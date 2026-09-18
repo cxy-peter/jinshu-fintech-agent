@@ -1,0 +1,58 @@
+name: V5.1 reading and workbench acceptance
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/v5-reading-check.yml']
+permissions:
+  contents: write
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Build and run functional tests
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/v5_1
+          cd lite
+          npm ci --ignore-scripts
+          npm test | tee ../evidence/v5_1/unit-tests.txt
+          npm run build
+      - name: Browser setup and synthetic PDF
+        run: |
+          pip install playwright==1.55.0 reportlab
+          python -m playwright install --with-deps chromium
+          python - <<'PY'
+          from pathlib import Path
+          from reportlab.pdfgen import canvas
+          p=Path('data/mock_pdfs');p.mkdir(exist_ok=True)
+          c=canvas.Canvas(str(p/'06_public_faq.pdf'));c.drawString(60,740,'Synthetic FAQ: keep a draft if the ticket API fails.');c.save()
+          PY
+      - name: Full lightweight browser flow
+        run: |
+          python -m http.server 8795 --bind 127.0.0.1 --directory lite/dist >/tmp/lite-http.log 2>&1 &
+          python lite/tests/browser.py
+      - name: Preserve observed results
+        if: always()
+        run: |
+          mkdir -p evidence/v5_1
+          cp evidence/v5/browser-results.json evidence/v5_1/browser-results.json
+          printf '{"commit":"%s","run":"https://github.com/%s/actions/runs/%s","vercel_deployment":false,"private_document_uploaded":false}\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > evidence/v5_1/environment.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: jinshu-v5-1-evidence, path: evidence/v5_1/}
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with: {name: jinshu-v5-1-built-website, path: lite/dist/}
+      - name: Commit execution evidence
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/v5_1
+          if ! git diff --staged --quiet; then git commit -m 'Record observed V5.1 reading and browser checks'; git pull --rebase origin main; git push; fi

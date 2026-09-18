@@ -25,13 +25,17 @@ export function rewrite(q,last=''){
  for(const [a,b] of Object.entries(ALIASES))if(norm(text).includes(a)){terms.push(b)}
  return {original:q,expanded:text+' '+terms.join(' '),followup:!!(follow&&last),aliases:terms};
 }
+/** Detect dot-leader contents pages without discarding them from full-document viewing. */
+export function isContents(text){return (String(text).match(/(?:\.{4,}|…{2,})\s*\d+/g)||[]).length>=3;}
+function queryPhrase(query){return norm(query).replace(/^(请)?(解释一下|解释|介绍一下|介绍|什么是)/,'').replace(/(是什么|有哪些|是什么含义|什么意思|怎么办|如何处理)[？?。]*$/,'').replace(/[？?。]/g,'').trim();}
+function headingBonus(content,query){const q=queryPhrase(query);if(q.length<3)return 0;return String(content).split(/\n/).some(line=>{const n=norm(line).replace(/^[\d.、（）()一二三四五六七八九十#\s]+/,'');return n.length<=60&&n.includes(q)})?12:0;}
 export class Index {
  constructor(rows){this.rows=rows;this.postings=new Map();this.lengths=[];let length=0;
  rows.forEach((r,i)=>{const ts=tokens(r.title+' '+r.content),f=new Map();ts.forEach(t=>f.set(t,(f.get(t)||0)+1));this.lengths[i]=ts.length;length+=ts.length;for(const[t,n]of f){if(!this.postings.has(t))this.postings.set(t,[]);this.postings.get(t).push([i,n]);}});this.avg=length/Math.max(rows.length,1)||1;}
  search(query,{flow=null,limit=5}={}){
  const ts=[...new Set(tokens(query))],scores=new Map(),N=this.rows.length;
  for(const t of ts){const hits=this.postings.get(t)||[],idf=Math.log(1+(N-hits.length+.5)/(hits.length+.5));for(const[i,tf]of hits){const r=this.rows[i];if(r.status!=='active'||flow&&(r.flow!==flow&&r.flow!=='all'))continue;const score=idf*tf*2.2/(tf+1.2*(.25+.75*this.lengths[i]/this.avg));scores.set(i,(scores.get(i)||0)+score);}}
- return [...scores].map(([i,s])=>{const r=this.rows[i];let bonus=0;for(const term of ts)if(term.length>1&&norm(r.title).includes(term))bonus+=1.5;return {...r,score:s+bonus}}).sort((a,b)=>b.score-a.score).slice(0,limit);
+ return [...scores].map(([i,s])=>{const r=this.rows[i];let bonus=0;for(const term of ts)if(term.length>1&&norm(r.title).includes(term))bonus+=1.5;const contents=r.is_contents??isContents(r.content);const penalty=contents&&!/目录|目次/.test(query)?.18:1;return {...r,is_contents:contents,score:(s+bonus+headingBonus(r.content,query))*penalty}}).sort((a,b)=>b.score-a.score).slice(0,limit);
  }
 }
 export function route(q,index,lastFlow=null){
@@ -44,15 +48,27 @@ export function route(q,index,lastFlow=null){
  const top=all[0];return{flow:top.score>=1?top.id:null,mode:'rules_and_lexical',reason:top.score>=1?'术语规则与资料词项匹配（非模型概率）':'未发现明确资料或任务，请补充问题或手选工作流',candidates:all.slice(0,3)};
 }
 export function chunksFromPages(pages,{id,title,flow='finance_learning',status='pending_review',source='上传资料',version=1}={}){
- const out=[];pages.forEach((p,pi)=>{const text=typeof p==='string'?p:p.text;let at=0;
- while(at<text.length){let end=Math.min(at+650,text.length);if(end<text.length){const cut=Math.max(text.lastIndexOf('。',end),text.lastIndexOf('\n',end));if(cut>at+220)end=cut+1;}const content=text.slice(at,end).trim();if(content)out.push({id:id+':'+out.length,doc_id:id,title,flow,status,source,page:typeof p==='string'?pi+1:(p.page||pi+1),version,content,start:at,end});if(end===text.length)break;at=Math.max(end-60,at+1);}});return out;
+ const out=[];pages.forEach((p,pi)=>{const text=typeof p==='string'?p:p.text;const is_contents=isContents(text);let at=0;
+ while(at<text.length){let end=Math.min(at+650,text.length);if(end<text.length){const cut=Math.max(text.lastIndexOf('。',end),text.lastIndexOf('\n',end));if(cut>at+220)end=cut+1;}const content=text.slice(at,end).trim();if(content)out.push({id:id+':'+out.length,doc_id:id,title,flow,status,source,page:typeof p==='string'?pi+1:(p.page||pi+1),version,content,is_contents,start:at,end});if(end===text.length)break;at=Math.max(end-60,at+1);}});return out;
+}
+/** Keep ranked IDs; identify neighboring source chunks separately. Not semantic chunking. */
+export function readingEvidence(hits,index,flow){
+ return hits.map(hit=>{
+  if(hit.start===undefined||hit.is_contents)return hit;
+  const siblings=index.rows.filter(r=>r.doc_id===hit.doc_id&&r.status==='active'&&(r.flow===flow||r.flow==='all'));
+  const at=siblings.findIndex(r=>r.id===hit.id);const chosen=[hit];
+  // At most one previous and two following chunks; never cross documents or more than one page.
+  for(const offset of [-1,1,2]){const row=siblings[at+offset];if(row&&!isContents(row.content)&&!row.is_contents&&Math.abs((row.page??0)-(hit.page??0))<=1)chosen.push(row);}
+  chosen.sort((a,b)=>(a.page??0)-(b.page??0)||(a.start??0)-(b.start??0));
+  return {...hit,source_chunk_ids:chosen.map(r=>r.id),source_pages:[...new Set(chosen.map(r=>r.page))],content:chosen.map(r=>`【原文第${r.page??'未标'}页 · 片段${r.id}】\n${r.content}`).join('\n\n'),context_expansion:'adjacent_chunks_not_additional_ranked_hits'};
+ });
 }
 export function answerQuestion(q,index,{flow=null,last='',topK=5}={}){
- const started=performance.now(),rw=rewrite(q,last);const routing=flow?{flow,mode:'manual',reason:'用户明确选择'}:route(q,index);flow=routing.flow;
+ const started=performance.now(),rw=rewrite(q,last);const routing=flow?{flow,mode:'manual',reason:'用户明确选择'}:route(rw.followup?last:q,index);flow=routing.flow;
  if(!flow)return{query:q,route:routing,answer:routing.reason,sources:[],verified:false,mode:'clarification',stages:[{node:'Intent',status:'needs_clarification',implementation:'rules'}]};
- const hits=index.search(rw.expanded,{flow,limit:topK});const sourceTerms=[...new Set(tokens(q))].filter(t=>t.length>1&&!['什么','如何','怎么','为什么','金融','问题'].includes(t));
+ const hits=index.search(rw.expanded,{flow,limit:topK});const sourceTerms=[...new Set(tokens(rw.followup?last+' '+q:q))].filter(t=>t.length>1&&!['什么','如何','怎么','为什么','金融','问题'].includes(t));
  const direct=hits.some(h=>sourceTerms.some(t=>norm(h.content+' '+h.title).includes(t)));
- const sources=direct?hits:[];
+ const sources=direct?readingEvidence(hits,index,flow):[];
  let answer=sources.length?'依据当前资料，相关内容如下（检索整理，未调用生成模型）：\n\n'+sources.map((h,i)=>`【来源${i+1}】${h.title}${h.page?' · 第'+h.page+'页':''}\n${h.content}`).join('\n\n'):'当前资料中未找到足够的直接依据。请补充资料、改写问题或转人工；不编造规定和账户状态。';
  if(answer.length>12000)answer=answer.slice(0,12000)+'\n\n回答预览达到长度上限，请在来源面板展开完整文档。';
  return{query:q,rewritten:rw,route:routing,flow,sources,answer,mode:sources.length?'lexical_extractive':'no_evidence',verified:!!sources.length,verification_scope:'仅检查活动来源与原文引用，不是模型语义正确率',topK,elapsed_ms:Math.round((performance.now()-started)*100)/100,stages:['Intent','Rewrite','Retrieval','Answer','Verify'].map(node=>({node,status:node==='Verify'&&!sources.length?'no_evidence':'completed',implementation:node==='Answer'?'source_assembly':'local_rules'}))};
