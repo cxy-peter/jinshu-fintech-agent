@@ -8,9 +8,9 @@
 
 ### [打开金枢工作台 → jinshu-workbench.vercel.app](https://jinshu-workbench.vercel.app)
 
-**V6已在上述真实网址完成浏览器操作与100题带出处开发验收。** [实际网站运行](https://github.com/cxy-peter/jinshu-fintech-agent/actions/runs/35405427350) · [100题答案与原文证据](evidence/v6-production/vercel100.json) · [功能验收](evidence/v6-production/browser-results.json)
+**V6已在上述真实网址完成浏览器操作与100题带出处开发验收。** [实际网站运行](https://github.com/cxy-peter/jinshu-fintech-agent/actions/runs/35405427350) · [100题答案与原文证据](evidence/v6-production/vercel100.json) · [追加功能验收](evidence/v6-extra/result.json)
 
-[产品与验收说明](docs/V6_ACCEPTANCE_AND_PRODUCT.md) · [原ZIP/pi/视频对照](docs/V6_SOURCE_ALIGNMENT.md) · [产品面试问答](docs/V5_INTERVIEW.md) · [V5操作指南](docs/V5_GUIDE.md) · [完整服务部署](docs/V4_GUIDE.md)
+[产品岗简历与介绍](docs/V6_RESUME_PRODUCT.md) · [产品与验收说明](docs/V6_ACCEPTANCE_AND_PRODUCT.md) · [原ZIP/pi/视频对照](docs/V6_SOURCE_ALIGNMENT.md) · [产品面试问答](docs/V5_INTERVIEW.md) · [操作指南](docs/V5_GUIDE.md) · [完整服务部署](docs/V4_GUIDE.md)
 
 | 业务入口 | 可操作结果 |
 |---|---|
@@ -63,7 +63,7 @@ Mongo维护事实正文、版本、有效状态和作业；Milvus是可重建候
 
 ## 工作流与反馈图
 
-每行一张；已修正SVG内部1.81倍缩放与画布不一致导致的裁切。点击原图放大。图展示完整工程设计，不能据图推断网页运行了全部服务器组件。
+每行一张；已修正SVG内部1.81倍缩放与画布不一致导致的裁切，并确认整图可见。点击原图放大。图展示完整工程设计，不能据图推断网页运行了全部服务器组件。
 
 <p><a href="diagrams/01_architecture.svg"><img src="diagrams/01_architecture.svg" width="620" alt="完整DAG、金融Skill、可信RAG与记忆架构"></a></p>
 
@@ -75,7 +75,7 @@ Mongo维护事实正文、版本、有效状态和作业；Milvus是可重建候
 
 | 实际网站结果 | 数值 |
 |---|---:|
-| 联合验收通过 | 100 / 100 |
+| 联合开发验收通过 | 100 / 100 |
 | 有依据问题 | 96 |
 | 指定来源Hit@5 / labeled Recall@5 | 100% / 100% |
 | MRR@5 | 0.9766 |
@@ -84,6 +84,8 @@ Mongo维护事实正文、版本、有效状态和作业；Milvus是可重建候
 | 组件程序测试 | 48条通过 |
 
 **这是自编、单一设计者、指定语料的开发验收，不是独立盲测、穷尽相关性标注、LLM生成准确率或真实用户效果。** 原文一致不等于结论全部语义正确。答案、引用、原始记录和构建哈希均可复核。真实用户试点仍为0。
+
+追加实站检查覆盖偏好刷新保留、体验记录撤回、CSV计算与导出、切片ZIP导入、重复文件去重、原文定位、资料停用和工作区导出清空。[运行记录](https://github.com/cxy-peter/jinshu-fintech-agent/actions/runs/35406081464)
 
 ## 部署与后续更新
 
@@ -95,7 +97,7 @@ npm ci && npm run build
 python -m http.server 8795 --directory dist
 ```
 
-当前实际站点由单独的 `jinshu-workbench` 发布仓库连接Vercel。其构建固定读取已通过测试的上游提交 `925f698cf8c9c12a644fd545cfb4bd145770b248` 并逐文件核验SHA-256；不会悄悄跟随可变main。下次更新需修改发布仓库的固定提交/哈希清单。`build-info.json`可核对实际部署来源。
+当前实际站点由单独的 `jinshu-workbench` 发布仓库连接Vercel。其构建固定读取已通过测试的上游提交 `925f698cf8c9c12a644fd545cfb4bd145770b248` 并逐文件核验SHA-256；不会悄悄跟随可变main。下次更新需修改发布仓库的固定提交/哈希清单。`build-info.json`可核对实际部署来源。本次后续文档修订不改变线上已验收代码。
 
 完整服务：
 
@@ -112,7 +114,7 @@ docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml --prof
 
 V4实跑了Mongo/Redis/Milvus、8个模拟PDF/34切片入库和Qwen/BGE/Reranker调用；完整CI随后在评测导入处失败，真实pi最终验收与24题评测未完成，部分生成候选曾被Verifier阻止。V6网页及pi合同测试成功不替代这些缺项。
 
-K8s/HPA/k6为待执行容量方案，不是20Pod成绩。原ZIP231文件中公开engine保留218个，216个字节一致，2个为已说明的V3补丁；16个pi文件一致，新增overlay不改原件。视频本轮复核10个关键时间点，未逐字转写全部音频。私人90份资料/19032片预处理不随公共站点发布。
+K8s/HPA/k6为待执行容量方案，不是20Pod成绩。原ZIP231文件中公开engine保留218个，216个字节一致，2个为已说明的V3补丁。pi目录18个文件全部一致，包含16个非隐藏文件和2个隐藏配置；新增overlay不改原件。视频复核10个关键时间点，未逐字转写全部音频。私人90份资料/19032片预处理不随公共站点发布。
 
 </details>
 
