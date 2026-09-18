@@ -1,0 +1,6 @@
+# Merge after stack.yml. This changes the pi build only, retaining its profile and environment.
+services:
+  pi-agent:
+    build:
+      context: ../..
+      dockerfile: services/pi-agent-overlay/Dockerfile
