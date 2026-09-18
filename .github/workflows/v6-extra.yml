@@ -1,0 +1,28 @@
+name: V6 real website extra functional checks
+on:
+  push:
+    paths: ['.github/workflows/v6-extra.yml']
+  workflow_dispatch:
+permissions: {contents: write}
+jobs:
+  extra:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install playwright==1.55.0 && python -m playwright install --with-deps chromium
+      - run: python scripts/vercel_extra.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: v6-real-site-extra, path: evidence/v6-extra/}
+      - name: Keep observed result
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/v6-extra
+          git commit -m 'Record real Vercel additional functional checks' || true
+          git pull --rebase --autostash origin main
+          git push
