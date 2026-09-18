@@ -54,5 +54,11 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add evidence/v5_1
-          if ! git diff --staged --quiet; then git commit -m 'Record observed V5.1 reading and browser checks'; git pull --rebase origin main; git push; fi
+          git add evidence/v5 evidence/v5_1
+          if ! git diff --staged --quiet; then git commit -m 'Record observed V5.1 reading and browser checks'; git pull --rebase --autostash origin main; git push; fi
+      - name: Package complete tracked source
+        if: success()
+        run: git archive --format=zip --prefix=jinshu-fintech-agent/ HEAD -o /tmp/jinshu-v5-1-source.zip
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with: {name: jinshu-v5-1-complete-source, path: /tmp/jinshu-v5-1-source.zip}
