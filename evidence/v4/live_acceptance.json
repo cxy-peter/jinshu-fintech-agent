@@ -1,0 +1,343 @@
+{
+  "test_scope": "real local weights + MongoDB + Redis + Milvus, synthetic tasks; not a user study",
+  "checks": {
+    "pdf_to_milvus": true,
+    "llm_inference": true,
+    "redis_cross_instance": true,
+    "mongo_cross_instance": true,
+    "redis_stream_ack": true,
+    "dag_real_model_call": true,
+    "shared_freeze": true
+  },
+  "real_users": 0,
+  "k8s_load_test": false,
+  "errors": [
+    {
+      "type": "AssertionError",
+      "message": "pi did not return model output",
+      "traceback": "Traceback (most recent call last):\n  File \"/app/scripts/live_acceptance.py\", line 72, in main\n    if not text:raise AssertionError('pi did not return model output')\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: pi did not return model output\n"
+    }
+  ],
+  "services": {
+    "mode": "services",
+    "model_scope": "local",
+    "services": {
+      "mongo": "ok",
+      "redis": "ok",
+      "milvus": "ok"
+    },
+    "embedding_model": "BAAI/bge-small-zh-v1.5",
+    "embedding_dimension": 512,
+    "collection": "jinshu_fintech_bge_v4_b5b707a0a48c",
+    "chat_model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "note": "Connectivity only; model quality requires evaluation. No secrets returned."
+  },
+  "documents": [
+    {
+      "file": "01_balance_sheet.pdf",
+      "status": "active",
+      "vector_status": "ready",
+      "chunks": 4
+    },
+    {
+      "file": "02_income_statement.pdf",
+      "status": "active",
+      "vector_status": "ready",
+      "chunks": 4
+    },
+    {
+      "file": "03_cashflow_statement.pdf",
+      "status": "active",
+      "vector_status": "ready",
+      "chunks": 4
+    },
+    {
+      "file": "04_wealth_products.pdf",
+      "status": "active",
+      "vector_status": "ready",
+      "chunks": 6
+    },
+    {
+      "file": "05_issuance_sop.pdf",
+      "status": "active",
+      "vector_status": "ready",
+      "chunks": 4
+    },
+    {
+      "file": "06_public_faq.pdf",
+      "status": "active",
+      "vector_status": "ready",
+      "chunks": 4
+    },
+    {
+      "file": "07_onboarding_sop.pdf",
+      "status": "active",
+      "vector_status": "ready",
+      "chunks": 4
+    },
+    {
+      "file": "08_case_handoff.pdf",
+      "status": "active",
+      "vector_status": "ready",
+      "chunks": 4
+    }
+  ],
+  "semantic_probe": {
+    "dimension": 512,
+    "related_cosine": 0.6209762118578269,
+    "unrelated_cosine": 0.3955276425572796,
+    "kind": "descriptive sanity check; not domain accuracy"
+  },
+  "completion": "保存待提交草稿",
+  "model_calls": [
+    {
+      "kind": "embedding",
+      "model": "BAAI/bge-small-zh-v1.5",
+      "dimension": 512,
+      "texts": 3,
+      "status": "ok",
+      "usage": {
+        "prompt_tokens": 48,
+        "total_tokens": 48
+      }
+    },
+    {
+      "kind": "chat",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "status": "ok",
+      "usage": {
+        "prompt_tokens": 47,
+        "completion_tokens": 6,
+        "total_tokens": 53
+      },
+      "latency_ms": 5765.62
+    }
+  ],
+  "dag": {
+    "answer": "本次回答未通过校验；请查看已核对的原文或联系负责人。",
+    "trace_id": "trace_37dabe3726b7444db1cb5de0065fdc65",
+    "execution": {
+      "user_id": "ci-reviewer",
+      "workflow": "service",
+      "original_query": "用户要求转人工，工单接口不可用时应当怎么做？",
+      "params": {},
+      "tools": [],
+      "profile": "services",
+      "last_user_query": "",
+      "allow_external": false,
+      "models_enabled": true,
+      "selected_workflow": "service",
+      "memory_context": {
+        "chars": 62,
+        "budget": 6000,
+        "user_items": 0,
+        "organization_items": 0,
+        "evidence_ids": [],
+        "procedures": {
+          "skills": 1,
+          "hooks": 0,
+          "rules": 0,
+          "experiments": 0
+        },
+        "entities": {
+          "workflow": "service"
+        }
+      },
+      "intent_mode": "explicit_workflow_rules",
+      "stages": [
+        {
+          "node": "Intent",
+          "budget_seconds": 60.0,
+          "elapsed_ms": 0.05,
+          "status": "completed"
+        },
+        {
+          "node": "Rewrite",
+          "budget_seconds": 60.0,
+          "elapsed_ms": 2543.03,
+          "status": "completed"
+        },
+        {
+          "node": "Retrieval",
+          "budget_seconds": 120.0,
+          "elapsed_ms": 7902.47,
+          "status": "completed"
+        },
+        {
+          "node": "Answer",
+          "budget_seconds": 120.0,
+          "elapsed_ms": 3433.04,
+          "status": "completed"
+        },
+        {
+          "node": "Verify",
+          "budget_seconds": 90.0,
+          "elapsed_ms": 8.52,
+          "status": "completed"
+        },
+        {
+          "node": "Answer",
+          "budget_seconds": 120.0,
+          "elapsed_ms": 2824.8,
+          "status": "completed"
+        },
+        {
+          "node": "Verify",
+          "budget_seconds": 90.0,
+          "elapsed_ms": 8.69,
+          "status": "completed"
+        },
+        {
+          "node": "Answer",
+          "budget_seconds": 120.0,
+          "elapsed_ms": 2733.79,
+          "status": "completed"
+        },
+        {
+          "node": "Verify",
+          "budget_seconds": 90.0,
+          "elapsed_ms": 7.89,
+          "status": "completed"
+        }
+      ],
+      "rewritten_query": "用户要求转人工，工单接口不可用时应当怎么做？",
+      "model_calls": [
+        {
+          "kind": "chat",
+          "model": "Qwen/Qwen2.5-0.5B-Instruct",
+          "status": "ok",
+          "usage": {
+            "prompt_tokens": 121,
+            "completion_tokens": 20,
+            "total_tokens": 141
+          },
+          "latency_ms": 2542.37
+        },
+        {
+          "kind": "embedding",
+          "model": "BAAI/bge-small-zh-v1.5",
+          "dimension": 512,
+          "texts": 1,
+          "status": "ok",
+          "usage": {
+            "prompt_tokens": 43,
+            "total_tokens": 43
+          }
+        },
+        {
+          "kind": "embedding",
+          "model": "BAAI/bge-small-zh-v1.5",
+          "dimension": 512,
+          "texts": 1,
+          "status": "ok",
+          "usage": {
+            "prompt_tokens": 52,
+            "total_tokens": 52
+          }
+        },
+        {
+          "kind": "rerank",
+          "model": "BAAI/bge-reranker-base",
+          "status": "ok",
+          "candidates": 8
+        },
+        {
+          "kind": "chat",
+          "model": "Qwen/Qwen2.5-0.5B-Instruct",
+          "status": "ok",
+          "usage": {
+            "prompt_tokens": 492,
+            "completion_tokens": 12,
+            "total_tokens": 504
+          },
+          "latency_ms": 3432.8
+        },
+        {
+          "kind": "chat",
+          "model": "Qwen/Qwen2.5-0.5B-Instruct",
+          "status": "ok",
+          "usage": {
+            "prompt_tokens": 495,
+            "completion_tokens": 5,
+            "total_tokens": 500
+          },
+          "latency_ms": 2824.62
+        },
+        {
+          "kind": "chat",
+          "model": "Qwen/Qwen2.5-0.5B-Instruct",
+          "status": "ok",
+          "usage": {
+            "prompt_tokens": 495,
+            "completion_tokens": 5,
+            "total_tokens": 500
+          },
+          "latency_ms": 2733.59
+        }
+      ],
+      "skill_plan": {
+        "queries": [
+          "用户要求转人工，工单接口不可用时应当怎么做？",
+          "用户要求转人工，工单接口不可用时应当怎么做？ 客服 知识 版本 无依据"
+        ],
+        "top_k": 5,
+        "instructions": [
+          "使用输出模板：依据—行动—转人工"
+        ],
+        "skills": [
+          "base_service"
+        ],
+        "executions": [
+          "sx_a6c9f9e50569450faf5311d724371d54"
+        ]
+      },
+      "retrieval": [
+        {
+          "queries": [
+            "用户要求转人工，工单接口不可用时应当怎么做？",
+            "用户要求转人工，工单接口不可用时应当怎么做？ 客服 知识 版本 无依据"
+          ],
+          "top_k": 5,
+          "bm25_candidates": 8,
+          "vector_candidates": 8,
+          "hydrated": 8,
+          "returned": 5,
+          "ids": [
+            "doc_66a30c08e9f44a37:2",
+            "doc_48638b465fcd4cb7:3",
+            "doc_48638b465fcd4cb7:2",
+            "doc_66a30c08e9f44a37:1",
+            "doc_48638b465fcd4cb7:0"
+          ],
+          "degraded": [],
+          "embedding_mode": "semantic_http"
+        }
+      ],
+      "rules_applied": [],
+      "answer_mode": "llm",
+      "answer_template": "上次回答存在以下问题，请修正：missing_or_unknown_reference_number",
+      "semantic_check": "verbatim extractive + reference integrity, not learned QA accuracy",
+      "trace_id": "trace_37dabe3726b7444db1cb5de0065fdc65"
+    }
+  },
+  "shared_rollback": {
+    "result": {
+      "frozen": true,
+      "candidate": "ci-synthetic-candidate",
+      "last_stable": "base_service",
+      "reason": "acceptance",
+      "status": "local_baseline_remote_unconfirmed",
+      "at": "2026-09-18T18:40:11.969065+00:00",
+      "error": "ConnectionError",
+      "note": "本实例已停止候选流量；远端状态未确认时不声称所有实例都已回滚。",
+      "scope": "shared MongoDB control read at each new request; already-running requests may finish"
+    },
+    "second_instance_frozen": true
+  },
+  "pi_runtime": {
+    "status": "failed",
+    "text": null,
+    "uses_original_source": true
+  },
+  "status": "failed"
+}

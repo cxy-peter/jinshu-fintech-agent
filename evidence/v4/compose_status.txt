@@ -1,1 +1,8 @@
-NAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS
+NAME                        IMAGE                                              COMMAND                  SERVICE         CREATED              STATUS                        PORTS
+jinshu-v4-etcd-1            quay.io/coreos/etcd:v3.5.18                        "etcd -advertise-cli…"   etcd            About a minute ago   Up About a minute (healthy)   2379-2380/tcp
+jinshu-v4-milvus-1          milvusdb/milvus:v2.5.27                            "/tini -- milvus run…"   milvus          About a minute ago   Up About a minute (healthy)   
+jinshu-v4-minio-1           quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z   "/usr/bin/docker-ent…"   minio           About a minute ago   Up About a minute (healthy)   9000/tcp
+jinshu-v4-model-gateway-1   jinshu-v4-model-gateway                            "uvicorn server:app …"   model-gateway   About a minute ago   Up About a minute (healthy)   
+jinshu-v4-mongodb-1         mongo:7.0                                          "docker-entrypoint.s…"   mongodb         About a minute ago   Up About a minute (healthy)   27017/tcp
+jinshu-v4-pi-agent-1        jinshu-v4-pi-agent                                 "docker-entrypoint.s…"   pi-agent        About a minute ago   Up About a minute             8100/tcp
+jinshu-v4-redis-1           redis:7-alpine                                     "docker-entrypoint.s…"   redis           About a minute ago   Up About a minute (healthy)   6379/tcp
