@@ -2,7 +2,7 @@
 
 ## 1. 对照范围
 
-本轮重新解包用户上传的 `wenshu-project(3).zip`，共231个文件，SHA-256为 `716d2022e4c9c7ecad17ef082921f383aa779ff55bc0e86e07c395ee49ca479d`。与当前public engine比较：218个保留，其中216个字节相同；原有2个V3补丁仍为backend/app/harness/orchestrator.py和backend/app/storage/mongodb.py。13个学校资料和原设计资料未发布，不是新丢失的运行代码。16个pi目录文件全部一致。本轮通过新增overlay扩展，不覆盖原ZIP或engine。
+本轮重新解包用户上传的 `wenshu-project(3).zip`，共231个文件，SHA-256为 `716d2022e4c9c7ecad17ef082921f383aa779ff55bc0e86e07c395ee49ca479d`。与当前public engine比较：218个保留，其中216个字节相同；原有2个V3补丁仍为backend/app/harness/orchestrator.py和backend/app/storage/mongodb.py。13个学校资料和原设计资料未发布，不是新丢失的运行代码。pi目录共18个文件全部一致：16个非隐藏文件，加上.dockerignore与.env.example两个隐藏配置。此前“16个pi文件”未计隐藏文件，本次统一采用18个的完整计数。本轮通过新增overlay扩展，不覆盖原ZIP或engine。
 
 视频为25分21.885秒、1868×1080；本轮按00:45、03:00、07:30、10:00、13:00、16:00、19:30、22:00、24:00、25:00检查10个关键帧并对照源码，未做完整音频逐字转写。视频07:30明确提及没有直接启动多个部门后端容器，因此不把图示拆分或配置当成真实集群效果。
 
@@ -11,7 +11,7 @@
 | 参考能力 | 金枢完整服务 | Vercel网站 | 本轮处理/边界 |
 |---|---|---|---|
 | Intent→Rewrite→Retrieval→Answer→Verify | 复用原Harness并增加金融适配 | 规则路由、改写、检索、原文组装、来源校验 | 五步可观察，网页不声称每步调用模型 |
-| pi Agent Runtime | 原16文件保留，兼容服务接口 | 不在浏览器运行pi服务 | 新增超时abort、最终消息选取和严格JSON overlay |
+| pi Agent Runtime | 原18文件保留，兼容服务接口 | 不在浏览器运行pi服务 | 新增超时abort、最终消息选取和严格JSON overlay |
 | Mongo事实平面/有效版本 | 文档状态、来源、审核与版本回查 | IndexedDB文档及active启停 | 网页没有服务器多人权限或分布式事实存储 |
 | BM25+Milvus+RRF+Reranker | 已有真实服务子链路执行记录 | 中文分词+BM25+标题权重 | 网页未使用语义Embedding；失败不假装模型生成 |
 | 父子/跨页证据 | 取决于解析器与原块元数据 | 同文档有界邻块展开 | V5.1已修目录误排和第24—25页说明不完整 |
