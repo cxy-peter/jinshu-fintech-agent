@@ -1,0 +1,7 @@
+{
+  "url": "https://github.com/cxy-peter/jinshu-fintech-agent/actions/runs/35380615293",
+  "commit": "0fdec2f9eade0a574c11af3f3dd7fc07811e57c1",
+  "runner": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+  "real_user_trial": false,
+  "k8s_hpa_test": false
+}
