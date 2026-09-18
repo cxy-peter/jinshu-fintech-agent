@@ -4,9 +4,9 @@
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcxy-peter%2Fjinshu-fintech-agent%2Ftree%2Fmain%2Flite&project-name=jinshu-workbench&repository-name=jinshu-workbench)
 
-**先体验主要功能，再按需要部署完整服务。** 上面的按钮复制 `lite` 子目录并进入 Vercel 建项目流程；需要登录并确认，完成后使用平台返回的网址。要持续跟随本仓库更新，在 Vercel Import 本仓库并把 **Root Directory 设为 `lite`**。当前没有自动创建 Vercel 线上项目，不提供猜测的 `vercel.app` 地址。
+**先体验主要功能，再按需要部署完整服务。** 上面按钮复制 `lite` 子目录并进入 Vercel 建项目流程；需要本人登录并确认，完成后使用平台返回的网址。要持续跟随本仓库更新，在 Vercel Import 本仓库并把 **Root Directory 设为 `lite`**。当前没有代建 Vercel 线上项目，不提供猜测的 `vercel.app` 地址。
 
-[部署与操作](docs/V5_GUIDE.md) · [产品方案与验收](docs/PRODUCT_SPEC_V5.md) · [产品面试问答](docs/V5_INTERVIEW.md) · [实际浏览器验收](https://github.com/cxy-peter/jinshu-fintech-agent/actions/runs/35392921379)
+[部署与操作](docs/V5_GUIDE.md) · [产品方案与验收](docs/PRODUCT_SPEC_V5.md) · [产品面试问答](docs/V5_INTERVIEW.md) · [全文与跨页改进](docs/V5_1_READING.md) · [V5.1实际验收](https://github.com/cxy-peter/jinshu-fintech-agent/actions/runs/35401483662)
 
 ## 可以做什么
 
@@ -21,9 +21,11 @@
 
 默认网页使用**词项检索与原文整理**，不需要模型密钥，也不把它说成语义Embedding或LLM生成。上传资料和反馈存在访问者自己的IndexedDB，不进入公共知识库。可选模型接口须由部署者配置，并由访问者确认发送当前问题及片段。
 
+V5.1保留完整文档阅读，同时对目录页降权、正文小标题加权，并为命中片段补充同文档相邻页依据。新增上下文有独立来源ID，不混入top-k召回指标。本人115页笔记可以通过随交付提供的分页JSON导入；全文不放公共仓库。
+
 ## 一次部署
 
-Vercel设置：**Root `lite` / Framework `Other` / Build `npm run build` / Output `dist` / Node 22**。不需要为默认模式配置数据库或模型。
+Vercel设置：**Root `lite` / Framework `Other` / Install `npm ci` / Build `npm run build` / Output `dist` / Node 22**。默认不配置数据库或模型。
 
 本机运行：
 
@@ -46,10 +48,10 @@ docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml --prof
 
 ## 工作流与反馈闭环
 
-点击小图查看原尺寸；下图是完整工程结构，网页使用可操作的简化实现。
+点击缩略图查看原图；下图是完整工程结构，网页实现可操作的简化流程。
 
-<a href="diagrams/01_architecture.svg"><img src="diagrams/01_architecture.svg" width="430" alt="完整工程的固定DAG、事实检索与业务工作流"></a>
-<a href="diagrams/03_loop.svg"><img src="diagrams/03_loop.svg" width="430" alt="反馈、候选、回放、灰度与回滚"></a>
+<a href="diagrams/01_architecture.svg"><img src="diagrams/01_architecture.svg" width="360" alt="固定DAG、事实检索与业务工作流"></a>
+<a href="diagrams/03_loop.svg"><img src="diagrams/03_loop.svg" width="360" alt="反馈、候选、回放、灰度与回滚"></a>
 
 ```text
 任务 → 路由 → 改写 → 检索 / 工具 → 答案与来源 → 校验 → Trace
@@ -60,14 +62,18 @@ docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml --prof
 
 ## 实际验证范围
 
-**V5轻量路径已通过实际执行：38条程序测试；Chromium问答、上传、刷新保留、PDF/Word解析、115页模拟导入、8类工具、Word导出、反馈回放启用及回滚、移动端布局。** [查看JSON](evidence/v5/browser-results.json)。16题是自编开发回归，不能当成独立金融准确率；真实用户为0。
+**V5.1的43条程序测试与Chromium主流程验收已通过，完整CI成功。** [运行记录](https://github.com/cxy-peter/jinshu-fintech-agent/actions/runs/35401483662)；[结果JSON](evidence/v5_1/browser-results.json)。
+
+覆盖问答、上传、刷新保留、PDF/Word解析、115页模拟导入、8类工具、Word导出、反馈回放启用及回滚、移动端布局。16题是自编开发回归，不是独立金融准确率。真实115页笔记另用原生提取及同一JS索引验证目录/跨页问题，不冒充浏览器PDF.js整本上传验收。真实用户为0。
+
+第一次V5.1运行的功能检查已成功，但证据提交因工作区生成文件而失败；后续修正提交步骤并重新通过。历史失败保留。
 
 <details>
-<summary>V4完整服务的历史状态与原工程保留范围</summary>
+<summary>完整服务的历史状态与原工程保留范围</summary>
 
-V4实际接通过Mongo/Redis/Milvus，8份模拟PDF形成34个服务切片并向量入库；Qwen2.5-0.5B、BGE512与Reranker有实际调用记录。完整CI随后因评测脚本包冲突失败，pi最终验收与24题评测没有完成，生成候选也曾被Verifier阻止。V5提供显式导入修补入口 `scripts/run_live_acceptance_v5.py`，但没有重新宣称完整服务全部通过。[历史原始证据](evidence/v4/live_acceptance.json)
+V4实际接通过Mongo/Redis/Milvus，8份模拟PDF形成34个服务切片并向量入库；Qwen2.5-0.5B、BGE512与Reranker有实际调用记录。完整CI随后因评测脚本包冲突失败，pi最终验收与24题评测未完成，生成候选也曾被Verifier阻止。V5提供显式导入修补入口 `scripts/run_live_acceptance_v5.py`，没有宣称完整服务全部通过。[历史原始证据](evidence/v4/live_acceptance.json)
 
-K8s/HPA/k6是待执行的容量工具，不是已完成20Pod压测。用户私有90份资料/19032片的预处理结果不随公共网页发布。公开engine保留原ZIP中的218个文件，216个字节一致，另外2个是已声明的V3补丁；V5没有修改engine。原署名和目录保留。
+K8s/HPA/k6是待执行容量工具，不是已完成20Pod压测。私有90份资料/19032片的预处理不随公共网页发布。公开engine保留原ZIP中218个文件，216个字节一致，另2个是已声明V3补丁；V5.1未修改engine。原署名与目录保留。
 
 </details>
 
@@ -75,4 +81,4 @@ K8s/HPA/k6是待执行的容量工具，不是已完成20Pod压测。用户私�
 
 `lite/` 可部署网页；`jinshu/` 金融适配；`engine/` 原参考工程；`services/model-gateway/` 私有模型接口；`deploy/` Compose及K8s；`docs/` 产品与技术文档；`evidence/` 实际执行结果。
 
-用户原始PDF、公司截图、私人切片、密钥、字体文件及模型权重不进入公共网页包。网页里的金融内容用于资料学习与模拟，历史笔记不是现行政策或投资建议。
+用户原始PDF、公司截图、私人切片、密钥、字体文件及模型权重不进入公共网页包。金融内容用于学习与模拟，历史笔记不是现行政策或投资建议。
