@@ -14,7 +14,7 @@ async def valid_chunk(store,id_,depts):
  from .document_service import can_read
  if not can_read(d,access.get()):return None
  state=run_state.get() or {}
- kinds={'fund_research':{'research_reference','synthetic'},'finance_learning':{'learning_reference'}}.get(state.get('workflow'))
+ kinds={'fund_research':{'research_reference','synthetic'},'finance_learning':{'learning_reference'}}.get(state.get('workflow'), {'institutional_document','synthetic'})
  if kinds and d.get('source_kind','synthetic' if d.get('synthetic') else 'institutional_document') not in kinds:return None
  now=date.today().isoformat()
  if d.get('effective_date') and d['effective_date']>now:return None

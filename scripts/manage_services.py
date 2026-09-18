@@ -28,6 +28,17 @@ async def run(args):
    from jinshu.corpus import import_reviewed_pack
    rows=await import_reviewed_pack(r,args.corpus,args.approvals)
    print(json.dumps(rows,ensure_ascii=False,indent=2))
+  elif args.command=='reindex':
+   from jinshu.live import local_models
+   doc=await r.c.store.get_document(args.doc_id)
+   if not doc or doc['status']!='active':raise ValueError('Only approved active documents may be reindexed')
+   if not local_models() and not doc.get('external_allowed'):raise ValueError('External embedding not approved')
+   chunks=await r.c.store.list_chunks_by_doc(doc['_id'])
+   vectors=await r.c.embeddings.embed([c['content'] for c in chunks])
+   for chunk,vector in zip(chunks,vectors):
+    await r.c.vector_store.add(chunk['_id'],vector,{'doc_id':doc['_id'],'dept_id':doc['dept_id'],'chunk_index':chunk['chunk_index']})
+   await r.c.store.update_document(doc['_id'],{'vector_status':'ready','embedding_fingerprint':r.c.embeddings.fingerprint})
+   print(json.dumps({'doc_id':doc['_id'],'vectors':len(vectors),'collection':r.c.vector_store.collection}))
   elif args.command=='status':
    from jinshu.live import ping_runtime
    print(json.dumps(await ping_runtime(r),ensure_ascii=False,indent=2))
@@ -36,5 +47,6 @@ p=argparse.ArgumentParser();sub=p.add_subparsers(dest='command',required=True)
 u=sub.add_parser('user');u.add_argument('username');u.add_argument('--department',default='');u.add_argument('--role',choices=['student','staff','admin'],default='student')
 s=sub.add_parser('synthetic');s.add_argument('--uploader',required=True)
 i=sub.add_parser('import-reviewed');i.add_argument('--corpus',type=Path,default=Path('/app/private_corpus'));i.add_argument('--approvals',type=Path,required=True)
+r=sub.add_parser('reindex');r.add_argument('doc_id')
 sub.add_parser('status')
 if __name__=='__main__':asyncio.run(run(p.parse_args()))

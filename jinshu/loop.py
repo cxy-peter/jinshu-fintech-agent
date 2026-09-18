@@ -17,6 +17,8 @@ def now():return datetime.now(timezone.utc).isoformat()
 
 class FeedbackLoop(LoopEngine):
  async def _reflect(self,bad_cases):
+  if self.embeddings.provider!='hash' and not local_models():
+   raise PermissionError('后台Loop默认只使用私有模型；外部模型模式不自动发送反馈及跨文档正文')
   result=await super()._reflect(bad_cases)
   cats={}
   for c in bad_cases:
@@ -128,8 +130,7 @@ class SourceReplay:
  """Paired replay uses actual retrieval/answer/verifier, not hand-assigned improvement scores."""
  def __init__(self,c):self.c=c
  async def replay_skill(self,skill,traces,limit=20):
-  details=[]
-  seen=set()
+  details=[];seen=set()
   traces=[t for t in traces if t.get('eval_split')!='frozen_holdout']
   for trace in traces[:limit]:
    if trace['query'] in seen:continue

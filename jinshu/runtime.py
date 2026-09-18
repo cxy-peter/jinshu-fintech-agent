@@ -32,7 +32,11 @@ class StrictEmbeddings(EmbeddingClient):
 
 class FinancialOrchestrator(Orchestrator):
  async def _finalize(self,*a,**k):
-  tid=await super()._finalize(*a,**k);state=run_state.get()
+  state=run_state.get()
+  if state is not None and len(a)>3 and not a[3].verification.get('passed',False):
+   state['attempted_answer_mode']=state.get('answer_mode')
+   state['answer_mode']='verification_blocked'
+  tid=await super()._finalize(*a,**k)
   if state is not None:
    trace=await self.store.get('traces',tid)
    trace.update({key:copy.deepcopy(value) for key,value in state.items() if key not in {'trace_id'}})
@@ -55,7 +59,7 @@ class Runtime:
    else:raise ValueError('Unknown runtime profile')
   from .operations import RecoveryController,TicketOutbox
   from . import ROOT
-  directory=ROOT/'workspace'/(instance_id or os.getenv('JINSHU_INSTANCE_ID','local'))
+  directory=ROOT/'workspace'/(instance_id or os.getenv('JINSHU_INSTANCE_ID') or (__import__('socket').gethostname() if profile=='services' else 'local'))
   self.recovery=RecoveryController(directory);self.outbox=TicketOutbox(directory)
   self.profile=profile;self.c=c=build_container(settings);self.sessions={};self.worker_task=None;self.stop=asyncio.Event()
   if profile=='services':
@@ -186,16 +190,14 @@ class Runtime:
     await self.c.job_queue.update_progress(j['_id'],{'stage':stage,'history':list(stages)})
    try:
     if j['type']=='loop':r=await self.c.loop_engine.run_cycle(progress)
-    elif j['type']=='document_stage':
-     r=await self.c.documents.stage_file(**j['payload'])
+    elif j['type']=='document_stage':r=await self.c.documents.stage_file(**j['payload'])
     else:raise ValueError('未知作业类型')
     await self.c.job_queue.finish(j,'completed',r)
    except Exception as e:await self.c.job_queue.finish(j,'failed',{'error':type(e).__name__,'message':str(e)})
  async def worker(self):
   while not self.stop.is_set():
    try:await self.process_jobs()
-   except Exception:
-    await asyncio.sleep(2)
+   except Exception:await asyncio.sleep(2)
    try:await asyncio.wait_for(self.stop.wait(),timeout=.5)
    except asyncio.TimeoutError:pass
  async def close(self):

@@ -175,3 +175,13 @@ def install_routes(app,rt,auth,admin,depts):
         real=[r for r in rows if not r.get('is_test')]
         return {'rows':rows,'non_test_events':len(real),'participants':len(set(r['participant'] for r in real)),
                 'claim_boundary':'Uploaded forms do not themselves prove external recruitment or independent correctness.'}
+
+    @app.post('/api/pilot/withdraw')
+    async def withdraw(u=Depends(auth)):
+        participant=hashlib.sha256(u['id'].encode()).hexdigest()[:20]
+        rows=await rt().c.store.find('pilot_events',{'participant':participant})
+        for row in rows:await rt().c.store.delete('pilot_events',row['_id'])
+        await rt().c.store.upsert('pilot_consents',{'_id':u['id'],'consent':False,'at':timestamp()})
+        return {'consent':False,'deleted_events':len(rows)}
+    from .ui_v4 import install_ui
+    install_ui(app)

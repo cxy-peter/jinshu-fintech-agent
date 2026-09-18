@@ -1,0 +1,59 @@
+name: V4 full integration acceptance
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/v4-acceptance.yml']
+permissions:
+  contents: write
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure and start private inference and databases
+        run: |
+          python scripts/init_deployment.py
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml --profile local-models --profile pi up -d --build mongodb redis etcd minio milvus model-gateway pi-agent
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml build api
+      - name: Real inference, 8 PDFs, 24 queries and original pi
+        run: |
+          mkdir -p evidence/v4
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml run --rm --no-deps -e V4_TEST_PI=1 -v "$PWD/evidence/v4:/app/evidence/v4" manage python scripts/live_acceptance.py
+      - name: API and worker readiness
+        run: |
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml up -d api worker
+          for n in $(seq 1 50); do if curl --fail http://127.0.0.1:8766/ready; then break; fi; sleep 3; done
+          curl --fail http://127.0.0.1:8766/ready
+      - name: Keep offline regression working
+        run: |
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml run --rm --no-deps -v "$PWD/tests:/app/tests:ro" -v "$PWD/pytest.ini:/app/pytest.ini:ro" -v "$PWD/conftest.py:/app/conftest.py:ro" manage python -m pytest -q | tee evidence/v4/offline_regression.txt
+      - name: Collect actual diagnostics
+        if: always()
+        run: |
+          mkdir -p evidence/v4
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml logs --tail=80 model-gateway pi-agent api worker > evidence/v4/service_diagnostics.txt 2>&1 || true
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml ps > evidence/v4/compose_status.txt || true
+          printf '{"run_url":"https://github.com/%s/actions/runs/%s","commit":"%s","real_users":0,"hpa_executed":false}\n' "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" "$GITHUB_SHA" > evidence/v4/run_environment.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jinshu-v4-integration-evidence
+          path: evidence/v4/
+      - name: Commit evidence and package actual source
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/v4
+          if ! git diff --staged --quiet; then git commit -m 'Record full V4 acceptance result without inventing unrun tests'; git pull --rebase origin main; git push origin HEAD:main; fi
+          git archive --format=zip --prefix=jinshu-fintech-agent/ HEAD -o /tmp/jinshu-v4-source.zip
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: jinshu-v4-source, path: /tmp/jinshu-v4-source.zip}
+      - name: Stop isolated CI stack
+        if: always()
+        run: docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml --profile local-models --profile pi down -v
