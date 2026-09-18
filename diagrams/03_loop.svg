@@ -6,7 +6,7 @@
 <!-- Title: G Pages: 1 -->
 <svg width="692pt" height="1257pt"
  viewBox="0.00 0.00 383.40 696.40" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.81 1.81) rotate(0) translate(25.2 671.2)">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(25.2 671.2)">
 <title>G</title>
 <polygon fill="#ffffff" stroke="transparent" points="-25.2,25.2 -25.2,-671.2 358.2,-671.2 358.2,25.2 -25.2,25.2"/>
 <text text-anchor="middle" x="166.5" y="-627.6" font-family="Noto Sans CJK SC" font-size="18.00">反馈自进化与回滚控制失败</text>

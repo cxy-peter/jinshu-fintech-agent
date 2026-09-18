@@ -1,0 +1,302 @@
+
+> jinshu-lite@5.0.0 test
+> node --test tests/*.test.mjs
+
+TAP version 13
+# Subtest: references point to verbatim current source
+ok 1 - references point to verbatim current source
+  ---
+  duration_ms: 5.764018
+  type: 'test'
+  ...
+# Subtest: capability question is not an account-state request
+ok 2 - capability question is not an account-state request
+  ---
+  duration_ms: 0.279001
+  type: 'test'
+  ...
+# Subtest: financial and weekly subtasks retain both sources
+ok 3 - financial and weekly subtasks retain both sources
+  ---
+  duration_ms: 1.973579
+  type: 'test'
+  ...
+# Subtest: unprovided financial figures not fabricated
+ok 4 - unprovided financial figures not fabricated
+  ---
+  duration_ms: 0.617017
+  type: 'test'
+  ...
+# Subtest: quote mutation detected
+ok 5 - quote mutation detected
+  ---
+  duration_ms: 0.611671
+  type: 'test'
+  ...
+# Subtest: all eleven workflows registered
+ok 6 - all eleven workflows registered
+  ---
+  duration_ms: 1.598298
+  type: 'test'
+  ...
+# Subtest: route 商业银行的四个职能
+ok 7 - route 商业银行的四个职能
+  ---
+  duration_ms: 1.970265
+  type: 'test'
+  ...
+# Subtest: route 支付中介和信用中介
+ok 8 - route 支付中介和信用中介
+  ---
+  duration_ms: 0.339733
+  type: 'test'
+  ...
+# Subtest: route 发行排期遇非工作日
+ok 9 - route 发行排期遇非工作日
+  ---
+  duration_ms: 0.40823
+  type: 'test'
+  ...
+# Subtest: route 生成Word发行材料
+ok 10 - route 生成Word发行材料
+  ---
+  duration_ms: 0.319523
+  type: 'test'
+  ...
+# Subtest: route 净值产品对标
+ok 11 - route 净值产品对标
+  ---
+  duration_ms: 0.242644
+  type: 'test'
+  ...
+# Subtest: route 周报缺数
+ok 12 - route 周报缺数
+  ---
+  duration_ms: 0.245838
+  type: 'test'
+  ...
+# Subtest: route KYC开户字段时点
+ok 13 - route KYC开户字段时点
+  ---
+  duration_ms: 0.363403
+  type: 'test'
+  ...
+# Subtest: route 案件邮件KEP核查
+ok 14 - route 案件邮件KEP核查
+  ---
+  duration_ms: 0.336678
+  type: 'test'
+  ...
+# Subtest: route 特征计数策略
+ok 15 - route 特征计数策略
+  ---
+  duration_ms: 0.400869
+  type: 'test'
+  ...
+# Subtest: route 三表勾稽
+ok 16 - route 三表勾稽
+  ---
+  duration_ms: 1.237484
+  type: 'test'
+  ...
+# Subtest: route 客服工单转人工
+ok 17 - route 客服工单转人工
+  ---
+  duration_ms: 0.17948
+  type: 'test'
+  ...
+# Subtest: route FOF基金研究
+ok 18 - route FOF基金研究
+  ---
+  duration_ms: 0.107995
+  type: 'test'
+  ...
+# Subtest: complete bank functions including fourth point
+ok 19 - complete bank functions including fourth point
+  ---
+  duration_ms: 2.267505
+  type: 'test'
+  ...
+# Subtest: no evidence does not invent answer
+ok 20 - no evidence does not invent answer
+  ---
+  duration_ms: 0.451729
+  type: 'test'
+  ...
+# Subtest: unknown task can request clarification
+ok 21 - unknown task can request clarification
+  ---
+  duration_ms: 0.222109
+  type: 'test'
+  ...
+# Subtest: non-active facts not retrieved
+ok 22 - non-active facts not retrieved
+  ---
+  duration_ms: 0.239556
+  type: 'test'
+  ...
+# Subtest: multi-round query retained separately
+ok 23 - multi-round query retained separately
+  ---
+  duration_ms: 0.167364
+  type: 'test'
+  ...
+# Subtest: chunk content covers complete source without losing tail
+ok 24 - chunk content covers complete source without losing tail
+  ---
+  duration_ms: 0.39382
+  type: 'test'
+  ...
+# Subtest: metrics recall differs from hit
+ok 25 - metrics recall differs from hit
+  ---
+  duration_ms: 1.006201
+  type: 'test'
+  ...
+# Subtest: stable bucket
+ok 26 - stable bucket
+  ---
+  duration_ms: 0.173396
+  type: 'test'
+  ...
+# Subtest: loop alters retrieval and keeps bounded top k
+ok 27 - loop alters retrieval and keeps bounded top k
+  ---
+  duration_ms: 20.30728
+  type: 'test'
+  ...
+# Subtest: actual tool executes wealth_benchmark
+ok 28 - actual tool executes wealth_benchmark
+  ---
+  duration_ms: 2.876333
+  type: 'test'
+  ...
+# Subtest: actual tool executes issuance
+ok 29 - actual tool executes issuance
+  ---
+  duration_ms: 0.315217
+  type: 'test'
+  ...
+# Subtest: actual tool executes material_fill
+ok 30 - actual tool executes material_fill
+  ---
+  duration_ms: 0.125545
+  type: 'test'
+  ...
+# Subtest: actual tool executes weekly_report
+ok 31 - actual tool executes weekly_report
+  ---
+  duration_ms: 0.174669
+  type: 'test'
+  ...
+# Subtest: actual tool executes onboarding
+ok 32 - actual tool executes onboarding
+  ---
+  duration_ms: 0.097804
+  type: 'test'
+  ...
+# Subtest: actual tool executes kep
+ok 33 - actual tool executes kep
+  ---
+  duration_ms: 0.345355
+  type: 'test'
+  ...
+# Subtest: actual tool executes strategy
+ok 34 - actual tool executes strategy
+  ---
+  duration_ms: 0.088042
+  type: 'test'
+  ...
+# Subtest: actual tool executes statements
+ok 35 - actual tool executes statements
+  ---
+  duration_ms: 0.257173
+  type: 'test'
+  ...
+# Subtest: calendar agrees with synthetic python baseline
+ok 36 - calendar agrees with synthetic python baseline
+  ---
+  duration_ms: 0.28208
+  type: 'test'
+  ...
+# Subtest: leading zeros and missing values
+ok 37 - leading zeros and missing values
+  ---
+  duration_ms: 0.154104
+  type: 'test'
+  ...
+# Subtest: future unavailable features
+ok 38 - future unavailable features
+  ---
+  duration_ms: 0.101422
+  type: 'test'
+  ...
+# Subtest: email ambiguity distinct from absence
+ok 39 - email ambiguity distinct from absence
+  ---
+  duration_ms: 0.216191
+  type: 'test'
+  ...
+# Subtest: strategy cannot go live
+ok 40 - strategy cannot go live
+  ---
+  duration_ms: 0.13196
+  type: 'test'
+  ...
+# Subtest: bad date and bad numbers rejected
+ok 41 - bad date and bad numbers rejected
+  ---
+  duration_ms: 0.311588
+  type: 'test'
+  ...
+# Subtest: CSV parser handles quotes, unicode and zeros
+ok 42 - CSV parser handles quotes, unicode and zeros
+  ---
+  duration_ms: 0.261573
+  type: 'test'
+  ...
+# Subtest: CSV escaped spreadsheet formulas
+ok 43 - CSV escaped spreadsheet formulas
+  ---
+  duration_ms: 0.223212
+  type: 'test'
+  ...
+# Subtest: contents pages remain readable but body ranks first
+ok 44 - contents pages remain readable but body ranks first
+  ---
+  duration_ms: 8.971189
+  type: 'test'
+  ...
+# Subtest: short followup checks full subject instead of empty pronoun
+ok 45 - short followup checks full subject instead of empty pronoun
+  ---
+  duration_ms: 2.731164
+  type: 'test'
+  ...
+# Subtest: cross-page continuation carries explicit source IDs
+ok 46 - cross-page continuation carries explicit source IDs
+  ---
+  duration_ms: 1.518983
+  type: 'test'
+  ...
+# Subtest: inactive adjacent chunks excluded
+ok 47 - inactive adjacent chunks excluded
+  ---
+  duration_ms: 0.422181
+  type: 'test'
+  ...
+# Subtest: marking contents pages does not delete source
+ok 48 - marking contents pages does not delete source
+  ---
+  duration_ms: 0.159412
+  type: 'test'
+  ...
+1..48
+# tests 48
+# suites 0
+# pass 48
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 194.532685

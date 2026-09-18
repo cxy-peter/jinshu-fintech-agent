@@ -1,0 +1,1 @@
+{"checks":{"actual_pi_agent_with_fixture_stream":true,"final_message_selected":true,"json_value_contract":true,"timeout_requests_abort":true},"live_model":false,"note":"Contract test of real package; synthetic provider output is not LLM generation."}
