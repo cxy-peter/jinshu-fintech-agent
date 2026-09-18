@@ -13,9 +13,9 @@
   "k8s_load_test": false,
   "errors": [
     {
-      "type": "AssertionError",
-      "message": "pi did not return model output",
-      "traceback": "Traceback (most recent call last):\n  File \"/app/scripts/live_acceptance.py\", line 72, in main\n    if not text:raise AssertionError('pi did not return model output')\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: pi did not return model output\n"
+      "type": "ModuleNotFoundError",
+      "message": "No module named 'scripts.evaluate_v4'",
+      "traceback": "Traceback (most recent call last):\n  File \"/app/scripts/live_acceptance.py\", line 67, in main\n    from scripts.evaluate_v4 import evaluate\nModuleNotFoundError: No module named 'scripts.evaluate_v4'\n"
     }
   ],
   "services": {
@@ -110,12 +110,12 @@
         "completion_tokens": 6,
         "total_tokens": 53
       },
-      "latency_ms": 5765.62
+      "latency_ms": 6143.88
     }
   ],
   "dag": {
     "answer": "本次回答未通过校验；请查看已核对的原文或联系负责人。",
-    "trace_id": "trace_37dabe3726b7444db1cb5de0065fdc65",
+    "trace_id": "trace_418f1c48c5c247d5a9cca2f7333717f5",
     "execution": {
       "user_id": "ci-reviewer",
       "workflow": "service",
@@ -148,55 +148,55 @@
         {
           "node": "Intent",
           "budget_seconds": 60.0,
-          "elapsed_ms": 0.05,
+          "elapsed_ms": 0.04,
           "status": "completed"
         },
         {
           "node": "Rewrite",
           "budget_seconds": 60.0,
-          "elapsed_ms": 2543.03,
+          "elapsed_ms": 2488.47,
           "status": "completed"
         },
         {
           "node": "Retrieval",
           "budget_seconds": 120.0,
-          "elapsed_ms": 7902.47,
+          "elapsed_ms": 7154.15,
           "status": "completed"
         },
         {
           "node": "Answer",
           "budget_seconds": 120.0,
-          "elapsed_ms": 3433.04,
+          "elapsed_ms": 3390.74,
           "status": "completed"
         },
         {
           "node": "Verify",
           "budget_seconds": 90.0,
-          "elapsed_ms": 8.52,
+          "elapsed_ms": 8.14,
           "status": "completed"
         },
         {
           "node": "Answer",
           "budget_seconds": 120.0,
-          "elapsed_ms": 2824.8,
+          "elapsed_ms": 2933.53,
           "status": "completed"
         },
         {
           "node": "Verify",
           "budget_seconds": 90.0,
-          "elapsed_ms": 8.69,
+          "elapsed_ms": 8.72,
           "status": "completed"
         },
         {
           "node": "Answer",
           "budget_seconds": 120.0,
-          "elapsed_ms": 2733.79,
+          "elapsed_ms": 2745.29,
           "status": "completed"
         },
         {
           "node": "Verify",
           "budget_seconds": 90.0,
-          "elapsed_ms": 7.89,
+          "elapsed_ms": 8.36,
           "status": "completed"
         }
       ],
@@ -211,7 +211,7 @@
             "completion_tokens": 20,
             "total_tokens": 141
           },
-          "latency_ms": 2542.37
+          "latency_ms": 2487.87
         },
         {
           "kind": "embedding",
@@ -250,7 +250,7 @@
             "completion_tokens": 12,
             "total_tokens": 504
           },
-          "latency_ms": 3432.8
+          "latency_ms": 3390.55
         },
         {
           "kind": "chat",
@@ -261,7 +261,7 @@
             "completion_tokens": 5,
             "total_tokens": 500
           },
-          "latency_ms": 2824.62
+          "latency_ms": 2933.36
         },
         {
           "kind": "chat",
@@ -272,7 +272,7 @@
             "completion_tokens": 5,
             "total_tokens": 500
           },
-          "latency_ms": 2733.59
+          "latency_ms": 2745.12
         }
       ],
       "skill_plan": {
@@ -288,7 +288,7 @@
           "base_service"
         ],
         "executions": [
-          "sx_a6c9f9e50569450faf5311d724371d54"
+          "sx_089bad51f0104864b5045eb1ab41b458"
         ]
       },
       "retrieval": [
@@ -303,11 +303,11 @@
           "hydrated": 8,
           "returned": 5,
           "ids": [
-            "doc_66a30c08e9f44a37:2",
-            "doc_48638b465fcd4cb7:3",
-            "doc_48638b465fcd4cb7:2",
-            "doc_66a30c08e9f44a37:1",
-            "doc_48638b465fcd4cb7:0"
+            "doc_a716cf33ba2b4c07:2",
+            "doc_712012afbec64293:3",
+            "doc_712012afbec64293:2",
+            "doc_a716cf33ba2b4c07:1",
+            "doc_712012afbec64293:0"
           ],
           "degraded": [],
           "embedding_mode": "semantic_http"
@@ -317,7 +317,7 @@
       "answer_mode": "llm",
       "answer_template": "上次回答存在以下问题，请修正：missing_or_unknown_reference_number",
       "semantic_check": "verbatim extractive + reference integrity, not learned QA accuracy",
-      "trace_id": "trace_37dabe3726b7444db1cb5de0065fdc65"
+      "trace_id": "trace_418f1c48c5c247d5a9cca2f7333717f5"
     }
   },
   "shared_rollback": {
@@ -327,17 +327,12 @@
       "last_stable": "base_service",
       "reason": "acceptance",
       "status": "local_baseline_remote_unconfirmed",
-      "at": "2026-09-18T18:40:11.969065+00:00",
+      "at": "2026-09-18T18:56:11.286541+00:00",
       "error": "ConnectionError",
       "note": "本实例已停止候选流量；远端状态未确认时不声称所有实例都已回滚。",
       "scope": "shared MongoDB control read at each new request; already-running requests may finish"
     },
     "second_instance_frozen": true
-  },
-  "pi_runtime": {
-    "status": "failed",
-    "text": null,
-    "uses_original_source": true
   },
   "status": "failed"
 }

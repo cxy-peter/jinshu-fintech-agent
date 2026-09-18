@@ -1,0 +1,36 @@
+pi-agent-1  | [pi-agent] listening on http://0.0.0.0:8100
+pi-agent-1  | [pi-agent] backend -> http://api:8766
+model-gateway-1  | INFO:     Started server process [1]
+model-gateway-1  | INFO:     Waiting for application startup.
+model-gateway-1  | INFO:     Application startup complete.
+model-gateway-1  | INFO:     Uvicorn running on http://0.0.0.0:8200 (Press CTRL+C to quit)
+model-gateway-1  | INFO:     127.0.0.1:49506 - "GET /health HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     127.0.0.1:36462 - "GET /health HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     127.0.0.1:34862 - "GET /health HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     127.0.0.1:59044 - "GET /health HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     127.0.0.1:45706 - "GET /health HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:52402 - "POST /v1/embeddings HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:52402 - "POST /v1/embeddings HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:52402 - "POST /v1/embeddings HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:52402 - "POST /v1/embeddings HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     127.0.0.1:53366 - "GET /health HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:52402 - "POST /v1/embeddings HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:52402 - "POST /v1/embeddings HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:52402 - "POST /v1/embeddings HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:52402 - "POST /v1/embeddings HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:52402 - "POST /v1/embeddings HTTP/1.1" 200 OK
+model-gateway-1  | The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+model-gateway-1  | INFO:     172.18.0.9:51906 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+model-gateway-1  | The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+model-gateway-1  | INFO:     172.18.0.9:51906 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:51910 - "POST /v1/embeddings HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:51910 - "POST /v1/embeddings HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     127.0.0.1:38796 - "GET /health HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:51922 - "POST /v1/rerank HTTP/1.1" 200 OK
+model-gateway-1  | The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+model-gateway-1  | INFO:     172.18.0.9:56158 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+model-gateway-1  | The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+model-gateway-1  | INFO:     127.0.0.1:51682 - "GET /health HTTP/1.1" 200 OK
+model-gateway-1  | INFO:     172.18.0.9:56158 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+model-gateway-1  | The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+model-gateway-1  | INFO:     172.18.0.9:56158 - "POST /v1/chat/completions HTTP/1.1" 200 OK
