@@ -16,13 +16,17 @@ jobs:
       - name: Materialize checksum-verified UTF-8 source
         run: |
           python - <<'PY'
-          import base64, hashlib, json, pathlib, zlib
+          import base64, hashlib, json, pathlib, lzma
           root=pathlib.Path.cwd()
           spec=json.loads((root/'_bootstrap/publish.json').read_text())
-          encoded=''.join((root/'_bootstrap'/name).read_text().strip() for name in spec['parts'])
-          raw=base64.b64decode(encoded, validate=True)
+          parts=[]
+          for name in spec['parts']:
+              part=(root/'_bootstrap'/name).read_bytes()
+              assert hashlib.sha256(part).hexdigest()==spec['part_sha256'][name], 'Part checksum mismatch: '+name
+              parts.append(part.decode().strip())
+          raw=base64.b64decode(''.join(parts), validate=True)
           assert hashlib.sha256(raw).hexdigest()==spec['sha256'], 'Capsule checksum mismatch'
-          bundle=json.loads(zlib.decompress(raw))
+          bundle=json.loads(lzma.decompress(raw))
           assert len(bundle)==spec['files'], 'File count mismatch'
           for name, content in bundle.items():
               path=root/name
@@ -37,8 +41,11 @@ jobs:
       - name: Install and test
         run: |
           python -m pip install -r requirements.txt
+          python -m jinshu generate-data
           python -m jinshu.mock_pdfs
           python -m pytest -q
+          python scripts/verify_source.py
+          python scripts/validate_v3.py
       - name: Generate diagram images
         run: |
           sudo apt-get update -qq
