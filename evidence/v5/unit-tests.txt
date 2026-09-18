@@ -6,229 +6,229 @@ TAP version 13
 # Subtest: all eleven workflows registered
 ok 1 - all eleven workflows registered
   ---
-  duration_ms: 0.823425
+  duration_ms: 0.782287
   type: 'test'
   ...
 # Subtest: route 商业银行的四个职能
 ok 2 - route 商业银行的四个职能
   ---
-  duration_ms: 0.741471
+  duration_ms: 0.724106
   type: 'test'
   ...
 # Subtest: route 支付中介和信用中介
 ok 3 - route 支付中介和信用中介
   ---
-  duration_ms: 0.223527
+  duration_ms: 0.267642
   type: 'test'
   ...
 # Subtest: route 发行排期遇非工作日
 ok 4 - route 发行排期遇非工作日
   ---
-  duration_ms: 0.228631
+  duration_ms: 0.225792
   type: 'test'
   ...
 # Subtest: route 生成Word发行材料
 ok 5 - route 生成Word发行材料
   ---
-  duration_ms: 0.166237
+  duration_ms: 0.160204
   type: 'test'
   ...
 # Subtest: route 净值产品对标
 ok 6 - route 净值产品对标
   ---
-  duration_ms: 0.116026
+  duration_ms: 0.116676
   type: 'test'
   ...
 # Subtest: route 周报缺数
 ok 7 - route 周报缺数
   ---
-  duration_ms: 0.137585
+  duration_ms: 0.140593
   type: 'test'
   ...
 # Subtest: route KYC开户字段时点
 ok 8 - route KYC开户字段时点
   ---
-  duration_ms: 0.156281
+  duration_ms: 0.184051
   type: 'test'
   ...
 # Subtest: route 案件邮件KEP核查
 ok 9 - route 案件邮件KEP核查
   ---
-  duration_ms: 0.261942
+  duration_ms: 0.24861
   type: 'test'
   ...
 # Subtest: route 特征计数策略
 ok 10 - route 特征计数策略
   ---
-  duration_ms: 0.283865
+  duration_ms: 0.279828
   type: 'test'
   ...
 # Subtest: route 三表勾稽
 ok 11 - route 三表勾稽
   ---
-  duration_ms: 0.133541
+  duration_ms: 0.13334
   type: 'test'
   ...
 # Subtest: route 客服工单转人工
 ok 12 - route 客服工单转人工
   ---
-  duration_ms: 0.083742
+  duration_ms: 0.135978
   type: 'test'
   ...
 # Subtest: route FOF基金研究
 ok 13 - route FOF基金研究
   ---
-  duration_ms: 0.061772
+  duration_ms: 0.067784
   type: 'test'
   ...
 # Subtest: complete bank functions including fourth point
 ok 14 - complete bank functions including fourth point
   ---
-  duration_ms: 2.305457
+  duration_ms: 2.117623
   type: 'test'
   ...
 # Subtest: no evidence does not invent answer
 ok 15 - no evidence does not invent answer
   ---
-  duration_ms: 0.29351
+  duration_ms: 0.271014
   type: 'test'
   ...
 # Subtest: unknown task can request clarification
 ok 16 - unknown task can request clarification
   ---
-  duration_ms: 0.157445
+  duration_ms: 0.131148
   type: 'test'
   ...
 # Subtest: non-active facts not retrieved
 ok 17 - non-active facts not retrieved
   ---
-  duration_ms: 0.112553
+  duration_ms: 0.102492
   type: 'test'
   ...
 # Subtest: multi-round query retained separately
 ok 18 - multi-round query retained separately
   ---
-  duration_ms: 0.073908
+  duration_ms: 0.066041
   type: 'test'
   ...
 # Subtest: chunk content covers complete source without losing tail
 ok 19 - chunk content covers complete source without losing tail
   ---
-  duration_ms: 0.264714
+  duration_ms: 0.242112
   type: 'test'
   ...
 # Subtest: metrics recall differs from hit
 ok 20 - metrics recall differs from hit
   ---
-  duration_ms: 0.528219
+  duration_ms: 0.554788
   type: 'test'
   ...
 # Subtest: stable bucket
 ok 21 - stable bucket
   ---
-  duration_ms: 0.075102
+  duration_ms: 0.07802
   type: 'test'
   ...
 # Subtest: loop alters retrieval and keeps bounded top k
 ok 22 - loop alters retrieval and keeps bounded top k
   ---
-  duration_ms: 13.313091
+  duration_ms: 8.711336
   type: 'test'
   ...
 # Subtest: actual tool executes wealth_benchmark
 ok 23 - actual tool executes wealth_benchmark
   ---
-  duration_ms: 3.081489
+  duration_ms: 2.41565
   type: 'test'
   ...
 # Subtest: actual tool executes issuance
 ok 24 - actual tool executes issuance
   ---
-  duration_ms: 0.263581
+  duration_ms: 0.274336
   type: 'test'
   ...
 # Subtest: actual tool executes material_fill
 ok 25 - actual tool executes material_fill
   ---
-  duration_ms: 0.093849
+  duration_ms: 0.092875
   type: 'test'
   ...
 # Subtest: actual tool executes weekly_report
 ok 26 - actual tool executes weekly_report
   ---
-  duration_ms: 0.12723
+  duration_ms: 0.305045
   type: 'test'
   ...
 # Subtest: actual tool executes onboarding
 ok 27 - actual tool executes onboarding
   ---
-  duration_ms: 0.071558
+  duration_ms: 0.091805
   type: 'test'
   ...
 # Subtest: actual tool executes kep
 ok 28 - actual tool executes kep
   ---
-  duration_ms: 0.289745
+  duration_ms: 0.311125
   type: 'test'
   ...
 # Subtest: actual tool executes strategy
 ok 29 - actual tool executes strategy
   ---
-  duration_ms: 0.060306
+  duration_ms: 0.064329
   type: 'test'
   ...
 # Subtest: actual tool executes statements
 ok 30 - actual tool executes statements
   ---
-  duration_ms: 0.201925
+  duration_ms: 0.201854
   type: 'test'
   ...
 # Subtest: calendar agrees with synthetic python baseline
 ok 31 - calendar agrees with synthetic python baseline
   ---
-  duration_ms: 0.20196
+  duration_ms: 0.202261
   type: 'test'
   ...
 # Subtest: leading zeros and missing values
 ok 32 - leading zeros and missing values
   ---
-  duration_ms: 0.108219
+  duration_ms: 0.1045
   type: 'test'
   ...
 # Subtest: future unavailable features
 ok 33 - future unavailable features
   ---
-  duration_ms: 0.067918
+  duration_ms: 0.068456
   type: 'test'
   ...
 # Subtest: email ambiguity distinct from absence
 ok 34 - email ambiguity distinct from absence
   ---
-  duration_ms: 0.174333
+  duration_ms: 0.192472
   type: 'test'
   ...
 # Subtest: strategy cannot go live
 ok 35 - strategy cannot go live
   ---
-  duration_ms: 0.099752
+  duration_ms: 0.102526
   type: 'test'
   ...
 # Subtest: bad date and bad numbers rejected
 ok 36 - bad date and bad numbers rejected
   ---
-  duration_ms: 0.218014
+  duration_ms: 0.224689
   type: 'test'
   ...
 # Subtest: CSV parser handles quotes, unicode and zeros
 ok 37 - CSV parser handles quotes, unicode and zeros
   ---
-  duration_ms: 0.198994
+  duration_ms: 0.19823
   type: 'test'
   ...
 # Subtest: CSV escaped spreadsheet formulas
 ok 38 - CSV escaped spreadsheet formulas
   ---
-  duration_ms: 0.156186
+  duration_ms: 0.166313
   type: 'test'
   ...
 1..38
@@ -239,4 +239,4 @@ ok 38 - CSV escaped spreadsheet formulas
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 123.43711
+# duration_ms 118.088544
