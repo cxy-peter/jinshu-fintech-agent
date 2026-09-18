@@ -53,6 +53,12 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add evidence/v4
           if ! git diff --staged --quiet; then git commit -m 'Record actual V4 service/model results (including failures)'; git pull --rebase origin main; git push origin HEAD:main; fi
+      - name: Package tracked source only
+        if: always()
+        run: git archive --format=zip --prefix=jinshu-fintech-agent/ HEAD -o /tmp/jinshu-v4-source.zip
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: jinshu-v4-source, path: /tmp/jinshu-v4-source.zip}
       - name: Stop temporary integration services
         if: always()
         run: docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml --profile local-models --profile pi down -v
