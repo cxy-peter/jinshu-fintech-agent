@@ -68,7 +68,7 @@
 
 回答：不能。仅调用白名单函数，拒绝额外参数；没有eval、动态导入任意路径或执行上传代码。增加Skill要修改受审代码并补测试。
 
-代码/证据：tests/test_v3_governance.py
+代码/证据：jinshu/python_skills.py:REGISTRY
 
 
 ## 03 PDF与可信RAG
@@ -77,9 +77,9 @@
 
 思路：验证实际输入链路。
 
-回答：CSV只证明读表。本轮从模拟数据生成8份PDF，读取文字与表格，切成13块，再经过审核、索引和检索，验证源页、单位和表头能跟到答案依据。
+回答：CSV只证明读表。本轮从模拟数据生成8份PDF，读取文字与表格，切成33块（含5个表格切片），再经过审核、索引和检索，验证源页、单位和表头能跟到答案依据。
 
-代码/证据：jinshu/mock_pdfs.py / pdf_pipeline.py
+代码/证据：jinshu/mock_pdfs.py / jinshu/document_service.py
 
 ### 表格切片怎样避免数字失去语义？
 
@@ -87,7 +87,7 @@
 
 回答：先识别完整表格，转为有表头的结构片段，并附同页的公司、年度、单位、口径和页码。不能把“100、120”独立切出来让模型猜是什么。
 
-代码/证据：PageContextChunker
+代码/证据：jinshu/ingestion.py:TableAwareChunker
 
 ### RAG是否已经使用了真实Embedding？
 
@@ -114,7 +114,7 @@
 
 回答：不能。系统本地检测风险类别，与声明一起给独立审核人；没有审核不共享检索、不外发Embedding。最终权限还受到部门和密级约束。
 
-代码/证据：jinshu/governance.py / pdf_pipeline.py
+代码/证据：jinshu/document_service.py:detect_sensitivity
 
 ### 自动检测误报如何处理？
 
@@ -122,7 +122,7 @@
 
 回答：审核人可以给出解释调整等级，降低检测建议须填理由。检测只是规则提示，没有宣称识别准确率；最终Restricted或Sensitive级别不能勾选外发；检测提示并非绝对分类结论。
 
-代码/证据：ReviewedIndexer.review
+代码/证据：ReviewedDocumentService.review_and_publish
 
 ### 为什么审核放在Embedding前？
 
@@ -130,13 +130,13 @@
 
 回答：若先送外部Embedding再审核，正文已经出去了。本轮待审解析和切片在本机隔离；获准后才考虑向量化，敏感资料走本地关键词路径。
 
-代码/证据：test_no_external_embeddings_before_review
+代码/证据：jinshu/document_service.py:stage_file
 
 ### 同一用户后来降了权限怎么办？
 
 思路：不能沿用旧会话范围。
 
-回答：用户权限由服务端记录确认。会话保存权限指纹，变化后要求新会话；组织记忆再次回查源文件。跨节点撤销、复杂历史保留和企业DLP仍需补齐，不能说已经绝对防泄露。
+回答：每次请求使用服务端当前身份限定部门与密级，检索及来源回查按当前范围执行；会话做了所有权检查，但还没有完整的权限指纹和历史会话撤销机制。生产化时还需处理旧摘要及历史内容，不能说权限变化后既有会话已自动清空。
 
 代码/证据：runtime.py / memory.py / api.py
 
@@ -165,7 +165,7 @@
 
 回答：默认不外发。工作台默认关闭模型生成；资料外发许可由审核人控制，限制向量化、重排与答案资料。真实服务中的用户问题、记忆和模型调用仍需逐项联调，不把离线原型当作完整数据外发认证。
 
-代码/证据：ModelEgressGate / Runtime.ask
+代码/证据：jinshu/runtime.py:Runtime.ask / jinshu/agents.py / jinshu/retrieval.py
 
 ### 来源检查是否能保证回答一定正确？
 
@@ -235,13 +235,13 @@
 
 回答：受保护资料不行，无法确认最新权限和版本。返回不可用或公共自助，不把离线内存模式当生产降级。demo与services是启动配置，不应运行中静默互换。
 
-代码/证据：api.py dependency_error
+代码/证据：jinshu/retrieval.py / docs/FAILURE_PLAYBOOK.md
 
 ### 工单接口超时会不会丢请求或重复创建？
 
 思路：确认ID和幂等键。
 
-回答：先写本地草稿并用用户/Trace形成幂等键。超时标待重试，没有外部确认ID就不显示受理成功；重复操作复用同一键。对接真实Zendesk尚未进行。
+回答：先写本地草稿并按会话与请求摘要形成稳定幂等键。超时标待重试，没有外部确认ID就不显示受理成功；重复操作复用同一键。对接真实Zendesk尚未进行。
 
 代码/证据：TicketOutbox
 

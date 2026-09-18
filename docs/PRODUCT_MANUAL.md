@@ -148,7 +148,7 @@ python scripts/verify_source.py
 python scripts/build_diagrams.py
 ```
 
-本轮测试数字以evidence/v3_validation_summary.json和压缩包复测记录为准。当前128项程序测试通过；本轮只补充5项主流程验收，没有扩展安全专项测试。两项原测试因缺pymongo跳过，明确不计入通过。
+本轮测试数字以evidence/v3_validation_summary.json和压缩包复测记录为准。当前123项程序测试通过，2项原测试因缺少pymongo跳过，不计入通过。测试覆盖既有逻辑与本轮业务主流程，没有扩展安全专项。
 
 界面验证方式与结果以evidence/v3_ui_checks.json为准；本地浏览器检查不能代替真实用户试点或公网部署验收。
 
