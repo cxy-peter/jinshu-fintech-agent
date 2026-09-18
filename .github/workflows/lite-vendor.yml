@@ -1,0 +1,25 @@
+name: Build Lite browser dependencies
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/lite-vendor.yml']
+permissions:
+  contents: write
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: python lite/prepare_public.py
+      - run: npm install --prefix lite --ignore-scripts
+      - run: cd lite && npm run build
+      - name: Save explicit browser assets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add lite/package-lock.json lite/web/vendor lite/web/fixtures.json
+          if ! git diff --staged --quiet; then git commit -m 'Bundle pinned browser PDF and Word parsers plus public synthetic fixtures'; git pull --rebase origin main; git push; fi
+      - uses: actions/upload-artifact@v4
+        with: {name: lite-browser-vendor, path: lite/web/vendor/}
