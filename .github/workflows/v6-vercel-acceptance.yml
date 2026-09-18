@@ -1,0 +1,73 @@
+name: V6 production Vercel acceptance
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/v6-vercel-acceptance.yml']
+permissions: {contents: write}
+jobs:
+  actual-site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      SITE: https://jinshu-workbench.vercel.app
+      LITE_TEST_URL: https://jinshu-workbench.vercel.app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Wait for the exact tested source, not merely HTTP 200
+        run: |
+          python - <<'PY'
+          import os,time,json,urllib.request
+          for n in range(30):
+            try:
+              with urllib.request.urlopen(os.environ['SITE']+'/build-info.json?acceptance=v6',timeout=20) as r: b=json.load(r)
+              if b.get('upstream_commit')=='925f698cf8c9c12a644fd545cfb4bd145770b248':
+                print('Serving V6',b['commit']);break
+            except Exception as e:print(type(e).__name__)
+            time.sleep(4)
+          else:raise SystemExit('Vercel did not serve expected release')
+          PY
+      - name: Install browser and synthetic upload fixture
+        run: |
+          pip install playwright==1.55.0 reportlab
+          python -m playwright install --with-deps chromium
+          python - <<'PY'
+          from pathlib import Path
+          from reportlab.pdfgen import canvas
+          p=Path('data/mock_pdfs');p.mkdir(exist_ok=True)
+          c=canvas.Canvas(str(p/'06_public_faq.pdf'));c.drawString(60,740,'Synthetic FAQ: keep a draft if the ticket API fails.');c.save()
+          PY
+      - name: Actual remote uploads, tools, memory, feedback, rollback and mobile layout
+        run: python lite/tests/browser.py
+      - name: Actual remote 100-question cited-answer acceptance
+        run: python scripts/vercel100.py
+      - name: Preserve remote evidence and optional-model status
+        if: always()
+        run: |
+          python - <<'PY'
+          import urllib.request,urllib.error,json,shutil,os
+          from pathlib import Path
+          out=Path('evidence/v6-production');out.mkdir(parents=True,exist_ok=True)
+          for n in ['vercel100.json','website-export100.json','vercel-cited-answer.png','vercel-benchmark100.png','vercel-failure.png']:
+            p=Path('evidence/v6')/n
+            if p.exists():shutil.copy2(p,out/n)
+          shutil.copy2('evidence/v5/browser-results.json',out/'browser-results.json')
+          record={'site':os.environ['SITE'],'run':'https://github.com/'+os.environ['GITHUB_REPOSITORY']+'/actions/runs/'+os.environ['GITHUB_RUN_ID'],'test_inputs':'public and synthetic; no private original documents transmitted','real_users':0}
+          try:
+            req=urllib.request.Request(os.environ['SITE']+'/api/answer',data=b'{}',headers={'Content-Type':'application/json'})
+            with urllib.request.urlopen(req,timeout=30) as r: record['model_endpoint_status']=r.status
+          except urllib.error.HTTPError as e:record.update(model_endpoint_status=e.code,model_endpoint_message=e.read().decode()[:500])
+          except Exception as e:record['model_endpoint_error']=str(e)
+          (out/'environment.json').write_text(json.dumps(record,ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: v6-actual-vercel-acceptance, path: evidence/v6-production/}
+      - name: Commit actual deployment results without replacing component records
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/v6-production
+          if ! git diff --staged --quiet; then git commit -m 'Record V6 actual Vercel deployment acceptance'; git pull --rebase --autostash origin main; git push; fi
