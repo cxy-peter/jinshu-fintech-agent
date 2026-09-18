@@ -1,0 +1,67 @@
+name: V6 evidence and pi component release
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/v6-release.yml']
+permissions: {contents: write}
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Reproducible source migration and local tests
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/v6
+          python scripts/apply_v6.py
+          cd lite
+          npm ci --ignore-scripts
+          npm test | tee ../evidence/v6/unit-tests.txt
+          npm run build
+          cd ..
+          node scripts/evaluate100.mjs
+      - name: Real pi package contract with synthetic provider
+        run: |
+          set -euo pipefail
+          python services/pi-agent-overlay/prepare.py /tmp/jinshu-pi-v6
+          cd /tmp/jinshu-pi-v6
+          npm ci --ignore-scripts
+          npm run build
+          node contract.mjs | tee "$GITHUB_WORKSPACE/evidence/v6/pi-contract.json"
+      - name: Browser and generated fixture
+        run: |
+          pip install playwright==1.55.0 reportlab
+          python -m playwright install --with-deps chromium
+          python - <<'PY'
+          from pathlib import Path
+          from reportlab.pdfgen import canvas
+          p=Path('data/mock_pdfs');p.mkdir(exist_ok=True)
+          c=canvas.Canvas(str(p/'06_public_faq.pdf'));c.drawString(60,740,'Synthetic FAQ: keep a draft if the ticket API fails.');c.save()
+          PY
+          python -m http.server 8795 --bind 127.0.0.1 --directory lite/dist >/tmp/lite-http.log 2>&1 &
+          python lite/tests/browser.py
+          SITE=http://127.0.0.1:8795 python scripts/vercel100.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: v6-component-evidence, path: evidence/v6/}
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with: {name: v6-built-website, path: lite/dist/}
+      - name: Commit readable upgraded source and observed results
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add lite/web/app.mjs lite/web/index.html lite/web/style.css lite/web/benchmark100.json lite/build.mjs diagrams evidence/v5 evidence/v6
+          git commit -m 'Apply V6 source integration and record actual component tests' || true
+          git pull --rebase --autostash origin main
+          git push origin HEAD:main
+          git archive --format=zip --prefix=jinshu-fintech-agent/ HEAD -o /tmp/jinshu-v6-source.zip
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with: {name: v6-complete-source, path: /tmp/jinshu-v6-source.zip}

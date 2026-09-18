@@ -1,0 +1,2 @@
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';import {evaluate} from '../lite/web/benchmarking.mjs';
+const cases=JSON.parse(readFileSync('lite/web/benchmark100.json')),rows=JSON.parse(readFileSync('lite/web/knowledge.json'));const result=evaluate(cases,rows);mkdirSync('evidence/v6',{recursive:true});writeFileSync('evidence/v6/benchmark100-local.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result.summary,null,2));if(!result.summary.criterion_passed)process.exitCode=1;
