@@ -1,0 +1,57 @@
+name: V5 final website release check
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/v5-release-check.yml']
+permissions:
+  contents: write
+jobs:
+  website:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Check and build self-contained Vercel directory
+        run: |
+          mkdir -p evidence/v5
+          cd lite
+          npm ci --ignore-scripts
+          npm test | tee ../evidence/v5/unit-tests.txt
+          npm run build
+      - name: Browser acceptance with public synthetic fixtures
+        run: |
+          pip install playwright==1.55.0 reportlab
+          python -m playwright install --with-deps chromium
+          python - <<'PY'
+          from pathlib import Path
+          from reportlab.pdfgen import canvas
+          p=Path('data/mock_pdfs');p.mkdir(exist_ok=True)
+          c=canvas.Canvas(str(p/'06_public_faq.pdf'));c.drawString(60,740,'Synthetic FAQ: keep a draft if the ticket API fails.');c.save()
+          PY
+          python -m http.server 8795 --bind 127.0.0.1 --directory lite/dist >/tmp/lite.log 2>&1 &
+          python lite/tests/browser.py
+      - name: Record observed scope
+        if: always()
+        run: |
+          printf '{"commit":"%s","run":"https://github.com/%s/actions/runs/%s","real_users":0,"vercel_deployment":false,"scope":"built static website and Chromium; not full service acceptance"}\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > evidence/v5/environment.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: jinshu-v5-final-evidence, path: evidence/v5/}
+      - name: Commit evidence only
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/v5
+          if ! git diff --staged --quiet; then git commit -m 'Record final browser acceptance and preserve deployment boundary'; git pull --rebase origin main; git push; fi
+          git archive --format=zip --prefix=jinshu-fintech-agent/ HEAD -o /tmp/jinshu-v5-final-source.zip
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: jinshu-v5-final-source, path: /tmp/jinshu-v5-final-source.zip}
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with: {name: jinshu-v5-built-static-website, path: lite/dist/}

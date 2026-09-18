@@ -1,83 +1,78 @@
-# 金枢｜金融产品中后台自进化 Agent
+# 金枢｜金融产品中后台智能助手
 
-可信 RAG、可执行理财 Python Skill、五层 Memory、反馈 Loop；保留离线展示，并增加私有模型与数据库运行模式。
+把**金融资料问答、理财工具、发行支持和反馈复盘**放进同一个工作台。基于既有 Agent 参考工程与 Python 方法的个人 AI 辅助改造项目，不是实习公司的正式上线系统，也不是学校委托项目。
 
-个人 AI 辅助改造作品，来源于实习场景与用户提供的参考工程；不是两家实习公司共同上线的系统，也不是学校委托项目。原工程署名及目录保留。
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcxy-peter%2Fjinshu-fintech-agent%2Ftree%2Fmain%2Flite&project-name=jinshu-workbench&repository-name=jinshu-workbench)
 
-## V4 当前状态（2026-09-18）
+**先体验主要功能，再按需要部署完整服务。** 上面的按钮复制 `lite` 子目录并进入 Vercel 建项目流程；需要登录并确认，完成后使用平台返回的网址。要持续跟随本仓库更新，在 Vercel Import 本仓库并把 **Root Directory 设为 `lite`**。当前没有自动创建 Vercel 线上项目，不提供猜测的 `vercel.app` 地址。
 
-**真实服务子链路已执行，完整验收尚未通过。** [查看实际运行](https://github.com/cxy-peter/jinshu-fintech-agent/actions/runs/35383830099)。
+[部署与操作](docs/V5_GUIDE.md) · [产品方案与验收](docs/PRODUCT_SPEC_V5.md) · [产品面试问答](docs/V5_INTERVIEW.md) · [实际浏览器验收](https://github.com/cxy-peter/jinshu-fintech-agent/actions/runs/35392921379)
 
-- MongoDB、Redis、Milvus 实际容器与客户端接通；8 份模拟 PDF、34 个服务模式切片实际向量化并写入 Milvus。
-- Qwen2.5-0.5B-Instruct 实际生成；bge-small-zh-v1.5 生成512维语义向量；bge-reranker-base 在实际 DAG 中重排。
-- 已验证 Mongo/Redis 跨 Runtime 读写、Redis Stream 消费确认、共享停候选标记。两 Runtime 不等于两个 Kubernetes Pod。
-- 小模型校验未通过时，最终输出为 verification_blocked；实际调用模型不代表答案正确。
-- 完整 CI 随后因 `scripts.evaluate_v4` 导入与上游同名包冲突而失败。24题评测、最终 pi 验收、后续容器回归阶段没有完成。最后一次上传评测脚本修补被工具拦截，仓库仍保留真实失败状态；下载交付包中的本地修补也尚未完成全量服务复测。
-- K8s/HPA/k6 清单已提供，未执行集群扩缩容压测。真实参与者为0；试点表单不等于用户试点已经完成。
+## 可以做什么
 
-详见 [V4部署、材料、评测与边界](docs/V4_GUIDE.md) 和 [原始执行证据](evidence/v4/live_acceptance.json)。V3手册为旧版基线，当前状态以本节和V4指南为准。
+| 功能 | 可操作内容 |
+|---|---|
+| 金融学习与自动路由 | 56个原创学习主题、11类任务入口；中文分词、术语扩展、来源展示和短追问 |
+| 文档上传与查阅 | PDF / DOCX / TXT / MD / CSV / JSON / JSONL / 切片ZIP；页码、切片、启停、全文查看 |
+| 理财与发行工具 | 产品对标、发行排期、周报质检、材料生成；实际计算并导出CSV / JSON / Word |
+| 风险与运营辅助 | 开户字段时点、案件邮件匹配、禁用策略候选、模拟三表核对；不执行真实资金或账户操作 |
+| 执行与反馈 | Trace、记忆视图、反馈分类、受限候选、历史检索回放、本地启用和回滚 |
+| 评测与体验记录 | 16题开发回归、真实浏览器测试；体验表单默认标记测试数据 |
 
-## 两种运行方式
+默认网页使用**词项检索与原文整理**，不需要模型密钥，也不把它说成语义Embedding或LLM生成。上传资料和反馈存在访问者自己的IndexedDB，不进入公共知识库。可选模型接口须由部署者配置，并由访问者确认发送当前问题及片段。
 
-离线展示（无需模型密钥）：
+## 一次部署
+
+Vercel设置：**Root `lite` / Framework `Other` / Build `npm run build` / Output `dist` / Node 22**。不需要为默认模式配置数据库或模型。
+
+本机运行：
 
 ```bash
-python -m venv .venv
-# 激活虚拟环境后：
-pip install -r requirements.txt
-python -m jinshu.mock_pdfs
-python -m jinshu serve --port 8766
+cd lite
+npm ci
+npm run build
+python -m http.server 8795 --directory dist
+# 浏览器：http://localhost:8795
 ```
 
-浏览器打开 `http://127.0.0.1:8766`。演示账户 `editor / demo-editor`、`reviewer / demo-reviewer`；普通用户 analyst、risk、operations、service 的密码为 `demo-用户名`。演示账号仅本机使用。
-
-私有服务器（Docker Engine + Compose；真实本地模型）：
+完整服务仍在仓库根目录，保留原工程：
 
 ```bash
 python scripts/init_deployment.py
 docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml --profile local-models up -d --build
 ```
 
-服务模式不自动创建公开演示账户。用户创建、PDF审核和模型配置见V4指南。首次拉镜像和模型需要网络；不把单机Compose称为高可用集群。
+账户创建、资料审核和私有模型见 [V4部署指南](docs/V4_GUIDE.md)。单机Compose不等于高可用。
 
-## 业务与核心结构
+## 工作流与反馈闭环
 
-11个工作流入口：产品对标、发行排期、周报质检、材料生成、开户时点、案件核查、策略预检、模拟三表、客服、基金/FOF研究资料、金融基础学习。后两个需要导入相应资料，不会凭空得到知识。
+点击小图查看原尺寸；下图是完整工程结构，网页使用可操作的简化实现。
+
+<a href="diagrams/01_architecture.svg"><img src="diagrams/01_architecture.svg" width="430" alt="完整工程的固定DAG、事实检索与业务工作流"></a>
+<a href="diagrams/03_loop.svg"><img src="diagrams/03_loop.svg" width="430" alt="反馈、候选、回放、灰度与回滚"></a>
 
 ```text
-身份与资料范围 → MemoryContextBuilder
-→ Intent → Rewrite → Retrieval → Answer → Verify → Trace/反馈
-                     ↓
-            BM25 + 语义向量 → RRF → 回查Mongo → Reranker
-反馈 → Observe → Reflect → Adapt → 配对回放 → 审核 → 灰度 → 扩量/回滚
+任务 → 路由 → 改写 → 检索 / 工具 → 答案与来源 → 校验 → Trace
+反馈 → 失败归因 → 受限候选 → 历史回放 → 确认 → 生效 / 回滚
 ```
 
-`engine/` 保留原后端、Next.js和pi服务；`jinshu/` 是金融适配；`services/model-gateway/` 是真实权重网关；`deploy/compose/` 是私有化配置；`deploy/k8s/` 和 `loadtest/` 是待执行容量测试工具。
+自进化改变查询词、top-k及模板等执行策略，不自动训练模型，不改财务公式，不擅自批准真实风险处置。
 
-![原DAG与工作流](diagrams/01_architecture.svg)
-![反馈Loop](diagrams/03_loop.svg)
+## 实际验证范围
 
-## 资料与发布范围
+**V5轻量路径已通过实际执行：38条程序测试；Chromium问答、上传、刷新保留、PDF/Word解析、115页模拟导入、8类工具、Word导出、反馈回放启用及回滚、移动端布局。** [查看JSON](evidence/v5/browser-results.json)。16题是自编开发回归，不能当成独立金融准确率；真实用户为0。
 
-上传 → 本地解析/敏感性提示 → 待审 → 独立复核 → 索引 → 发布有效版本。文档及查询向量必须同模型同空间；真实模式失败回BM25，不静默换hash。
+<details>
+<summary>V4完整服务的历史状态与原工程保留范围</summary>
 
-新金融资料在私有包完成92份输入、90份去重解析、3,859页、19,032切片，尚待审核和语义向量化。原文和切片不进入公共仓库。研报、2022学习笔记、内部制度、模拟材料分开来源类别，历史资料不是现行政策。
+V4实际接通过Mongo/Redis/Milvus，8份模拟PDF形成34个服务切片并向量入库；Qwen2.5-0.5B、BGE512与Reranker有实际调用记录。完整CI随后因评测脚本包冲突失败，pi最终验收与24题评测没有完成，生成候选也曾被Verifier阻止。V5提供显式导入修补入口 `scripts/run_live_acceptance_v5.py`，但没有重新宣称完整服务全部通过。[历史原始证据](evidence/v4/live_acceptance.json)
 
-原ZIP231文件中，公开engine保留218个，216个逐字节一致；2个是V3已声明补丁。13份原校内资料或设计图未公开。V4不修改engine。字体、模型权重、公司截图、私人语料、密钥均不随代码发布。
+K8s/HPA/k6是待执行的容量工具，不是已完成20Pod压测。用户私有90份资料/19032片的预处理结果不随公共网页发布。公开engine保留原ZIP中的218个文件，216个字节一致，另外2个是已声明的V3补丁；V5没有修改engine。原署名和目录保留。
 
-## 验证与阅读
+</details>
 
-```bash
-python -m pytest -q
-python scripts/evaluate_v4.py --profile services
-```
+## 目录
 
-本地离线回归记录为126通过、2跳过；不能与失败CI的跳过阶段混为一谈。评测输出必须实际运行后读取，不能沿用原说明中的93.1%、1,200题或20Pod吞吐。
+`lite/` 可部署网页；`jinshu/` 金融适配；`engine/` 原参考工程；`services/model-gateway/` 私有模型接口；`deploy/` Compose及K8s；`docs/` 产品与技术文档；`evidence/` 实际执行结果。
 
-- [V4综合指南](docs/V4_GUIDE.md)
-- [真实服务执行结果（包含失败）](evidence/v4/live_acceptance.json)
-- [V3产品手册（历史）](docs/PRODUCT_MANUAL.md)
-- [V3面试问答（历史）](docs/INTERVIEW_MANUAL.md)
-- [原工程来源说明](docs/SOURCE_REVIEW.md)
-
-GitHub保存源码并可运行临时CI；GitHub Pages不能承载FastAPI、数据库或模型服务。持续运行应放在自己的服务器。当前无生产上线、真人试点或全量金融质量保证。
+用户原始PDF、公司截图、私人切片、密钥、字体文件及模型权重不进入公共网页包。网页里的金融内容用于资料学习与模拟，历史笔记不是现行政策或投资建议。
