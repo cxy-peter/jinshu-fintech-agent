@@ -49,21 +49,23 @@ class Runtime:
      loop_rollback_margin=.1,deepseek_api_key='',relay_api_key='')
    elif profile=='services':
     settings=Settings(app_name='金枢｜金融产品中后台自进化 Agent',storage_mode='mongo',seed_demo_users=False)
-    if not os.getenv('JINSHU_ALLOW_EXTERNAL')=='1':raise RuntimeError('Services profile requires explicit JINSHU_ALLOW_EXTERNAL=1')
+    if os.getenv('JINSHU_MODEL_SCOPE','external')!='local' and not os.getenv('JINSHU_ALLOW_EXTERNAL')=='1':raise RuntimeError('Services profile requires explicit JINSHU_ALLOW_EXTERNAL=1')
     if not settings.auth_secret or settings.auth_secret=='wenshu-dev-secret-change-me':raise RuntimeError('Configure AUTH_SECRET')
-    if settings.embedding_provider!='relay' or not settings.relay_api_key:raise RuntimeError('Configure real embedding provider; never silently hash')
+    if settings.embedding_provider=='hash':raise RuntimeError('Services must use semantic embeddings, not hash')
    else:raise ValueError('Unknown runtime profile')
   from .operations import RecoveryController,TicketOutbox
   from . import ROOT
   directory=ROOT/'workspace'/(instance_id or os.getenv('JINSHU_INSTANCE_ID','local'))
   self.recovery=RecoveryController(directory);self.outbox=TicketOutbox(directory)
   self.profile=profile;self.c=c=build_container(settings);self.sessions={};self.worker_task=None;self.stop=asyncio.Event()
-  # Assembly only. Original package and all original modules remain present.
+  if profile=='services':
+   from .live import configure_clients
+   configure_clients(c,settings)
   if profile=='offline':
    c.llm=DisabledLLM();c.session_store=ExpiringSessionStore()
-  c.embeddings=StrictEmbeddings(settings,c.relay)
+  c.embeddings=c.live_embeddings if profile=='services' else StrictEmbeddings(settings,c.relay)
   if settings.vector_backend=='milvus':
-   c.vector_store=MilvusVectorStore(os.getenv('MILVUS_URI','http://localhost:19530'),os.getenv('MILVUS_COLLECTION','jinshu_chunks'),settings.embedding_dim,os.getenv('MILVUS_TOKEN',''))
+   c.vector_store=MilvusVectorStore(os.getenv('MILVUS_URI','http://localhost:19530'),os.getenv('MILVUS_COLLECTION','jinshu_chunks')+('_'+c.embeddings.fingerprint if profile=='services' else ''),settings.embedding_dim,os.getenv('MILVUS_TOKEN',''))
   elif settings.vector_backend not in {'memory','mongo','chroma'}:raise ValueError('Unrecognized vector backend')
   original_hybrid=c.retrieval_agent.hybrid;original_hybrid.vector_store=c.vector_store
   c.retrieval_agent=TrustedRetrieval(original_hybrid,c.embeddings,c.store)
@@ -72,6 +74,13 @@ class Runtime:
   c.indexer=DraftIndexer(c.store,c.vector_store,c.embeddings,c.bm25,c.llm);c.indexer.organization_memory=c.organization_memory
   from .document_service import ReviewedDocumentService
   c.documents=ReviewedDocumentService(c.indexer)
+  if profile=='services':
+   from .live_chunker import LiveChunker
+   c.indexer.chunker=LiveChunker()
+  if profile=='services':
+   from .service_ops import SharedPublisher,SharedRecovery
+   c.documents.indexer=c.indexer=SharedPublisher.from_indexer(c.indexer,c.mongo)
+   self.recovery=SharedRecovery(directory,c.store);c.documents.indexer.organization_memory=c.organization_memory
   c.working_memory=WorkingMemory(c.session_store,ttl=settings.memory_session_ttl_seconds,max_history=settings.memory_max_recent_messages)
   c.memory_context_builder=BudgetedContextBuilder(c.store,c.working_memory,c.episodic_memory,c.user_semantic_memory,c.organization_memory,c.learning_memory,max_chars=settings.memory_context_max_chars,user_limit=settings.memory_user_limit,org_limit=settings.memory_org_limit,recent_limit=settings.memory_max_recent_messages)
   from .hooks import FintechHooks
@@ -81,7 +90,6 @@ class Runtime:
   c.skill_miner=SkillMiner(c.store,c.llm,min_cluster=settings.skill_min_cluster)
   c.loop_engine=FeedbackLoop(settings,c.store,c.llm,c.embeddings,c.skill_miner,c.hook_engine,c.rule_engine,c.feedback_collector,None,c.pi_runtime)
   c.loop_engine.recovery=self.recovery
-  old=c.orchestrator
   c.orchestrator=FinancialOrchestrator(settings=settings,store=c.store,working_memory=c.working_memory,user_memory=c.user_memory,dept_memory=c.dept_memory,episodic_memory=c.episodic_memory,memory_context_builder=c.memory_context_builder,organization_memory=c.organization_memory,
    intent_agent=FintechIntent(c.llm,c.store,c.pi_runtime,settings.pi_runtime_timeout_intent),dept_router=c.dept_router,
    query_rewriter=FintechRewrite(c.llm,c.store,c.pi_runtime,settings.pi_runtime_timeout_rewrite),retrieval_agent=c.retrieval_agent,
@@ -98,7 +106,6 @@ class Runtime:
   o.answer_agent=BoundedNode(o.answer_agent,'generate','Answer',settings.timeout_answer,backup.generate)
   o.verifier_agent=BoundedNode(o.verifier_agent,'verify','Verify',settings.timeout_verify,lambda *a,**k:VerificationResult(False,0,['verify_timeout_no_approval']))
   c.retrieval_agent=o.retrieval_agent
-  # Original distributed client is retained for services deployment, not silently used in offline tests.
   c.strategy_evaluator=SourceReplay(c);c.loop_engine.strategy_evaluator=c.strategy_evaluator
   c.job_queue=RecoverableJobQueue(c.store,c.session_store,settings.async_stream_name)
   c.review_engine.llm=c.llm;c.review_engine.retrieval_agent=c.retrieval_agent;c.review_engine.answer_agent=c.orchestrator.answer_agent
@@ -140,12 +147,16 @@ class Runtime:
    if not workflow and query.strip() in {'那怎么办','那怎么办？','然后呢','怎么处理','再说一下'}:workflow=ctx.get('entities',{}).get('workflow')
   if workflow not in WORKFLOWS:raise ValueError('请明确选择金融产品工作流')
   allowed=allowed if allowed is not None else [WORKFLOWS[workflow]['dept']]
+  if self.profile=='services' and os.getenv('DEPT_ID'):
+   allowed=[d for d in allowed if d==os.environ['DEPT_ID']]
   if WORKFLOWS[workflow]['dept'] not in allowed:raise PermissionError('当前身份无权执行该部门工作流')
   state={'user_id':user_id,'workflow':workflow,'original_query':query,'params':params or {},'tools':[],'profile':self.profile,'last_user_query':previous[-1] if previous else ''}
   state['allow_external']=bool(allow_external and self.profile=='services')
+  from .live import local_models
+  state['models_enabled']=self.profile=='services' and (local_models() or allow_external)
+  if self.profile=='services':await self.recovery.refresh(workflow)
   tk=scope.set(allowed);sk=run_state.set(state);ak=access.set({'departments':allowed,'clearance':clearance})
   try:
-   # Explicit workflow adds its trigger only to internal routing; original user text remains unchanged.
    state['selected_workflow']=workflow
    result=await self.c.orchestrator.answer(query,session_id,user_id,[WORKFLOWS[workflow]['dept']])
    result.update(trace_id=state.get('trace_id'),workflow=workflow,tool_results=state['tools'],execution=state)
@@ -175,12 +186,16 @@ class Runtime:
     await self.c.job_queue.update_progress(j['_id'],{'stage':stage,'history':list(stages)})
    try:
     if j['type']=='loop':r=await self.c.loop_engine.run_cycle(progress)
+    elif j['type']=='document_stage':
+     r=await self.c.documents.stage_file(**j['payload'])
     else:raise ValueError('未知作业类型')
     await self.c.job_queue.finish(j,'completed',r)
    except Exception as e:await self.c.job_queue.finish(j,'failed',{'error':type(e).__name__,'message':str(e)})
  async def worker(self):
   while not self.stop.is_set():
-   await self.process_jobs()
+   try:await self.process_jobs()
+   except Exception:
+    await asyncio.sleep(2)
    try:await asyncio.wait_for(self.stop.wait(),timeout=.5)
    except asyncio.TimeoutError:pass
  async def close(self):
@@ -190,4 +205,5 @@ class Runtime:
   if hasattr(self.c.llm,'close'):await self.c.llm.close()
   if hasattr(self.c.relay,'close'):await self.c.relay.close()
   if self.profile=='services':
+   await self.c.embeddings.close();await self.c.live_reranker.close()
    await self.c.session_store.close();await self.c.mongo.close()

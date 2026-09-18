@@ -1,0 +1,5 @@
+-r requirements.txt
+pymongo>=4.13,<5
+redis>=5.2,<7
+pymilvus==2.5.16
+PyYAML>=6,<7

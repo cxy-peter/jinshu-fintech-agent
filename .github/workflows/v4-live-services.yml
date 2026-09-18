@@ -1,0 +1,58 @@
+name: V4 real models and data services
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/v4-live-services.yml']
+permissions:
+  contents: write
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Local deployment configuration (ephemeral random secrets)
+        run: python scripts/init_deployment.py
+      - name: Build and start real services
+        run: |
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml --profile local-models --profile pi up -d --build mongodb redis etcd minio milvus model-gateway pi-agent
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml build api
+      - name: Real PDF, model, persistence, original DAG and pi acceptance
+        run: |
+          mkdir -p evidence/v4
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml run --rm --no-deps -e V4_TEST_PI=1 -v "$PWD/evidence/v4:/app/evidence/v4" manage python scripts/live_acceptance.py
+      - name: Start persistent API and worker
+        run: |
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml up -d api worker
+          for n in $(seq 1 60); do if curl --fail http://127.0.0.1:8766/ready; then break; fi; sleep 3; done
+          curl --fail http://127.0.0.1:8766/ready
+          curl --fail http://127.0.0.1:8766/ > /tmp/workbench.html
+      - name: Original offline mode regression
+        run: |
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml run --rm --no-deps -v "$PWD/tests:/app/tests:ro" -v "$PWD/pytest.ini:/app/pytest.ini:ro" -v "$PWD/conftest.py:/app/conftest.py:ro" manage python -m pytest -q
+      - name: Preserve observed results only
+        if: always()
+        run: |
+          mkdir -p evidence/v4
+          python - <<'PY'
+          import json,os,platform
+          from pathlib import Path
+          p=Path('evidence/v4/run_environment.json')
+          p.write_text(json.dumps({'url':f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}",'commit':os.environ['GITHUB_SHA'],'runner':platform.platform(),'real_user_trial':False,'k8s_hpa_test':False},indent=2))
+          PY
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml ps > evidence/v4/compose_status.txt || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: jinshu-v4-real-services-evidence, path: evidence/v4/}
+      - name: Commit execution evidence
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/v4
+          if ! git diff --staged --quiet; then git commit -m 'Record actual V4 service/model results (including failures)'; git pull --rebase origin main; git push origin HEAD:main; fi
+      - name: Stop temporary integration services
+        if: always()
+        run: docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml --profile local-models --profile pi down -v

@@ -4,6 +4,7 @@ from datetime import date
 from app.harness.agents.retrieval_agent import RetrievalAgent
 from app.retrieval.vector_store import VectorStore
 from .context import scope,run_state,access
+from .live import models_allowed,evidence_allowed
 
 async def valid_chunk(store,id_,depts):
  c=await store.get('chunks',id_)
@@ -12,13 +13,16 @@ async def valid_chunk(store,id_,depts):
  if not d or d.get('status')!='active':return None
  from .document_service import can_read
  if not can_read(d,access.get()):return None
+ state=run_state.get() or {}
+ kinds={'fund_research':{'research_reference','synthetic'},'finance_learning':{'learning_reference'}}.get(state.get('workflow'))
+ if kinds and d.get('source_kind','synthetic' if d.get('synthetic') else 'institutional_document') not in kinds:return None
  now=date.today().isoformat()
  if d.get('effective_date') and d['effective_date']>now:return None
  if d.get('expiry_date') and d['expiry_date']<now:return None
  head=await store.get('document_heads',d.get('topic_key',''))
  if d.get('topic_key') and (not head or head['doc_id']!=d['_id']):return None
  if hashlib.sha256(c['content'].encode()).hexdigest()!=c.get('content_hash'):return None
- return {**c,'id':id_,'doc_title':d['title'],'document_version':d['version'],'external_allowed':d.get('external_allowed',False),'sensitivity':d.get('sensitivity','internal')}
+ return {**c,'id':id_,'doc_title':d['title'],'source_kind':d.get('source_kind','synthetic' if d.get('synthetic') else 'institutional_document'),'source_date':d.get('source_date'),'document_version':d['version'],'external_allowed':d.get('external_allowed',False),'sensitivity':d.get('sensitivity','internal')}
 
 class TrustedRetrieval(RetrievalAgent):
  async def retrieve(self,queries,dept_ids=None,top_k=5):
@@ -28,15 +32,14 @@ class TrustedRetrieval(RetrievalAgent):
   fused={};sources={};degraded=[]
   for query in list(dict.fromkeys(queries))[:8]:
    try:
-    if self.embeddings.provider!='hash' and not (run_state.get() or {}).get('allow_external'):raise PermissionError('External query encoding not opted in')
-    vec=await asyncio.wait_for(self.embeddings.embed_query(query),timeout=8)
+    if self.embeddings.provider!='hash' and not models_allowed():raise PermissionError('External query encoding not opted in')
+    vec=await asyncio.wait_for(self.embeddings.embed_query(query),timeout=float(os.getenv('RETRIEVAL_MODEL_TIMEOUT','8')))
    except Exception:vec=None;degraded.append('embedding_unavailable_keywords_only')
    for dept in depts:
     bm=self.hybrid.bm25.search(query,top_k=self.hybrid.bm25_top,dept_id=dept)
     if inspect.isawaitable(bm):bm=await bm
     try:v=await self.hybrid.vector_store.search(vec,top_k=self.hybrid.vector_top,dept_id=dept) if vec is not None else []
     except Exception:v=[];degraded.append('vector_unavailable_keywords_only')
-    # Do not use rank score alone as evidence. Positive candidates still require source checks.
     for route,hits in [('bm25',bm),('vector',v)]:
      for rank,h in enumerate(hits):
       if h.get('score',0)<=0:continue
@@ -45,13 +48,12 @@ class TrustedRetrieval(RetrievalAgent):
   for idx in sorted(fused,key=fused.get,reverse=True)[:80]:
    c=await valid_chunk(self.store,idx,depts)
    if c:hydrated.append(c|{'_rrf':fused[idx],'score':fused[idx],'retrieval_routes':sorted(sources[idx])})
-  # The original reranker receives full text instead of vector metadata-only hits.
   try:
    from app.retrieval.reranker import HeuristicReranker
    reranker=self.hybrid.reranker
-   if not isinstance(reranker,HeuristicReranker) and not ((run_state.get() or {}).get('allow_external') and all(h.get('external_allowed') for h in hydrated)):
+   if not isinstance(reranker,HeuristicReranker) and not (models_allowed() and evidence_allowed(hydrated)):
     reranker=HeuristicReranker();degraded.append('external_reranker_not_approved_local_order')
-   ranked=await asyncio.wait_for(reranker.rerank(' '.join(queries),hydrated,top_k=min(max(top_k,1),12)),timeout=8)
+   ranked=await asyncio.wait_for(reranker.rerank(' '.join(queries),hydrated,top_k=min(max(top_k,1),12)),timeout=float(os.getenv('RETRIEVAL_MODEL_TIMEOUT','8')))
   except Exception:ranked=hydrated[:top_k];degraded.append('reranker_timeout_rrf_order')
   final=[]
   for h in ranked:

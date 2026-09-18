@@ -2,6 +2,7 @@
 Uploaded sensitivity and local hints remain separate from the reviewer's final decision.
 """
 from __future__ import annotations
+import os
 import asyncio,hashlib,uuid,re
 from datetime import datetime,timezone,date
 from pathlib import Path
@@ -18,7 +19,7 @@ def detect_sensitivity(text):
             'signals':hits,'method':'local rules, advisory only; not a trained sensitivity classifier'}
 
 def can_read(doc,who):
-    if who is None:return True # original engine's trusted offline/internal execution path
+    if who is None:return True
     level=doc.get('sensitivity','internal')
     return LEVELS.get(level,3)<=LEVELS.get(who.get('clearance','internal'),1) and bool(set(doc.get('allowed_depts') or [doc['dept_id']])&set(who.get('departments',[])))
 
@@ -63,9 +64,8 @@ class ReviewedDocumentService:
         if effective_date:date.fromisoformat(effective_date)
         path=Path(path);raw=path.read_bytes();digest=hashlib.sha256(raw).hexdigest()
         parsed=self.parser.parse(path)
-        # Check before cleaner removes standalone “内部资料” headers.
         hints=detect_sensitivity(parsed.text)
-        clean=self.indexer.cleaner.clean(parsed);pieces=TableAwareChunker().chunk(clean)
+        clean=self.indexer.cleaner.clean(parsed);pieces=self.indexer.chunker.chunk(clean)
         if not pieces:raise ValueError('没有有效内容，请补充可读取的资料')
         key=dept_id+':'+topic
         for old in await self.store.list_documents(dept_id=dept_id):
@@ -100,9 +100,10 @@ class ReviewedDocumentService:
             await self.store.update_document(did,reviewed)
             pieces=await self.store.list_chunks_by_doc(did);warnings=[]
             vector_ok=False
-            if self.indexer.embeddings.provider=='hash' or external_allowed:
+            from .live import local_models
+            if self.indexer.embeddings.provider=='hash' or local_models() or external_allowed:
                 try:
-                    vectors=await asyncio.wait_for(self.indexer.embeddings.embed([c['content'] for c in pieces]),timeout=15)
+                    vectors=await asyncio.wait_for(self.indexer.embeddings.embed([c['content'] for c in pieces]),timeout=float(os.getenv('INDEX_TIMEOUT','180')))
                     if len(vectors)!=len(pieces):raise ValueError('向量数量不符')
                     for c,v in zip(pieces,vectors):await self.indexer.vector_store.add(c['_id'],v,{'doc_id':did,'dept_id':d['dept_id'],'chunk_index':c['chunk_index']})
                     vector_ok=True

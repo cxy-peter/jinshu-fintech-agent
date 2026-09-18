@@ -67,7 +67,7 @@ def create_app(profile='offline',runtime=None):
    r.worker_task=asyncio.create_task(r.worker())
   yield
   await r.close()
- app=FastAPI(title='金枢｜金融产品中后台自进化 Agent',version='3.1.0',lifespan=lifespan)
+ app=FastAPI(title='金枢｜金融产品中后台自进化 Agent',version='4.0.0',lifespan=lifespan)
  def rt():return app.state.runtime
  async def auth(authorization:str|None=Header(default=None)):
   if not authorization or not authorization.startswith('Bearer '):raise HTTPException(401,'请先登录')
@@ -90,7 +90,7 @@ def create_app(profile='offline',runtime=None):
  @app.get('/')
  def index():return FileResponse(ROOT/'static'/'index.html')
  @app.get('/health')
- def health():return {'status':'ok','profile':rt().profile,'synthetic':True,'note':'offline uses original in-memory stores/hash vectors, not learned semantic models'}
+ def health():return {'status':'ok','profile':rt().profile,'semantic_embeddings':rt().profile=='services','note':'Use /api/services for connectivity; health alone does not assert model quality'}
  @app.get('/metrics')
  def metrics():return Response(generate_latest(),media_type=CONTENT_TYPE_LATEST)
  @app.post('/api/login')
@@ -102,7 +102,7 @@ def create_app(profile='offline',runtime=None):
   limiter.clear(key);return {'token':rt().c.auth.issue_token(user['id']),'user':user,'departments':depts(user)}
  @app.get('/api/catalog')
  async def catalog(u=Depends(auth)):
-  return {'workflows':{k:v for k,v in WORKFLOWS.items() if v['dept'] in depts(u)},'departments':DEPARTMENTS,'profile':rt().profile,'documents':await rt().c.store.count('documents'),'chunks':await rt().c.store.count('chunks'),'synthetic':True,'python_skills':__import__('jinshu.python_skills',fromlist=['catalog']).catalog()}
+  return {'workflows':{k:v for k,v in WORKFLOWS.items() if v['dept'] in depts(u)},'departments':DEPARTMENTS,'profile':rt().profile,'documents':await rt().c.store.count('documents'),'chunks':await rt().c.store.count('chunks'),'synthetic':rt().profile=='offline','python_skills':__import__('jinshu.python_skills',fromlist=['catalog']).catalog()}
  @app.post('/api/ask')
  async def ask(q:Ask,u=Depends(auth)):
   label=WORKFLOWS.get(q.workflow or '',{}).get('dept','auto')
@@ -138,7 +138,6 @@ def create_app(profile='offline',runtime=None):
  @app.get('/api/documents')
  async def documents(u=Depends(auth)):
   ds=await rt().c.store.list_documents()
-  
   from .document_service import can_read
   who={'departments':depts(u),'clearance':'sensitive' if u['role']=='admin' else 'internal'}
   return [d for d in ds if d['dept_id'] in depts(u) and (u['role']=='admin' or (d['status']=='active' and can_read(d,who)))]
@@ -153,7 +152,6 @@ def create_app(profile='offline',runtime=None):
   if d.dept_id not in depts(u):raise HTTPException(403,'部门不允许')
   if d.effective_date:
    from datetime import date;date.fromisoformat(d.effective_date)
-  # The API never accepts a filesystem path or arbitrary URL. Uploaded text is not executable.
   with tempfile.TemporaryDirectory() as td:
    p=Path(td)/'upload.md';p.write_text('# '+d.title+'\n\n'+d.body,encoding='utf-8')
    return await rt().c.documents.stage_file(p,d.dept_id,u['id'],d.topic,d.version,d.manual_sensitivity,d.effective_date)
@@ -246,6 +244,7 @@ def create_app(profile='offline',runtime=None):
   return await rt().recovery.rollback(s['family'],s['_id'],remote,d.reason)
  @app.post('/api/operations/resume/{family}')
  async def resume(family:str,u=Depends(global_admin)):
+  if rt().profile=='services':return await rt().recovery.resume_shared(family,u['id'])
   return rt().recovery.resume(family,u['id'])
  @app.post('/api/tickets')
  async def tickets(d:Ticket,u=Depends(auth)):
@@ -269,5 +268,7 @@ def create_app(profile='offline',runtime=None):
   p=ROOT/'diagrams'/filename
   if not p.exists():raise HTTPException(404)
   return FileResponse(p)
+ from .service_ops import install_routes
+ install_routes(app,rt,auth,admin,depts)
  return app
 app=create_app(os.getenv('JINSHU_PROFILE','offline'))

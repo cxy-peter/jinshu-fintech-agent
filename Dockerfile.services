@@ -1,0 +1,15 @@
+FROM python:3.11-slim
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends libarchive13 libgomp1 curl && rm -rf /var/lib/apt/lists/*
+COPY requirements.txt requirements-live.txt ./
+RUN pip install --no-cache-dir -r requirements-live.txt
+COPY engine ./engine
+COPY jinshu ./jinshu
+COPY static ./static
+COPY diagrams ./diagrams
+COPY scripts ./scripts
+COPY data ./data
+COPY evaluation ./evaluation
+RUN mkdir -p workspace private_corpus
+EXPOSE 8766
+CMD ["python","-m","jinshu","serve","--profile","services","--host","0.0.0.0","--port","8766"]

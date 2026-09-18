@@ -1,0 +1,10 @@
+.git
+.env
+**/.env
+.venv
+**/__pycache__
+workspace
+private_corpus
+private_reference
+*.rar
+_v4

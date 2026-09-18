@@ -9,20 +9,21 @@ from app.loop.skill_executor import SkillPlan
 from app.harness.base import Intent
 from .skills import validate_skill
 from .fixtures import WORKFLOWS
-from .context import scope,run_state
+from .context import scope,run_state,access
+from .live import local_models
+import os
 
 def now():return datetime.now(timezone.utc).isoformat()
 
 class FeedbackLoop(LoopEngine):
  async def _reflect(self,bad_cases):
   result=await super()._reflect(bad_cases)
-  # Explicit reviewer classification is a signal, not automatically trusted new business policy.
   cats={}
   for c in bad_cases:
    category=c.get('detail',{}).get('category')
    if category in {'retrieval','intent','generation','knowledge_gap'}:cats[category]=cats.get(category,0)+1
   if cats:result['explicit_feedback_categories']=cats
-  result['engine']='pi/Python LLM with fallback' if self.settings.pi_agent_enabled else 'offline deterministic fallback (no model inference)'
+  result['engine']='live runtime with recorded fallback' if self.embeddings.provider!='hash' else 'offline deterministic fallback (no model inference)'
   return result
  async def _adapt(self,reflect,bad_cases):
   proposals=[]
@@ -36,7 +37,6 @@ class FeedbackLoop(LoopEngine):
     pid='gap_'+hashlib.sha256((trace['query']+w['dept']).encode()).hexdigest()[:16]
     await self.store.upsert('knowledge_tickets',{'_id':pid,'dept_id':w['dept'],'query':trace['query'],'source_feedback':feedback['_id'],'status':'needs_document','created_at':now()})
     proposals.append({'type':'knowledge_gap','id':pid});continue
-   # Existing source material constrains expansions; free-form notes cannot become hard rules.
    from .retrieval import valid_chunk
    docs=[c for d in await self.store.list_active_chunks(w['dept']) if (c:=await valid_chunk(self.store,d['_id'],[w['dept']]))]
    text='\n'.join(d['content'] for d in docs)
@@ -59,8 +59,6 @@ class FeedbackLoop(LoopEngine):
    s['proposal_mode']=proposal['mode'];s['bounded_proposal']=proposal
    validate_skill(s)
    traces=await self.store.list_recent_traces(limit=100)
-   # Original DBSCAN/miner is retained; when sufficient family traces exist it contributes a proposal,
-   # but generated code or unapproved tool/schema changes never become an executable Skill.
    family_traces=[t for t in traces if t.get('workflow')==family]
    if len(family_traces)>=self.settings.skill_min_cluster:
     vecs=await self.embeddings.embed([t['query'] for t in family_traces])
@@ -75,7 +73,6 @@ class FeedbackLoop(LoopEngine):
    proposals.append({'type':'skill','id':sid,'name':s['name'],'replay':replay,'auto_activated':False})
   return proposals
  async def _deploy(self):
-  # Approval is still required to start live canary. Monitoring and rollback are automated.
   rolled=await self._rollback_failed_experiments()
   return {'skills':0,'hooks':0,'rules':0,'rolled_back':rolled,'note':'候选须经审核进入灰度；监控劣化后自动回滚'}
  async def approve(self,sid,actor):
@@ -104,7 +101,6 @@ class FeedbackLoop(LoopEngine):
  async def metrics(self,sid):
   rows=await self.store.find('strategy_executions',{'artifact_id':sid});rows.sort(key=lambda r:r.get('reviewed_at',''));out={}
   for group in ['control','treatment']:
-   # Deduplicate users so replaying one session cannot manufacture evidence for rollout.
    byuser={r['user_id']:r for r in rows if r.get('group')==group and r.get('quality_success') is not None};rs=list(byuser.values())
    out[group]={'n':len(rs),'rate':sum(bool(r['quality_success']) for r in rs)/len(rs) if rs else None}
   return out
@@ -138,7 +134,7 @@ class SourceReplay:
   for trace in traces[:limit]:
    if trace['query'] in seen:continue
    seen.add(trace['query'])
-   query=trace['query'];depts=[skill['dept_id']];token=scope.set(depts);state=run_state.set({'params':{},'tools':[]})
+   query=trace['query'];depts=[skill['dept_id']];token=scope.set(depts);state=run_state.set({'params':{},'tools':[],'models_enabled':self.c.embeddings.provider!='hash' and local_models(),'profile':'services' if self.c.embeddings.provider!='hash' else 'offline'});at=access.set({'departments':depts,'clearance':'internal'})
    try:
     for label,s in [('baseline',None),('candidate',skill)]:
      original=trace.get('skill_plan') or {}
@@ -150,6 +146,6 @@ class SourceReplay:
      covered=sum(any(t in x['content'] for x in chunks) for t in skill.get('expected_terms',[]))
      row={'trace_id':trace['_id'],'side':label,'source_valid':verdict.passed,'retrieved_ids':[x['_id'] for x in chunks],'expected_terms_covered':covered,'top_k':plan.top_k}
      details.append(row)
-   finally:scope.reset(token);run_state.reset(state)
+   finally:scope.reset(token);run_state.reset(state);access.reset(at)
   pairs=list(zip(details[::2],details[1::2]));passed=bool(pairs) and all(c['source_valid'] and c['expected_terms_covered']>=b['expected_terms_covered'] for b,c in pairs)
-  return {'sample_count':len(pairs),'passed':passed,'details':details,'scope':'配对离线回放；词项覆盖和来源校验不是语义正确率','strict_improvements':sum(c['expected_terms_covered']>b['expected_terms_covered'] for b,c in pairs)}
+  return {'sample_count':len(pairs),'passed':passed,'details':details,'scope':'历史配对回放；仅本地模型模式允许回放生成，外部模式默认原文；词项覆盖和来源校验不是人工准确率','strict_improvements':sum(c['expected_terms_covered']>b['expected_terms_covered'] for b,c in pairs)}

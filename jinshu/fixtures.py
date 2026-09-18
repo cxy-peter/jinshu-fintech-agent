@@ -73,5 +73,6 @@ def generate():
 
 if __name__=='__main__':print(generate())
 
-# Separate executable material skill: reuse issuance calculation, not a second calculator.
 WORKFLOWS['material_fill']={'name':'理财发行材料生成','dept':'dept_release','triggers':['材料填充','生成Word','材料生成'], 'tool':'material_fill','query':'发行材料 产品要素 日历 顺延 复核','template':'日期—差异—待确认'}
+WORKFLOWS['fund_research']={'name':'基金与FOF资料查询','dept':'dept_wealth','triggers':['FOF','基金研究','基金产品'], 'tool':None,'query':'','template':'范围—指标—来源—复核'}
+WORKFLOWS['finance_learning']={'name':'金融基础知识学习','dept':'dept_wealth','triggers':['金融学','名词解释'], 'tool':None,'query':'','template':'范围—指标—来源—复核'}
