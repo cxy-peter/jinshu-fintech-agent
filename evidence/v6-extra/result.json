@@ -1,0 +1,17 @@
+{
+  "site": "https://jinshu-workbench.vercel.app",
+  "scope": "real website functional transitions, no private data or live model",
+  "checks": {
+    "preference_saved_across_reload": true,
+    "pilot_test_default_trace_link_and_withdraw": true,
+    "csv_upload_real_computation_leading_zero": true,
+    "csv_json_exports": true,
+    "zip_chunks_import_and_publish": true,
+    "duplicate_file_dedup": true,
+    "uploaded_original_exact_quote_and_page": true,
+    "source_viewer_opens_original": true,
+    "archived_document_no_longer_answered": true,
+    "workspace_export_and_clear": true
+  },
+  "status": "passed"
+}
