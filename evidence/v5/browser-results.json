@@ -4,7 +4,14 @@
     "four_functions_complete": true,
     "sixteen_regression_queries": true,
     "eight_actual_tools": true,
-    "word_export": true
+    "word_export": true,
+    "upload_publish_persist_search": true,
+    "docx_upload": true,
+    "pdf_native_parse": true,
+    "all_115_pages_preserved": true,
+    "feedback_replay_deploy_rollback": true,
+    "all_nine_panels": true,
+    "mobile_no_horizontal_overflow": true
   },
   "errors": [],
   "evaluation": [
@@ -258,6 +265,5 @@
       "mrr": 1
     }
   ],
-  "status": "failed",
-  "failure": "Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"#ask-result .source\") to be visible\n"
+  "status": "passed"
 }

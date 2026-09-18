@@ -1,0 +1,17 @@
+{
+  "scope": "HTTP availability only, not browser functionality",
+  "results": [
+    {
+      "url": "https://rawcdn.githack.com/cxy-peter/jinshu-fintech-agent/a9bbda1d240ce648255f1fabaef63f68dad61610/lite/web/index.html",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://rawcdn.githack.com/cxy-peter/jinshu-fintech-agent/a9bbda1d240ce648255f1fabaef63f68dad61610/lite/web/app.mjs",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "url": "https://rawcdn.githack.com/cxy-peter/jinshu-fintech-agent/a9bbda1d240ce648255f1fabaef63f68dad61610/lite/web/knowledge.json",
+      "error": "HTTP Error 403: Forbidden"
+    }
+  ]
+}
