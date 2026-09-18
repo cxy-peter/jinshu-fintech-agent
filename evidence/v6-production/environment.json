@@ -1,0 +1,8 @@
+{
+  "site": "https://jinshu-workbench.vercel.app",
+  "run": "https://github.com/cxy-peter/jinshu-fintech-agent/actions/runs/35405427350",
+  "test_inputs": "public and synthetic; no private original documents transmitted",
+  "real_users": 0,
+  "model_endpoint_status": 503,
+  "model_endpoint_message": "{\"error\":\"部署者未启用模型服务。无模型的检索整理仍然可用。\"}"
+}

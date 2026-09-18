@@ -1,0 +1,269 @@
+{
+  "scope": "Chromium on static HTTP build; synthetic fixtures, not real users",
+  "checks": {
+    "four_functions_complete": true,
+    "sixteen_regression_queries": true,
+    "eight_actual_tools": true,
+    "word_export": true,
+    "upload_publish_persist_search": true,
+    "docx_upload": true,
+    "pdf_native_parse": true,
+    "all_115_pages_preserved": true,
+    "feedback_replay_deploy_rollback": true,
+    "all_nine_panels": true,
+    "mobile_no_horizontal_overflow": true
+  },
+  "errors": [],
+  "evaluation": [
+    {
+      "query": "商业银行的四个职能是什么？",
+      "flow": "finance_learning",
+      "route": "finance_learning",
+      "route_match": true,
+      "gold": "learn-014",
+      "retrieved": [
+        "learn-014",
+        "learn-018",
+        "learn-016",
+        "learn-015",
+        "learn-001"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "支付中介和信用中介的区别",
+      "flow": "finance_learning",
+      "route": "finance_learning",
+      "route_match": true,
+      "gold": "learn-015",
+      "retrieved": [
+        "learn-015",
+        "learn-014",
+        "learn-002",
+        "learn-055",
+        "learn-028"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "解释购买力平价",
+      "flow": "finance_learning",
+      "route": "finance_learning",
+      "route_match": true,
+      "gold": "learn-007",
+      "retrieved": [
+        "learn-007",
+        "learn-044",
+        "learn-032",
+        "learn-005",
+        "learn-043"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "什么是货币乘数？",
+      "flow": "finance_learning",
+      "route": "finance_learning",
+      "route_match": true,
+      "gold": "learn-041",
+      "retrieved": [
+        "learn-041",
+        "learn-042",
+        "learn-047",
+        "learn-004",
+        "learn-001"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "直接融资和间接融资",
+      "flow": "finance_learning",
+      "route": "finance_learning",
+      "route_match": true,
+      "gold": "learn-025",
+      "retrieved": [
+        "learn-025",
+        "learn-008",
+        "learn-055",
+        "learn-021",
+        "learn-013"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "交易预防投机动机",
+      "flow": "finance_learning",
+      "route": "finance_learning",
+      "route_match": true,
+      "gold": "learn-036",
+      "retrieved": [
+        "learn-036",
+        "learn-033",
+        "learn-031",
+        "learn-029",
+        "learn-038"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "什么是最后贷款人",
+      "flow": "finance_learning",
+      "route": "finance_learning",
+      "route_match": true,
+      "gold": "learn-019",
+      "retrieved": [
+        "learn-019",
+        "learn-018",
+        "learn-012",
+        "learn-017",
+        "learn-053"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "通货膨胀和货币幻觉",
+      "flow": "finance_learning",
+      "route": "finance_learning",
+      "route_match": true,
+      "gold": "learn-044",
+      "retrieved": [
+        "learn-044",
+        "learn-033",
+        "learn-004",
+        "learn-041",
+        "learn-042"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "期限结构三种理论",
+      "flow": "finance_learning",
+      "route": "finance_learning",
+      "route_match": true,
+      "gold": "learn-050",
+      "retrieved": [
+        "learn-050",
+        "learn-049",
+        "learn-053",
+        "learn-002",
+        "learn-033"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "道德风险和逆向选择",
+      "flow": "finance_learning",
+      "route": "finance_learning",
+      "route_match": true,
+      "gold": "learn-051",
+      "retrieved": [
+        "learn-051",
+        "learn-011",
+        "learn-036",
+        "learn-052",
+        "learn-020"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "发行排期遇非工作日顺延",
+      "flow": "issuance",
+      "route": "issuance",
+      "route_match": true,
+      "gold": "sim-calendar",
+      "retrieved": [
+        "sim-calendar"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "周报数字清洗",
+      "flow": "weekly_report",
+      "route": "weekly_report",
+      "route_match": true,
+      "gold": "sim-weekly",
+      "retrieved": [
+        "sim-weekly"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "开户字段决策时点",
+      "flow": "onboarding",
+      "route": "onboarding",
+      "route_match": true,
+      "gold": "sim-onboarding",
+      "retrieved": [
+        "sim-onboarding",
+        "guide-guide"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "案件邮件核查",
+      "flow": "kep",
+      "route": "kep",
+      "route_match": true,
+      "gold": "sim-kep",
+      "retrieved": [
+        "sim-kep"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "特征计数success",
+      "flow": "strategy",
+      "route": "strategy",
+      "route_match": true,
+      "gold": "sim-feature",
+      "retrieved": [
+        "sim-feature"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    },
+    {
+      "query": "客服转人工",
+      "flow": "service",
+      "route": "service",
+      "route_match": true,
+      "gold": "sim-service",
+      "retrieved": [
+        "sim-service"
+      ],
+      "hit": 1,
+      "recall": 1,
+      "mrr": 1
+    }
+  ],
+  "status": "passed"
+}
