@@ -1,0 +1,27 @@
+{
+  "seed": 20260918,
+  "synthetic": true,
+  "description": "仿照历史业务字段结构生成，不是原公司数据",
+  "files": {
+    "calendar_v1.md": "45634d8142ec50aa11ad61eab1776faaada740baf0f976e7c039f575766542db",
+    "features.csv": "009dcad472d1d0d7a89f4a5d26cf48c433d76a8dd640f25590662bd79655e2d8",
+    "financial_v1.md": "5e016ba886fa6b9efe36e61c67a48f205b196b6f85b510d10d6d6b38185bbc81",
+    "calendar.json": "10ed6e13b4316ee12f237bcc619294746dc4dcd248b6c4abe18b2fc683323508",
+    "benchmark_v1.md": "6b9139e0ddde4ea145b7d2a0a0c51f71e54c536172ff0d7d80fc67bdae801481",
+    "statements.csv": "1c8940dce31cdd68f958a0ff0214f80ccfb4270ae5c7b3f73b0f5735e1cbbcfa",
+    "feature_v1.md": "02eb11324a2a3224f303146725049247e238b362717ada3bf1b7b152271960c0",
+    "calendar_v2.md": "807a60908499837ec67132f668e8f09c7782459eddb088a5ea7c93e25d655572",
+    "service_v1.md": "8e2faed7f32dfeb73213423326990def7f8ec34fa7d7014560934998636f6e16",
+    "kep_v1.md": "4dc1eeb8fd3080d0efeddb5d08e6cc6b92d5ac4797dd970214bb13d8fe0f8d70",
+    "onboarding_v1.md": "97cc186db3a43b2512efb9fa27e933d362a5a07fce53c5a02414c4eabd7a26a6",
+    "draft_v2.md": "7b0a662c20692b2ee51895a31f262521a97de76ffd03b2fd80e7f9813a3689d9",
+    "nav.csv": "95772570317285fbc6b9f61dd5570691657b3231d927c5a64ebafecb6913924e",
+    "mails.csv": "72515ab68f96e899396562e83a636b3ac5b7afd99d5bd04a36c0c4421196aac4",
+    "documents.json": "c23ed0d0763b8c451dbfd0eaf8244cf421cdf895ee816099e225290554371f72",
+    "cases.csv": "b27dc8133cfa409ed99274bc2763beca06db26988c192d300f738d71efda90ea",
+    "onboarding.csv": "b8feccaba0ef5c70646746f90810b9f86862ab5514c81e13f998783c70de503a",
+    "products.csv": "381254450edef940d8a1395075bc22d480c49b817d86f8c657232540fe706fa6",
+    "weekly_v1.md": "a30821ca18d0859bddae2f1f245897bd1cbb249d470c3d7e0f84fff561376855",
+    "weekly_raw.csv": "d8723d3a0ffe399caeab2fbfcaa371ee3d5cb411520cb2cd2ea673422f523f59"
+  }
+}

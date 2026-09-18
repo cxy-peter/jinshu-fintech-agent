@@ -1,0 +1,37 @@
+[
+  {
+    "file": "wenshu-project(1).zip",
+    "sha256": "716d2022e4c9c7ecad17ef082921f383aa779ff55bc0e86e07c395ee49ca479d",
+    "bytes": 2200357,
+    "modified": false,
+    "used_for_business_data": false
+  },
+  {
+    "file": "照明数据.rar",
+    "sha256": "7f30a11cabc70069b811ccfe2252515cf25c748222e61cbe83dce45e934a860d",
+    "bytes": 41394704,
+    "modified": false,
+    "used_for_business_data": false
+  },
+  {
+    "file": "行政助手agent项目.xmind",
+    "sha256": "ae7e93c72eb7f7bf0b7ebe2b227e7172e08157f996e964c63cc38d2b3b847b3a",
+    "bytes": 558556,
+    "modified": false,
+    "used_for_business_data": false
+  },
+  {
+    "file": "行政助手agent代码运行与解读.mp4",
+    "sha256": "8507f003920c9d8b5baeb2014b200a16bd3e849451f797162245fedb63c357f6",
+    "bytes": 490112660,
+    "modified": false,
+    "used_for_business_data": false
+  },
+  {
+    "file": "Pasted markdown.md",
+    "sha256": "24b03f4ee10a2c28353c387cb609801c92e86b2d1982c5a00e91cff6e4379c0b",
+    "bytes": 63025,
+    "modified": false,
+    "used_for_business_data": false
+  }
+]

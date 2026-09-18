@@ -1,0 +1,136 @@
+[
+  {
+    "topic": "benchmark",
+    "dept_id": "dept_wealth",
+    "title": "可比产品筛选口径",
+    "version": 1,
+    "status": "active",
+    "file": "benchmark_v1.md"
+  },
+  {
+    "topic": "calendar",
+    "dept_id": "dept_release",
+    "title": "募集成立日期安排",
+    "version": 2,
+    "status": "active",
+    "file": "calendar_v2.md"
+  },
+  {
+    "topic": "calendar",
+    "dept_id": "dept_release",
+    "title": "募集成立日期安排",
+    "version": 1,
+    "status": "archived",
+    "file": "calendar_v1.md"
+  },
+  {
+    "topic": "weekly",
+    "dept_id": "dept_release",
+    "title": "周报表格整理规范",
+    "version": 1,
+    "status": "active",
+    "file": "weekly_v1.md"
+  },
+  {
+    "topic": "onboarding",
+    "dept_id": "dept_risk",
+    "title": "开户数据可用时点",
+    "version": 1,
+    "status": "active",
+    "file": "onboarding_v1.md"
+  },
+  {
+    "topic": "kep",
+    "dept_id": "dept_risk",
+    "title": "案件邮件核查作业",
+    "version": 1,
+    "status": "active",
+    "file": "kep_v1.md"
+  },
+  {
+    "topic": "feature",
+    "dept_id": "dept_risk",
+    "title": "特征需求与候选配置",
+    "version": 1,
+    "status": "active",
+    "file": "feature_v1.md"
+  },
+  {
+    "topic": "service",
+    "dept_id": "dept_service",
+    "title": "客服问答与转人工",
+    "version": 1,
+    "status": "active",
+    "file": "service_v1.md"
+  },
+  {
+    "topic": "financial",
+    "dept_id": "dept_release",
+    "title": "经营报表口径",
+    "version": 1,
+    "status": "active",
+    "file": "financial_v1.md"
+  },
+  {
+    "topic": "draft",
+    "dept_id": "dept_service",
+    "title": "提现新说明草稿",
+    "version": 2,
+    "status": "pending_review",
+    "file": "draft_v2.md"
+  },
+  {
+    "topic": "table-products.csv",
+    "dept_id": "dept_wealth",
+    "title": "products.csv模拟输入",
+    "version": 1,
+    "status": "active",
+    "file": "table-products.md",
+    "source_csv": "products.csv"
+  },
+  {
+    "topic": "table-weekly_raw.csv",
+    "dept_id": "dept_release",
+    "title": "weekly_raw.csv模拟输入",
+    "version": 1,
+    "status": "active",
+    "file": "table-weekly_raw.md",
+    "source_csv": "weekly_raw.csv"
+  },
+  {
+    "topic": "table-onboarding.csv",
+    "dept_id": "dept_risk",
+    "title": "onboarding.csv模拟输入",
+    "version": 1,
+    "status": "active",
+    "file": "table-onboarding.md",
+    "source_csv": "onboarding.csv"
+  },
+  {
+    "topic": "table-cases.csv",
+    "dept_id": "dept_risk",
+    "title": "cases.csv模拟输入",
+    "version": 1,
+    "status": "active",
+    "file": "table-cases.md",
+    "source_csv": "cases.csv"
+  },
+  {
+    "topic": "table-features.csv",
+    "dept_id": "dept_risk",
+    "title": "features.csv模拟输入",
+    "version": 1,
+    "status": "active",
+    "file": "table-features.md",
+    "source_csv": "features.csv"
+  },
+  {
+    "topic": "table-statements.csv",
+    "dept_id": "dept_release",
+    "title": "statements.csv模拟输入",
+    "version": 1,
+    "status": "active",
+    "file": "table-statements.md",
+    "source_csv": "statements.csv"
+  }
+]

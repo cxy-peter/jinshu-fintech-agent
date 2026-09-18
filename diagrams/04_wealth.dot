@@ -1,0 +1,28 @@
+digraph G {
+graph [fontname="Noto Sans CJK SC",bgcolor="#ffffff",pad="0.35",nodesep="0.35",ranksep="0.45",splines=polyline];
+node [shape=box,style="rounded,filled",fontname="Noto Sans CJK SC",fontsize=12,color="#c6d8ce",fillcolor="#edf5f0",fontcolor="#173c2e",margin="0.18,0.13"];
+edge [fontname="Noto Sans CJK SC",fontsize=10,color="#659182",fontcolor="#4b6b5d",arrowsize=.7];
+label="理财产品Python Skill：复用而非重写"; labelloc=t; fontsize=18;
+rankdir=TB;
+a [label="选择任务 + 传入参数
+产品 / 观察期 / 期限 / 发行频率"];
+b [label="Skill注册与Schema校验
+绑定已登记Python函数"];
+c [label="产品对标
+筛可比池 → 对齐净值区间
+收益、回撤、样本中位数"];
+d [label="发行排期
+读取模拟日历 → 顺延检查
+保留原日期与日历版本"];
+e [label="周报清洗
+数字格式 / 主键 / 缺失
+异常单独输出"];
+f [label="材料生成
+复用排期函数 → 字段映射
+Word草稿 + 幂等文件名"];
+g [label="资料检索补充口径
+计算不交给大模型"];
+h [label="结果表 + 源文件哈希 + 待复核事项"];
+a->b;b->c;b->d;b->e;d->f;c->g;e->g;f->g;g->h;
+
+}

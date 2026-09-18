@@ -1,0 +1,25 @@
+digraph G {
+graph [fontname="Noto Sans CJK SC",bgcolor="#ffffff",pad="0.35",nodesep="0.35",ranksep="0.45",splines=polyline];
+node [shape=box,style="rounded,filled",fontname="Noto Sans CJK SC",fontsize=12,color="#c6d8ce",fillcolor="#edf5f0",fontcolor="#173c2e",margin="0.18,0.13"];
+edge [fontname="Noto Sans CJK SC",fontsize=10,color="#659182",fontcolor="#4b6b5d",arrowsize=.7];
+label="PDF上传、敏感审核与可信建库"; labelloc=t; fontsize=18;
+rankdir=TB;
+a [label="上传原生PDF
+上传者选择：部门 / 类型 / 主题版本 / 初始敏感级别"];
+b [label="本地解析 + 规则提示
+段落识别、表格提取；扫描件待人工"];
+c [label="隔离切片
+表格重复表头；保留页码、年度、单位与来源"];
+d [label="独立审核人
+确认敏感级别、可访问部门、模型外发许可",fillcolor="#fbf0d6",color="#dbba72"];
+e [label="退回补充
+不进入普通检索"];
+f [label="BM25索引 + 获准向量化"];
+g [label="向量化失败或不准外发
+仅本地BM25，标明重建状态"];
+h [label="发布有效版本
+新版本就绪后切换，旧版退出默认检索"];
+i [label="检索候选 → 回填权威正文 → 引用校验"];
+a->b->c->d;d->e [label="退回"];d->f [label="通过"];f->g [label="降级"];f->h;g->h;h->i;
+
+}

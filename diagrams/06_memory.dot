@@ -1,0 +1,29 @@
+digraph G {
+graph [fontname="Noto Sans CJK SC",bgcolor="#ffffff",pad="0.35",nodesep="0.35",ranksep="0.45",splines=polyline];
+node [shape=box,style="rounded,filled",fontname="Noto Sans CJK SC",fontsize=12,color="#c6d8ce",fillcolor="#edf5f0",fontcolor="#173c2e",margin="0.18,0.13"];
+edge [fontname="Noto Sans CJK SC",fontsize=10,color="#659182",fontcolor="#4b6b5d",arrowsize=.7];
+label="一个权威事实平面 + 五类记忆"; labelloc=t; fontsize=18;
+rankdir=TB;
+a [label="权威事实：有效审核文档 / 原文片段 / 版本
+答案证据最终回查此处",fillcolor="#176c59",fontcolor=white];
+b [label="工作记忆
+当前会话、已确认实体
+短时TTL"];
+c [label="情景记忆
+原始交互事件、摘要
+原话与改写分开"];
+d [label="用户语义记忆
+明确同意的低敏偏好
+可查可删除"];
+e [label="组织知识记忆
+审核FAQ / 协调结论
+绑定来源与版本"];
+f [label="程序性记忆
+Skill / Hook / Rule
+实验、执行参数"];
+g [label="MemoryContextBuilder
+范围 → 时效 → 权威等级 → 上下文预算"];
+h [label="辅助理解和改写，不把摘要或推断当官方事实"];
+a->e [label="必须回查"];b->g;c->g;d->g;e->g;f->h [label="控制执行，不作事实"];g->h;
+
+}

@@ -1,0 +1,16 @@
+{
+  "ui_url": "http://127.0.0.1:8766",
+  "native_browser_localhost": false,
+  "method": "Chromium renders real HTML; explicit fetch bridge to real local API because native localhost navigation is blocked by environment",
+  "checks": [
+    "登录与9工作流",
+    "Python材料生成与下载按钮",
+    "8PDF导入",
+    "独立审核并发布",
+    "回滚API故障演示",
+    "工单待提交",
+    "六张SVG图谱",
+    "Loop隔离实验"
+  ],
+  "javascript_errors": []
+}

@@ -1,0 +1,6 @@
+﻿field,source,available_stage,owner,synthetic
+industry,questionnaire,1,业务,true
+income_band,questionnaire,1,业务,true
+video_status,video_kyc,2,KYC,true
+bank_link,first_deposit,4,数据,true
+transaction_count_7d,events,4,算法,true

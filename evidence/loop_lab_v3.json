@@ -1,0 +1,5133 @@
+{
+  "project": "金枢｜金融产品中后台自进化 Agent",
+  "profile": "offline",
+  "method": "original LoopEngine.run_cycle + original Skill workflow action executor + actual paired retrieval/answer/source checks",
+  "warning": "全部模拟；hash向量非语义embedding；无真实LLM；负面结果为显式故障注入；不是质量提升或显著性结论",
+  "execute": {
+    "development_traces": 21,
+    "baseline_plan": {
+      "queries": [
+        "发行排期需要确认哪些内容（模拟任务1）",
+        "发行排期需要确认哪些内容（模拟任务1） 募集 成立 期限"
+      ],
+      "top_k": 2,
+      "instructions": [
+        "使用输出模板：日期—差异—待确认"
+      ],
+      "skills": [
+        "base_issuance"
+      ],
+      "executions": [
+        "sx_ba0f15c1f1e14a13b76a75772a446a6a"
+      ]
+    }
+  },
+  "observe_reflect_adapt_deploy_job": {
+    "_id": "job_a12e070355df4f9c9879ecd158e4822a",
+    "type": "loop",
+    "payload": {},
+    "status": "completed",
+    "created_at": "2026-09-18T17:03:43.983315+00:00",
+    "updated_at": "2026-09-18T17:03:45.148798+00:00",
+    "progress": {
+      "stage": "complete",
+      "history": [
+        {
+          "stage": "observe",
+          "detail": "正在读取显式反馈、隐式行为和 Verifier 信号"
+        },
+        {
+          "stage": "reflect",
+          "detail": "正在归因 1 个 bad cases"
+        },
+        {
+          "stage": "adapt",
+          "detail": "正在回放历史 Trace 并生成 Skill / Hook / Rule 候选"
+        },
+        {
+          "stage": "deploy",
+          "detail": "正在依据人在环阶段审核、灰度发布或保留候选"
+        },
+        {
+          "stage": "complete",
+          "detail": "已分析 22 条反馈（1 个 bad case），生成 1 个候选，发布 0 个策略产物。"
+        }
+      ]
+    },
+    "result": {
+      "cycle_id": "loop_cycle_519738f8e2f6",
+      "started_at": "2026-09-18T17:03:43.983359+00:00",
+      "observed": 22,
+      "bad_cases": 1,
+      "signals": {
+        "down": 1,
+        "verifier_pass": 21
+      },
+      "reflect": {
+        "root_causes": {
+          "knowledge_gap": 1
+        },
+        "suggestions": [],
+        "explicit_feedback_categories": {
+          "retrieval": 1
+        },
+        "engine": "offline deterministic fallback (no model inference)"
+      },
+      "adaptations": [
+        {
+          "type": "skill",
+          "id": "learned_af9a7371937aa369",
+          "name": "发行排期与材料预览·反馈增强",
+          "replay": {
+            "sample_count": 20,
+            "passed": true,
+            "details": [
+              {
+                "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_ac2a567a6ce84aac:1"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_3411fcb111e64078:1",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:0"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_725ff05e6a764f43:1",
+                  "doc_ac2a567a6ce84aac:2"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_725ff05e6a764f43:1",
+                  "doc_ac2a567a6ce84aac:1"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:0"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_725ff05e6a764f43:1",
+                  "doc_ac2a567a6ce84aac:2"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_ac2a567a6ce84aac:1"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_c0eef80873fb4f42:0"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_725ff05e6a764f43:1",
+                  "doc_ac2a567a6ce84aac:2"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_ac2a567a6ce84aac:1"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:0"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_725ff05e6a764f43:1",
+                  "doc_ac2a567a6ce84aac:2"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_ac2a567a6ce84aac:1",
+                  "doc_725ff05e6a764f43:1"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_3411fcb111e64078:1",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_c0eef80873fb4f42:0"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_725ff05e6a764f43:1",
+                  "doc_3411fcb111e64078:1"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_c036f402c43e430c85591827484fe612",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_c036f402c43e430c85591827484fe612",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_ac2a567a6ce84aac:1"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_3411fcb111e64078:1",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:0"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_725ff05e6a764f43:1"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_744eb423548d45948749d4a16788832c",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:1"
+                ],
+                "expected_terms_covered": 1,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_744eb423548d45948749d4a16788832c",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:1",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_ac2a567a6ce84aac:1"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              },
+              {
+                "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+                "side": "baseline",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 2
+              },
+              {
+                "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+                "side": "candidate",
+                "source_valid": true,
+                "retrieved_ids": [
+                  "doc_ac2a567a6ce84aac:0",
+                  "doc_26c5eeafdee04d2b:2",
+                  "doc_26c5eeafdee04d2b:0",
+                  "doc_26c5eeafdee04d2b:1",
+                  "doc_3411fcb111e64078:1",
+                  "doc_ac2a567a6ce84aac:2",
+                  "doc_725ff05e6a764f43:2",
+                  "doc_3411fcb111e64078:0"
+                ],
+                "expected_terms_covered": 2,
+                "top_k": 8
+              }
+            ],
+            "scope": "配对离线回放；词项覆盖和来源校验不是语义正确率",
+            "strict_improvements": 13
+          },
+          "auto_activated": false
+        }
+      ],
+      "deployed": {
+        "skills": 0,
+        "hooks": 0,
+        "rules": 0,
+        "rolled_back": 0,
+        "note": "候选须经审核进入灰度；监控劣化后自动回滚"
+      },
+      "completed_at": "2026-09-18T17:03:45.148695+00:00",
+      "duration_ms": 1165,
+      "before": {
+        "skills": 9,
+        "active_skills": 9,
+        "pending_skills": 0,
+        "hooks": 2,
+        "rules": 3,
+        "experiments": 0,
+        "strategy_versions": 0
+      },
+      "after": {
+        "skills": 10,
+        "active_skills": 9,
+        "pending_skills": 1,
+        "hooks": 2,
+        "rules": 3,
+        "experiments": 1,
+        "strategy_versions": 1
+      },
+      "changes": {
+        "skills": 1,
+        "active_skills": 0,
+        "pending_skills": 1,
+        "hooks": 0,
+        "rules": 0,
+        "experiments": 1,
+        "strategy_versions": 1
+      },
+      "summary": "已分析 22 条反馈（1 个 bad case），生成 1 个候选，发布 0 个策略产物。",
+      "next_action": "检查下方新生成的 Skill/Rule/Hook；人在环中阶段需要管理员审核后才会生效。"
+    }
+  },
+  "candidate": {
+    "_id": "learned_af9a7371937aa369",
+    "family": "issuance",
+    "name": "发行排期与材料预览·反馈增强",
+    "dept_id": "dept_release",
+    "scope": "department",
+    "status": "pending",
+    "version": 2,
+    "gray_percent": 0,
+    "trigger": {
+      "intent_patterns": [
+        "排期",
+        "募集",
+        "成立日",
+        "发行"
+      ]
+    },
+    "action": {
+      "type": "workflow",
+      "steps": [
+        {
+          "action": "retrieve",
+          "params": {
+            "query": "{matter} 顺延 日历版本",
+            "top_k": 8
+          }
+        },
+        {
+          "action": "generate",
+          "params": {
+            "template": "结论—证据—操作—复核"
+          }
+        }
+      ]
+    },
+    "source_feedback": [
+      "explicit_25b8a4f83f394d38abf2ad4d00d3121e"
+    ],
+    "source_trace": "trace_243f76753ca04228992b84f7d4555069",
+    "expected_terms": [
+      "顺延",
+      "日历版本"
+    ],
+    "created_by": "loop_engine",
+    "created_at": "2026-09-18T17:03:43.985538+00:00",
+    "confidence": 0.7,
+    "replaces": null,
+    "target": "execution_policy_only",
+    "root_cause": "retrieval",
+    "proposal_mode": "offline_or_model_unavailable_bounded_fallback",
+    "bounded_proposal": {
+      "query_terms": [
+        "顺延",
+        "日历版本"
+      ],
+      "top_k": 8,
+      "template": "结论—证据—操作—复核",
+      "mode": "offline_or_model_unavailable_bounded_fallback"
+    },
+    "mined_draft_count": 0,
+    "replay": {
+      "sample_count": 20,
+      "passed": true,
+      "details": [
+        {
+          "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_ac2a567a6ce84aac:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_725ff05e6a764f43:1",
+            "doc_ac2a567a6ce84aac:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:1",
+            "doc_ac2a567a6ce84aac:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_3411fcb111e64078:1",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_725ff05e6a764f43:1",
+            "doc_ac2a567a6ce84aac:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_ac2a567a6ce84aac:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_c0eef80873fb4f42:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_725ff05e6a764f43:1",
+            "doc_ac2a567a6ce84aac:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_3411fcb111e64078:1",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_725ff05e6a764f43:1",
+            "doc_ac2a567a6ce84aac:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_ac2a567a6ce84aac:1",
+            "doc_725ff05e6a764f43:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:2",
+            "doc_c0eef80873fb4f42:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:1",
+            "doc_3411fcb111e64078:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_c036f402c43e430c85591827484fe612",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_c036f402c43e430c85591827484fe612",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_744eb423548d45948749d4a16788832c",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_744eb423548d45948749d4a16788832c",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_ac2a567a6ce84aac:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        }
+      ],
+      "scope": "配对离线回放；词项覆盖和来源校验不是语义正确率",
+      "strict_improvements": 13
+    },
+    "experiment_id": "exp_af9a7371937aa369"
+  },
+  "canary_comparison": [
+    {
+      "user": "lab_good_control0",
+      "group": "control",
+      "bucket": 0.4942533595021814,
+      "trace_id": "trace_9304bb236d8a4ea78741251a95cb9f16",
+      "plan": {
+        "queries": [
+          "发行排期需要确认哪些内容",
+          "发行排期需要确认哪些内容 募集 成立 期限"
+        ],
+        "top_k": 2,
+        "instructions": [
+          "使用输出模板：日期—差异—待确认"
+        ],
+        "skills": [
+          "base_issuance"
+        ],
+        "executions": [
+          "sx_51056c3cc0214798b72eb254561bb01d",
+          "sx_d18b67cb8f3b438e86037621c7f311b3"
+        ]
+      },
+      "source_verified": true,
+      "source_metric_only": true,
+      "tool_results": [
+        {
+          "tool": "issuance",
+          "synthetic": true,
+          "result": {
+            "rows": [
+              {
+                "批次": 1,
+                "拟成立日": "2026-09-25",
+                "成立日": "2026-09-28",
+                "募集结束日": "2026-09-24",
+                "到期日": "2026-12-28",
+                "实际自然日": 91,
+                "顺延": true,
+                "日历版本": "SIM-CALENDAR-v1"
+              },
+              {
+                "批次": 2,
+                "拟成立日": "2026-10-02",
+                "成立日": "2026-10-05",
+                "募集结束日": "2026-09-30",
+                "到期日": "2027-01-04",
+                "实际自然日": 91,
+                "顺延": true,
+                "日历版本": "SIM-CALENDAR-v1"
+              },
+              {
+                "批次": 3,
+                "拟成立日": "2026-10-09",
+                "成立日": "2026-10-09",
+                "募集结束日": "2026-10-08",
+                "到期日": "2027-01-07",
+                "实际自然日": 90,
+                "顺延": false,
+                "日历版本": "SIM-CALENDAR-v1"
+              }
+            ],
+            "material_preview": {
+              "标题": "模拟产品发行材料草稿",
+              "约定期限自然日": 90,
+              "发行频率天": 7,
+              "日历版本": "SIM-CALENDAR-v1",
+              "需人工确认": [
+                "产品要素",
+                "日历适用市场",
+                "顺延日期",
+                "募集与成立时点"
+              ]
+            },
+            "note": "根据模拟日历计算。所有结果为待核对排期草案，不是发行决定"
+          },
+          "source_files": [
+            {
+              "file": "calendar.json",
+              "sha256": "10ed6e13b4316ee12f237bcc619294746dc4dcd248b6c4abe18b2fc683323508"
+            }
+          ],
+          "python_skill": {
+            "entrypoint": "jinshu.tools:issuance",
+            "input": "start,term_days,frequency_days,count",
+            "output": "schedule rows, calendar version"
+          }
+        }
+      ]
+    },
+    {
+      "user": "lab_good_control1",
+      "group": "control",
+      "bucket": 0.2744843664113432,
+      "trace_id": "trace_71444c3b071d4ff3a69893ce84b16090",
+      "plan": {
+        "queries": [
+          "发行排期需要确认哪些内容",
+          "发行排期需要确认哪些内容 募集 成立 期限"
+        ],
+        "top_k": 2,
+        "instructions": [
+          "使用输出模板：日期—差异—待确认"
+        ],
+        "skills": [
+          "base_issuance"
+        ],
+        "executions": [
+          "sx_2eaf98dc1773418aa1bb5aa71ccdcb28",
+          "sx_7f646e2003554e7f8fe7455b8e1a4bcc"
+        ]
+      },
+      "source_verified": true,
+      "source_metric_only": true,
+      "tool_results": [
+        {
+          "tool": "issuance",
+          "synthetic": true,
+          "result": {
+            "rows": [
+              {
+                "批次": 1,
+                "拟成立日": "2026-09-25",
+                "成立日": "2026-09-28",
+                "募集结束日": "2026-09-24",
+                "到期日": "2026-12-28",
+                "实际自然日": 91,
+                "顺延": true,
+                "日历版本": "SIM-CALENDAR-v1"
+              },
+              {
+                "批次": 2,
+                "拟成立日": "2026-10-02",
+                "成立日": "2026-10-05",
+                "募集结束日": "2026-09-30",
+                "到期日": "2027-01-04",
+                "实际自然日": 91,
+                "顺延": true,
+                "日历版本": "SIM-CALENDAR-v1"
+              },
+              {
+                "批次": 3,
+                "拟成立日": "2026-10-09",
+                "成立日": "2026-10-09",
+                "募集结束日": "2026-10-08",
+                "到期日": "2027-01-07",
+                "实际自然日": 90,
+                "顺延": false,
+                "日历版本": "SIM-CALENDAR-v1"
+              }
+            ],
+            "material_preview": {
+              "标题": "模拟产品发行材料草稿",
+              "约定期限自然日": 90,
+              "发行频率天": 7,
+              "日历版本": "SIM-CALENDAR-v1",
+              "需人工确认": [
+                "产品要素",
+                "日历适用市场",
+                "顺延日期",
+                "募集与成立时点"
+              ]
+            },
+            "note": "根据模拟日历计算。所有结果为待核对排期草案，不是发行决定"
+          },
+          "source_files": [
+            {
+              "file": "calendar.json",
+              "sha256": "10ed6e13b4316ee12f237bcc619294746dc4dcd248b6c4abe18b2fc683323508"
+            }
+          ],
+          "python_skill": {
+            "entrypoint": "jinshu.tools:issuance",
+            "input": "start,term_days,frequency_days,count",
+            "output": "schedule rows, calendar version"
+          }
+        }
+      ]
+    },
+    {
+      "user": "lab_good_control2",
+      "group": "control",
+      "bucket": 0.7366171791218221,
+      "trace_id": "trace_c2e0cc69f6bc49c9a452047b0b0dd729",
+      "plan": {
+        "queries": [
+          "发行排期需要确认哪些内容",
+          "发行排期需要确认哪些内容 募集 成立 期限"
+        ],
+        "top_k": 2,
+        "instructions": [
+          "使用输出模板：日期—差异—待确认"
+        ],
+        "skills": [
+          "base_issuance"
+        ],
+        "executions": [
+          "sx_9362fe1eeb3f495a93693202c818f46b",
+          "sx_2c7d3cab73b945bdbc72eab2ac447296"
+        ]
+      },
+      "source_verified": true,
+      "source_metric_only": true,
+      "tool_results": [
+        {
+          "tool": "issuance",
+          "synthetic": true,
+          "result": {
+            "rows": [
+              {
+                "批次": 1,
+                "拟成立日": "2026-09-25",
+                "成立日": "2026-09-28",
+                "募集结束日": "2026-09-24",
+                "到期日": "2026-12-28",
+                "实际自然日": 91,
+                "顺延": true,
+                "日历版本": "SIM-CALENDAR-v1"
+              },
+              {
+                "批次": 2,
+                "拟成立日": "2026-10-02",
+                "成立日": "2026-10-05",
+                "募集结束日": "2026-09-30",
+                "到期日": "2027-01-04",
+                "实际自然日": 91,
+                "顺延": true,
+                "日历版本": "SIM-CALENDAR-v1"
+              },
+              {
+                "批次": 3,
+                "拟成立日": "2026-10-09",
+                "成立日": "2026-10-09",
+                "募集结束日": "2026-10-08",
+                "到期日": "2027-01-07",
+                "实际自然日": 90,
+                "顺延": false,
+                "日历版本": "SIM-CALENDAR-v1"
+              }
+            ],
+            "material_preview": {
+              "标题": "模拟产品发行材料草稿",
+              "约定期限自然日": 90,
+              "发行频率天": 7,
+              "日历版本": "SIM-CALENDAR-v1",
+              "需人工确认": [
+                "产品要素",
+                "日历适用市场",
+                "顺延日期",
+                "募集与成立时点"
+              ]
+            },
+            "note": "根据模拟日历计算。所有结果为待核对排期草案，不是发行决定"
+          },
+          "source_files": [
+            {
+              "file": "calendar.json",
+              "sha256": "10ed6e13b4316ee12f237bcc619294746dc4dcd248b6c4abe18b2fc683323508"
+            }
+          ],
+          "python_skill": {
+            "entrypoint": "jinshu.tools:issuance",
+            "input": "start,term_days,frequency_days,count",
+            "output": "schedule rows, calendar version"
+          }
+        }
+      ]
+    },
+    {
+      "user": "lab_good_treatment5",
+      "group": "treatment",
+      "bucket": 0.03359350701794028,
+      "trace_id": "trace_80c006ce22b4490bb700e62d252ac176",
+      "plan": {
+        "queries": [
+          "发行排期需要确认哪些内容",
+          "发行排期需要确认哪些内容 募集 成立 期限",
+          "发行排期需要确认哪些内容 顺延 日历版本"
+        ],
+        "top_k": 8,
+        "instructions": [
+          "使用输出模板：日期—差异—待确认",
+          "使用输出模板：结论—证据—操作—复核"
+        ],
+        "skills": [
+          "base_issuance",
+          "learned_af9a7371937aa369"
+        ],
+        "executions": [
+          "sx_8d8d2566b49942c1a3170b0f2c454e9a",
+          "sx_3519353b77504ba9a95f4aee3ab69142"
+        ]
+      },
+      "source_verified": true,
+      "source_metric_only": true,
+      "tool_results": [
+        {
+          "tool": "issuance",
+          "synthetic": true,
+          "result": {
+            "rows": [
+              {
+                "批次": 1,
+                "拟成立日": "2026-09-25",
+                "成立日": "2026-09-28",
+                "募集结束日": "2026-09-24",
+                "到期日": "2026-12-28",
+                "实际自然日": 91,
+                "顺延": true,
+                "日历版本": "SIM-CALENDAR-v1"
+              },
+              {
+                "批次": 2,
+                "拟成立日": "2026-10-02",
+                "成立日": "2026-10-05",
+                "募集结束日": "2026-09-30",
+                "到期日": "2027-01-04",
+                "实际自然日": 91,
+                "顺延": true,
+                "日历版本": "SIM-CALENDAR-v1"
+              },
+              {
+                "批次": 3,
+                "拟成立日": "2026-10-09",
+                "成立日": "2026-10-09",
+                "募集结束日": "2026-10-08",
+                "到期日": "2027-01-07",
+                "实际自然日": 90,
+                "顺延": false,
+                "日历版本": "SIM-CALENDAR-v1"
+              }
+            ],
+            "material_preview": {
+              "标题": "模拟产品发行材料草稿",
+              "约定期限自然日": 90,
+              "发行频率天": 7,
+              "日历版本": "SIM-CALENDAR-v1",
+              "需人工确认": [
+                "产品要素",
+                "日历适用市场",
+                "顺延日期",
+                "募集与成立时点"
+              ]
+            },
+            "note": "根据模拟日历计算。所有结果为待核对排期草案，不是发行决定"
+          },
+          "source_files": [
+            {
+              "file": "calendar.json",
+              "sha256": "10ed6e13b4316ee12f237bcc619294746dc4dcd248b6c4abe18b2fc683323508"
+            }
+          ],
+          "python_skill": {
+            "entrypoint": "jinshu.tools:issuance",
+            "input": "start,term_days,frequency_days,count",
+            "output": "schedule rows, calendar version"
+          }
+        }
+      ]
+    },
+    {
+      "user": "lab_good_treatment34",
+      "group": "treatment",
+      "bucket": 0.004171593580394983,
+      "trace_id": "trace_cae43f95ab3f4eb59c25f68d74b09d06",
+      "plan": {
+        "queries": [
+          "发行排期需要确认哪些内容",
+          "发行排期需要确认哪些内容 募集 成立 期限",
+          "发行排期需要确认哪些内容 顺延 日历版本"
+        ],
+        "top_k": 8,
+        "instructions": [
+          "使用输出模板：日期—差异—待确认",
+          "使用输出模板：结论—证据—操作—复核"
+        ],
+        "skills": [
+          "base_issuance",
+          "learned_af9a7371937aa369"
+        ],
+        "executions": [
+          "sx_e2e2aaffe0bb46cc83864a38d2da56fa",
+          "sx_a38d1856aa73408f8c8267a3b20050af"
+        ]
+      },
+      "source_verified": true,
+      "source_metric_only": true,
+      "tool_results": [
+        {
+          "tool": "issuance",
+          "synthetic": true,
+          "result": {
+            "rows": [
+              {
+                "批次": 1,
+                "拟成立日": "2026-09-25",
+                "成立日": "2026-09-28",
+                "募集结束日": "2026-09-24",
+                "到期日": "2026-12-28",
+                "实际自然日": 91,
+                "顺延": true,
+                "日历版本": "SIM-CALENDAR-v1"
+              },
+              {
+                "批次": 2,
+                "拟成立日": "2026-10-02",
+                "成立日": "2026-10-05",
+                "募集结束日": "2026-09-30",
+                "到期日": "2027-01-04",
+                "实际自然日": 91,
+                "顺延": true,
+                "日历版本": "SIM-CALENDAR-v1"
+              },
+              {
+                "批次": 3,
+                "拟成立日": "2026-10-09",
+                "成立日": "2026-10-09",
+                "募集结束日": "2026-10-08",
+                "到期日": "2027-01-07",
+                "实际自然日": 90,
+                "顺延": false,
+                "日历版本": "SIM-CALENDAR-v1"
+              }
+            ],
+            "material_preview": {
+              "标题": "模拟产品发行材料草稿",
+              "约定期限自然日": 90,
+              "发行频率天": 7,
+              "日历版本": "SIM-CALENDAR-v1",
+              "需人工确认": [
+                "产品要素",
+                "日历适用市场",
+                "顺延日期",
+                "募集与成立时点"
+              ]
+            },
+            "note": "根据模拟日历计算。所有结果为待核对排期草案，不是发行决定"
+          },
+          "source_files": [
+            {
+              "file": "calendar.json",
+              "sha256": "10ed6e13b4316ee12f237bcc619294746dc4dcd248b6c4abe18b2fc683323508"
+            }
+          ],
+          "python_skill": {
+            "entrypoint": "jinshu.tools:issuance",
+            "input": "start,term_days,frequency_days,count",
+            "output": "schedule rows, calendar version"
+          }
+        }
+      ]
+    },
+    {
+      "user": "lab_good_treatment39",
+      "group": "treatment",
+      "bucket": 0.004147208062931895,
+      "trace_id": "trace_56c2248ac6724a2c9b761bf0fbe20b88",
+      "plan": {
+        "queries": [
+          "发行排期需要确认哪些内容",
+          "发行排期需要确认哪些内容 募集 成立 期限",
+          "发行排期需要确认哪些内容 顺延 日历版本"
+        ],
+        "top_k": 8,
+        "instructions": [
+          "使用输出模板：日期—差异—待确认",
+          "使用输出模板：结论—证据—操作—复核"
+        ],
+        "skills": [
+          "base_issuance",
+          "learned_af9a7371937aa369"
+        ],
+        "executions": [
+          "sx_1903b248a41744ab93c446bcd41c5d41",
+          "sx_a6d702d326694995af53f1909ef55335"
+        ]
+      },
+      "source_verified": true,
+      "source_metric_only": true,
+      "tool_results": [
+        {
+          "tool": "issuance",
+          "synthetic": true,
+          "result": {
+            "rows": [
+              {
+                "批次": 1,
+                "拟成立日": "2026-09-25",
+                "成立日": "2026-09-28",
+                "募集结束日": "2026-09-24",
+                "到期日": "2026-12-28",
+                "实际自然日": 91,
+                "顺延": true,
+                "日历版本": "SIM-CALENDAR-v1"
+              },
+              {
+                "批次": 2,
+                "拟成立日": "2026-10-02",
+                "成立日": "2026-10-05",
+                "募集结束日": "2026-09-30",
+                "到期日": "2027-01-04",
+                "实际自然日": 91,
+                "顺延": true,
+                "日历版本": "SIM-CALENDAR-v1"
+              },
+              {
+                "批次": 3,
+                "拟成立日": "2026-10-09",
+                "成立日": "2026-10-09",
+                "募集结束日": "2026-10-08",
+                "到期日": "2027-01-07",
+                "实际自然日": 90,
+                "顺延": false,
+                "日历版本": "SIM-CALENDAR-v1"
+              }
+            ],
+            "material_preview": {
+              "标题": "模拟产品发行材料草稿",
+              "约定期限自然日": 90,
+              "发行频率天": 7,
+              "日历版本": "SIM-CALENDAR-v1",
+              "需人工确认": [
+                "产品要素",
+                "日历适用市场",
+                "顺延日期",
+                "募集与成立时点"
+              ]
+            },
+            "note": "根据模拟日历计算。所有结果为待核对排期草案，不是发行决定"
+          },
+          "source_files": [
+            {
+              "file": "calendar.json",
+              "sha256": "10ed6e13b4316ee12f237bcc619294746dc4dcd248b6c4abe18b2fc683323508"
+            }
+          ],
+          "python_skill": {
+            "entrypoint": "jinshu.tools:issuance",
+            "input": "start,term_days,frequency_days,count",
+            "output": "schedule rows, calendar version"
+          }
+        }
+      ]
+    }
+  ],
+  "good_metrics": {
+    "control": {
+      "n": 3,
+      "rate": 1.0
+    },
+    "treatment": {
+      "n": 3,
+      "rate": 1.0
+    }
+  },
+  "promoted_to": 0.2,
+  "injected_failures": [
+    {
+      "user": "lab_injected_0",
+      "trace_id": "trace_8ebcac65dee146109f858f85741df7a5",
+      "verification": {
+        "passed": false,
+        "score": 0,
+        "issues": [
+          "LAB_FAULT_INJECTION: verifier failure"
+        ]
+      }
+    },
+    {
+      "user": "lab_injected_1",
+      "trace_id": "trace_9a9a20cd3b0645a786d4041b614f1184",
+      "verification": {
+        "passed": false,
+        "score": 0,
+        "issues": [
+          "LAB_FAULT_INJECTION: verifier failure"
+        ]
+      }
+    },
+    {
+      "user": "lab_injected_6",
+      "trace_id": "trace_58403a28a4ca4b739331dc2c6a78878f",
+      "verification": {
+        "passed": false,
+        "score": 0,
+        "issues": [
+          "LAB_FAULT_INJECTION: verifier failure"
+        ]
+      }
+    },
+    {
+      "user": "lab_injected_7",
+      "trace_id": "trace_a5aeeed6b2414d69b4069cbf66f827b8",
+      "verification": {
+        "passed": false,
+        "score": 0,
+        "issues": [
+          "LAB_FAULT_INJECTION: verifier failure"
+        ]
+      }
+    }
+  ],
+  "degraded_metrics": {
+    "control": {
+      "n": 3,
+      "rate": 1.0
+    },
+    "treatment": {
+      "n": 7,
+      "rate": 0.42857142857142855
+    }
+  },
+  "automatic_rollback": {
+    "skills": 0,
+    "hooks": 0,
+    "rules": 0,
+    "rolled_back": 1,
+    "note": "候选须经审核进入灰度；监控劣化后自动回滚"
+  },
+  "final_experiment": {
+    "_id": "exp_af9a7371937aa369",
+    "artifact_id": "learned_af9a7371937aa369",
+    "status": "rolled_back",
+    "stage": 0.2,
+    "replay": {
+      "sample_count": 20,
+      "passed": true,
+      "details": [
+        {
+          "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_ac2a567a6ce84aac:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_725ff05e6a764f43:1",
+            "doc_ac2a567a6ce84aac:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:1",
+            "doc_ac2a567a6ce84aac:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_3411fcb111e64078:1",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_725ff05e6a764f43:1",
+            "doc_ac2a567a6ce84aac:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_ac2a567a6ce84aac:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_c0eef80873fb4f42:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_725ff05e6a764f43:1",
+            "doc_ac2a567a6ce84aac:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_3411fcb111e64078:1",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_725ff05e6a764f43:1",
+            "doc_ac2a567a6ce84aac:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_ac2a567a6ce84aac:1",
+            "doc_725ff05e6a764f43:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:2",
+            "doc_c0eef80873fb4f42:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:1",
+            "doc_3411fcb111e64078:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_c036f402c43e430c85591827484fe612",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_c036f402c43e430c85591827484fe612",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_744eb423548d45948749d4a16788832c",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:1"
+          ],
+          "expected_terms_covered": 1,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_744eb423548d45948749d4a16788832c",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_ac2a567a6ce84aac:1"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        },
+        {
+          "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+          "side": "baseline",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 2
+        },
+        {
+          "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+          "side": "candidate",
+          "source_valid": true,
+          "retrieved_ids": [
+            "doc_ac2a567a6ce84aac:0",
+            "doc_26c5eeafdee04d2b:2",
+            "doc_26c5eeafdee04d2b:0",
+            "doc_26c5eeafdee04d2b:1",
+            "doc_3411fcb111e64078:1",
+            "doc_ac2a567a6ce84aac:2",
+            "doc_725ff05e6a764f43:2",
+            "doc_3411fcb111e64078:0"
+          ],
+          "expected_terms_covered": 2,
+          "top_k": 8
+        }
+      ],
+      "scope": "配对离线回放；词项覆盖和来源校验不是语义正确率",
+      "strict_improvements": 13
+    },
+    "created_at": "2026-09-18T17:03:45.146094+00:00",
+    "approved_by": "lab_reviewer",
+    "metrics": {
+      "control": {
+        "n": 3,
+        "rate": 1.0
+      },
+      "treatment": {
+        "n": 7,
+        "rate": 0.42857142857142855
+      }
+    },
+    "rolled_back_at": "2026-09-18T17:03:45.276892+00:00"
+  },
+  "after_rollback": {
+    "plan": {
+      "queries": [
+        "发行排期需要确认哪些内容",
+        "发行排期需要确认哪些内容 募集 成立 期限"
+      ],
+      "top_k": 2,
+      "instructions": [
+        "使用输出模板：日期—差异—待确认"
+      ],
+      "skills": [
+        "base_issuance"
+      ],
+      "executions": [
+        "sx_2764ec38e72c48d5bd62144c63374bed"
+      ]
+    },
+    "verification": {
+      "passed": true,
+      "score": 1.0,
+      "issues": []
+    },
+    "trace_id": "trace_642eabb15993461c81a549079d08457e"
+  },
+  "unchanged_financial_results": true,
+  "strategy_versions": [
+    {
+      "_id": "strategy_version_learned_af9a7371937aa369_2_86f626ba",
+      "artifact_id": "learned_af9a7371937aa369",
+      "artifact_type": "skill",
+      "version": 2,
+      "reason": "automatic_rollback",
+      "snapshot": {
+        "_id": "learned_af9a7371937aa369",
+        "family": "issuance",
+        "name": "发行排期与材料预览·反馈增强",
+        "dept_id": "dept_release",
+        "scope": "department",
+        "status": "deprecated",
+        "version": 2,
+        "gray_percent": 0,
+        "trigger": {
+          "intent_patterns": [
+            "排期",
+            "募集",
+            "成立日",
+            "发行"
+          ]
+        },
+        "action": {
+          "type": "workflow",
+          "steps": [
+            {
+              "action": "retrieve",
+              "params": {
+                "query": "{matter} 顺延 日历版本",
+                "top_k": 8
+              }
+            },
+            {
+              "action": "generate",
+              "params": {
+                "template": "结论—证据—操作—复核"
+              }
+            }
+          ]
+        },
+        "source_feedback": [
+          "explicit_25b8a4f83f394d38abf2ad4d00d3121e"
+        ],
+        "source_trace": "trace_243f76753ca04228992b84f7d4555069",
+        "expected_terms": [
+          "顺延",
+          "日历版本"
+        ],
+        "created_by": "loop_engine",
+        "created_at": "2026-09-18T17:03:43.985538+00:00",
+        "confidence": 0.7,
+        "replaces": null,
+        "target": "execution_policy_only",
+        "root_cause": "retrieval",
+        "proposal_mode": "offline_or_model_unavailable_bounded_fallback",
+        "bounded_proposal": {
+          "query_terms": [
+            "顺延",
+            "日历版本"
+          ],
+          "top_k": 8,
+          "template": "结论—证据—操作—复核",
+          "mode": "offline_or_model_unavailable_bounded_fallback"
+        },
+        "mined_draft_count": 0,
+        "replay": {
+          "sample_count": 20,
+          "passed": true,
+          "details": [
+            {
+              "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_c0eef80873fb4f42:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1",
+                "doc_725ff05e6a764f43:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_c0eef80873fb4f42:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:1",
+                "doc_3411fcb111e64078:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_c036f402c43e430c85591827484fe612",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_c036f402c43e430c85591827484fe612",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_744eb423548d45948749d4a16788832c",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_744eb423548d45948749d4a16788832c",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            }
+          ],
+          "scope": "配对离线回放；词项覆盖和来源校验不是语义正确率",
+          "strict_improvements": 13
+        },
+        "experiment_id": "exp_af9a7371937aa369",
+        "approved_by": "lab_reviewer",
+        "metrics": {
+          "trigger_count": 7,
+          "success_count": 3,
+          "success_rate": 0.4286,
+          "last_triggered": "2026-09-18T17:03:45.273608+00:00"
+        },
+        "rollback_reason": "treatment_underperformed_control"
+      },
+      "created_at": "2026-09-18T17:03:45.277201+00:00"
+    },
+    {
+      "_id": "strategy_version_learned_af9a7371937aa369_2_fe6d03a6",
+      "artifact_id": "learned_af9a7371937aa369",
+      "artifact_type": "skill",
+      "version": 2,
+      "reason": "promoted_by_lab_reviewer",
+      "snapshot": {
+        "_id": "learned_af9a7371937aa369",
+        "family": "issuance",
+        "name": "发行排期与材料预览·反馈增强",
+        "dept_id": "dept_release",
+        "scope": "department",
+        "status": "active",
+        "version": 2,
+        "gray_percent": 0.2,
+        "trigger": {
+          "intent_patterns": [
+            "排期",
+            "募集",
+            "成立日",
+            "发行"
+          ]
+        },
+        "action": {
+          "type": "workflow",
+          "steps": [
+            {
+              "action": "retrieve",
+              "params": {
+                "query": "{matter} 顺延 日历版本",
+                "top_k": 8
+              }
+            },
+            {
+              "action": "generate",
+              "params": {
+                "template": "结论—证据—操作—复核"
+              }
+            }
+          ]
+        },
+        "source_feedback": [
+          "explicit_25b8a4f83f394d38abf2ad4d00d3121e"
+        ],
+        "source_trace": "trace_243f76753ca04228992b84f7d4555069",
+        "expected_terms": [
+          "顺延",
+          "日历版本"
+        ],
+        "created_by": "loop_engine",
+        "created_at": "2026-09-18T17:03:43.985538+00:00",
+        "confidence": 0.7,
+        "replaces": null,
+        "target": "execution_policy_only",
+        "root_cause": "retrieval",
+        "proposal_mode": "offline_or_model_unavailable_bounded_fallback",
+        "bounded_proposal": {
+          "query_terms": [
+            "顺延",
+            "日历版本"
+          ],
+          "top_k": 8,
+          "template": "结论—证据—操作—复核",
+          "mode": "offline_or_model_unavailable_bounded_fallback"
+        },
+        "mined_draft_count": 0,
+        "replay": {
+          "sample_count": 20,
+          "passed": true,
+          "details": [
+            {
+              "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_c0eef80873fb4f42:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1",
+                "doc_725ff05e6a764f43:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_c0eef80873fb4f42:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:1",
+                "doc_3411fcb111e64078:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_c036f402c43e430c85591827484fe612",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_c036f402c43e430c85591827484fe612",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_744eb423548d45948749d4a16788832c",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_744eb423548d45948749d4a16788832c",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            }
+          ],
+          "scope": "配对离线回放；词项覆盖和来源校验不是语义正确率",
+          "strict_improvements": 13
+        },
+        "experiment_id": "exp_af9a7371937aa369",
+        "approved_by": "lab_reviewer",
+        "metrics": {
+          "trigger_count": 3,
+          "success_count": 3,
+          "success_rate": 1.0,
+          "last_triggered": "2026-09-18T17:03:45.222229+00:00"
+        }
+      },
+      "created_at": "2026-09-18T17:03:45.225919+00:00"
+    },
+    {
+      "_id": "strategy_version_learned_af9a7371937aa369_2_3f24f524",
+      "artifact_id": "learned_af9a7371937aa369",
+      "artifact_type": "skill",
+      "version": 2,
+      "reason": "approved_canary_5pct",
+      "snapshot": {
+        "_id": "learned_af9a7371937aa369",
+        "family": "issuance",
+        "name": "发行排期与材料预览·反馈增强",
+        "dept_id": "dept_release",
+        "scope": "department",
+        "status": "active",
+        "version": 2,
+        "gray_percent": 0.05,
+        "trigger": {
+          "intent_patterns": [
+            "排期",
+            "募集",
+            "成立日",
+            "发行"
+          ]
+        },
+        "action": {
+          "type": "workflow",
+          "steps": [
+            {
+              "action": "retrieve",
+              "params": {
+                "query": "{matter} 顺延 日历版本",
+                "top_k": 8
+              }
+            },
+            {
+              "action": "generate",
+              "params": {
+                "template": "结论—证据—操作—复核"
+              }
+            }
+          ]
+        },
+        "source_feedback": [
+          "explicit_25b8a4f83f394d38abf2ad4d00d3121e"
+        ],
+        "source_trace": "trace_243f76753ca04228992b84f7d4555069",
+        "expected_terms": [
+          "顺延",
+          "日历版本"
+        ],
+        "created_by": "loop_engine",
+        "created_at": "2026-09-18T17:03:43.985538+00:00",
+        "confidence": 0.7,
+        "replaces": null,
+        "target": "execution_policy_only",
+        "root_cause": "retrieval",
+        "proposal_mode": "offline_or_model_unavailable_bounded_fallback",
+        "bounded_proposal": {
+          "query_terms": [
+            "顺延",
+            "日历版本"
+          ],
+          "top_k": 8,
+          "template": "结论—证据—操作—复核",
+          "mode": "offline_or_model_unavailable_bounded_fallback"
+        },
+        "mined_draft_count": 0,
+        "replay": {
+          "sample_count": 20,
+          "passed": true,
+          "details": [
+            {
+              "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_c0eef80873fb4f42:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1",
+                "doc_725ff05e6a764f43:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_c0eef80873fb4f42:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:1",
+                "doc_3411fcb111e64078:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_c036f402c43e430c85591827484fe612",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_c036f402c43e430c85591827484fe612",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_744eb423548d45948749d4a16788832c",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_744eb423548d45948749d4a16788832c",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            }
+          ],
+          "scope": "配对离线回放；词项覆盖和来源校验不是语义正确率",
+          "strict_improvements": 13
+        },
+        "experiment_id": "exp_af9a7371937aa369",
+        "approved_by": "lab_reviewer"
+      },
+      "created_at": "2026-09-18T17:03:45.150939+00:00"
+    },
+    {
+      "_id": "strategy_version_learned_af9a7371937aa369_2_1b86bac8",
+      "artifact_id": "learned_af9a7371937aa369",
+      "artifact_type": "skill",
+      "version": 2,
+      "reason": "candidate_after_replay",
+      "snapshot": {
+        "_id": "learned_af9a7371937aa369",
+        "family": "issuance",
+        "name": "发行排期与材料预览·反馈增强",
+        "dept_id": "dept_release",
+        "scope": "department",
+        "status": "pending",
+        "version": 2,
+        "gray_percent": 0,
+        "trigger": {
+          "intent_patterns": [
+            "排期",
+            "募集",
+            "成立日",
+            "发行"
+          ]
+        },
+        "action": {
+          "type": "workflow",
+          "steps": [
+            {
+              "action": "retrieve",
+              "params": {
+                "query": "{matter} 顺延 日历版本",
+                "top_k": 8
+              }
+            },
+            {
+              "action": "generate",
+              "params": {
+                "template": "结论—证据—操作—复核"
+              }
+            }
+          ]
+        },
+        "source_feedback": [
+          "explicit_25b8a4f83f394d38abf2ad4d00d3121e"
+        ],
+        "source_trace": "trace_243f76753ca04228992b84f7d4555069",
+        "expected_terms": [
+          "顺延",
+          "日历版本"
+        ],
+        "created_by": "loop_engine",
+        "created_at": "2026-09-18T17:03:43.985538+00:00",
+        "confidence": 0.7,
+        "replaces": null,
+        "target": "execution_policy_only",
+        "root_cause": "retrieval",
+        "proposal_mode": "offline_or_model_unavailable_bounded_fallback",
+        "bounded_proposal": {
+          "query_terms": [
+            "顺延",
+            "日历版本"
+          ],
+          "top_k": 8,
+          "template": "结论—证据—操作—复核",
+          "mode": "offline_or_model_unavailable_bounded_fallback"
+        },
+        "mined_draft_count": 0,
+        "replay": {
+          "sample_count": 20,
+          "passed": true,
+          "details": [
+            {
+              "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_7416c0df10a14307bfed69ab06612849",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_3632b6598e1648069daf299ae0b4646a",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_50c63e1438c1475483e3ef306d3ed4dc",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_97f1d4285231403092dbf2ad7cb12291",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_3d3c68ce183a4f948e21f0e4149c3adc",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_1dacb35d01bf4d868742e6d968296568",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_3248f56cf2d24dd5babdcd053190f7bc",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_6a6e5568c7e34ee78b4868032f4b3ce6",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_c0eef80873fb4f42:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_29cec24526b7424e8ea6b768335da954",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_e7f071971e7b4007ad45472f66e5cca5",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_d1f1beded20d4280af2d1bfacaee6632",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_1f490c70451a4d23aeb766bbe40b8721",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_725ff05e6a764f43:1",
+                "doc_ac2a567a6ce84aac:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_156aa0c3d4204a3fb2e41de0b85ed546",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1",
+                "doc_725ff05e6a764f43:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_e8536b843f9646adb76649e5fd81e9b0",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_c0eef80873fb4f42:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_88fc22d6d71c4b258279e19565f99ed9",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:1",
+                "doc_3411fcb111e64078:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_c036f402c43e430c85591827484fe612",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_c036f402c43e430c85591827484fe612",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_6aa2169c50ae45338e69564903cab8ab",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_32769f1914f440829fab94ebc791b240",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_744eb423548d45948749d4a16788832c",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:1"
+              ],
+              "expected_terms_covered": 1,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_744eb423548d45948749d4a16788832c",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_ac2a567a6ce84aac:1"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            },
+            {
+              "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+              "side": "baseline",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 2
+            },
+            {
+              "trace_id": "trace_181ea4c2d2914916a0eaa2f9b79f6cb6",
+              "side": "candidate",
+              "source_valid": true,
+              "retrieved_ids": [
+                "doc_ac2a567a6ce84aac:0",
+                "doc_26c5eeafdee04d2b:2",
+                "doc_26c5eeafdee04d2b:0",
+                "doc_26c5eeafdee04d2b:1",
+                "doc_3411fcb111e64078:1",
+                "doc_ac2a567a6ce84aac:2",
+                "doc_725ff05e6a764f43:2",
+                "doc_3411fcb111e64078:0"
+              ],
+              "expected_terms_covered": 2,
+              "top_k": 8
+            }
+          ],
+          "scope": "配对离线回放；词项覆盖和来源校验不是语义正确率",
+          "strict_improvements": 13
+        },
+        "experiment_id": "exp_af9a7371937aa369"
+      },
+      "created_at": "2026-09-18T17:03:45.146643+00:00"
+    }
+  ],
+  "mining_runs": [
+    {
+      "_id": "mining_af9a7371937aa369",
+      "family": "issuance",
+      "traces": 21,
+      "drafts": [],
+      "mode": "hash",
+      "note": "候选建议，不自动使用模型工具或规则"
+    }
+  ]
+}

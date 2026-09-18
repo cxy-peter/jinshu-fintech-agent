@@ -1,0 +1,23 @@
+digraph G {
+graph [fontname="Noto Sans CJK SC",bgcolor="#ffffff",pad="0.35",nodesep="0.35",ranksep="0.45",splines=polyline];
+node [shape=box,style="rounded,filled",fontname="Noto Sans CJK SC",fontsize=12,color="#c6d8ce",fillcolor="#edf5f0",fontcolor="#173c2e",margin="0.18,0.13"];
+edge [fontname="Noto Sans CJK SC",fontsize=10,color="#659182",fontcolor="#4b6b5d",arrowsize=.7];
+label="金枢｜金融产品中后台工作流"; labelloc=t; fontsize=18;
+rankdir=TB;
+a [label="业务人员：理财运营 / 发行报表 / 风控产品 / 客服"];
+b [label="任务入口 + 登录身份 + 部门范围"];
+c [label="Harness 固定流程
+Intent → Rewrite → Retrieval → Answer → Verify",fillcolor="#176c59",fontcolor=white];
+t [label="Python Skill
+对标 · 排期 · 清洗 · Word材料"];
+r [label="可信RAG
+BM25 + 向量候选 + RRF + 重排
+回查来源 / 版本 / 权限"];
+m [label="Memory
+五类状态，证据与上下文分开"];
+x [label="交付：结果表 / 原文依据 / 草稿 / 待确认事项"];
+l [label="Loop
+反馈 → 候选 → 回放 → 灰度 → 回滚",fillcolor="#fbf0d6",color="#dbba72"];
+a->b->c;c->t;c->r;c->m;t->x;r->x;m->x;x->l;l->c [label="受限执行参数，不改业务事实"];
+
+}

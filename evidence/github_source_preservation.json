@@ -1,0 +1,10 @@
+{
+  "original_files": 231,
+  "present": 218,
+  "declared_public_exclusions": 13,
+  "declared_patches": [
+    "backend/app/harness/orchestrator.py",
+    "backend/app/storage/mongodb.py"
+  ],
+  "errors": []
+}

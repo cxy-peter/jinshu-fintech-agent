@@ -1,0 +1,7 @@
+-r requirements.txt
+# Optional production adapters. Services/API compatibility must be verified in your deployment.
+motor>=3.4,<4
+pymongo>=4.6,<5
+redis>=5,<7
+pymilvus>=2.5,<2.6
+jieba>=0.42,<1

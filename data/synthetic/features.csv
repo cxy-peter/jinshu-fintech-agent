@@ -1,0 +1,3 @@
+﻿name,event,status_filter,dedup_key,window,refresh,synthetic
+successful_deposit_count_7d,FiatDeposit,success,transaction_id,7d,T+1,true
+withdraw_sum_24h,ChainWithdraw,success,transaction_id,24h,realtime,true

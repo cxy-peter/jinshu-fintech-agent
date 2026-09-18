@@ -1,0 +1,222 @@
+{
+  "mode": "offline business acceptance; all data and failures synthetic",
+  "pdf_files": 8,
+  "pdf_chunks": 33,
+  "pdf_table_chunks": 5,
+  "documents": [
+    {
+      "file": "01_balance_sheet.pdf",
+      "doc_id": "doc_dee5b9fc65e34a6f",
+      "manual": "internal",
+      "suggested": "public",
+      "final": "internal",
+      "chunks": 4,
+      "tables": 1,
+      "vector_status": "ready",
+      "pages": 1
+    },
+    {
+      "file": "02_income_statement.pdf",
+      "doc_id": "doc_96bca51bda4a419c",
+      "manual": "internal",
+      "suggested": "public",
+      "final": "internal",
+      "chunks": 4,
+      "tables": 1,
+      "vector_status": "ready",
+      "pages": 1
+    },
+    {
+      "file": "03_cashflow_statement.pdf",
+      "doc_id": "doc_2c76e7bb082f49de",
+      "manual": "internal",
+      "suggested": "public",
+      "final": "internal",
+      "chunks": 4,
+      "tables": 1,
+      "vector_status": "ready",
+      "pages": 1
+    },
+    {
+      "file": "04_wealth_products.pdf",
+      "doc_id": "doc_7339a243b8884f28",
+      "manual": "internal",
+      "suggested": "public",
+      "final": "internal",
+      "chunks": 5,
+      "tables": 2,
+      "vector_status": "ready",
+      "pages": 1
+    },
+    {
+      "file": "05_issuance_sop.pdf",
+      "doc_id": "doc_2f19f328d40a4feb",
+      "manual": "internal",
+      "suggested": "public",
+      "final": "internal",
+      "chunks": 4,
+      "tables": 0,
+      "vector_status": "ready",
+      "pages": 1
+    },
+    {
+      "file": "06_public_faq.pdf",
+      "doc_id": "doc_dd350dfc4cfa4b53",
+      "manual": "public",
+      "suggested": "public",
+      "final": "public",
+      "chunks": 4,
+      "tables": 0,
+      "vector_status": "ready",
+      "pages": 1
+    },
+    {
+      "file": "07_onboarding_sop.pdf",
+      "doc_id": "doc_af2d82aba60c4c1a",
+      "manual": "restricted",
+      "suggested": "restricted",
+      "final": "restricted",
+      "chunks": 4,
+      "tables": 0,
+      "vector_status": "ready",
+      "pages": 1
+    },
+    {
+      "file": "08_case_handoff.pdf",
+      "doc_id": "doc_f0fd0b9a3ab242ec",
+      "manual": "internal",
+      "suggested": "sensitive",
+      "final": "sensitive",
+      "chunks": 4,
+      "tables": 0,
+      "vector_status": "ready",
+      "pages": 1
+    }
+  ],
+  "retrieval_cases": [
+    {
+      "query": "资产总计 2025 1020250",
+      "expected_source": "01_balance_sheet.pdf",
+      "hit": true,
+      "returned": 8,
+      "mode": "BM25 + local hash test vectors, not learned semantic embeddings"
+    },
+    {
+      "query": "净利润 2025 102025",
+      "expected_source": "02_income_statement.pdf",
+      "hit": true,
+      "returned": 8,
+      "mode": "BM25 + local hash test vectors, not learned semantic embeddings"
+    },
+    {
+      "query": "期末现金 2025 92025",
+      "expected_source": "03_cashflow_statement.pdf",
+      "hit": true,
+      "returned": 8,
+      "mode": "BM25 + local hash test vectors, not learned semantic embeddings"
+    },
+    {
+      "query": "SIM0001 产品编码 持有期限",
+      "expected_source": "04_wealth_products.pdf",
+      "hit": true,
+      "returned": 8,
+      "mode": "BM25 + local hash test vectors, not learned semantic embeddings"
+    },
+    {
+      "query": "拟成立日 调整后成立日 顺延原因",
+      "expected_source": "05_issuance_sop.pdf",
+      "hit": true,
+      "returned": 8,
+      "mode": "BM25 + local hash test vectors, not learned semantic embeddings"
+    },
+    {
+      "query": "怎样转人工 用户主动请求",
+      "expected_source": "06_public_faq.pdf",
+      "hit": true,
+      "returned": 8,
+      "mode": "BM25 + local hash test vectors, not learned semantic embeddings"
+    }
+  ],
+  "retrieval_passed": 6,
+  "python_material": {
+    "tool": "material_fill",
+    "synthetic": true,
+    "result": {
+      "rows": [
+        {
+          "批次": 1,
+          "拟成立日": "2026-09-25",
+          "成立日": "2026-09-28",
+          "募集结束日": "2026-09-24",
+          "到期日": "2026-12-28",
+          "实际自然日": 91,
+          "顺延": true,
+          "日历版本": "SIM-CALENDAR-v1"
+        },
+        {
+          "批次": 2,
+          "拟成立日": "2026-10-02",
+          "成立日": "2026-10-05",
+          "募集结束日": "2026-09-30",
+          "到期日": "2027-01-04",
+          "实际自然日": 91,
+          "顺延": true,
+          "日历版本": "SIM-CALENDAR-v1"
+        },
+        {
+          "批次": 3,
+          "拟成立日": "2026-10-09",
+          "成立日": "2026-10-09",
+          "募集结束日": "2026-10-08",
+          "到期日": "2027-01-07",
+          "实际自然日": 90,
+          "顺延": false,
+          "日历版本": "SIM-CALENDAR-v1"
+        }
+      ],
+      "output_file": "issuance-af396a4cad4648342658.docx",
+      "download_path": "/api/outputs/issuance-af396a4cad4648342658.docx",
+      "sha256": "902a61e0e2e9508500005764d837ba9f7d1d731d0f5fa622a9e309950125ee92",
+      "note": "模板草稿；重复相同输入复用同一文件，不自动发送或批准发行。"
+    },
+    "source_files": [
+      {
+        "file": "calendar.json",
+        "sha256": "10ed6e13b4316ee12f237bcc619294746dc4dcd248b6c4abe18b2fc683323508"
+      }
+    ],
+    "python_skill": {
+      "entrypoint": "jinshu.python_skills:material_fill",
+      "input": "product_name,start,term_days,frequency_days,count",
+      "output": "Word draft and schedule"
+    }
+  },
+  "rollback_control_failure": {
+    "before_top_k": 8,
+    "after_top_k": 2,
+    "restart_keeps_freeze": true,
+    "result": {
+      "frozen": true,
+      "candidate": "candidate-recovery-demo",
+      "last_stable": "base_issuance",
+      "reason": "演示回滚控制请求失败",
+      "status": "local_baseline_remote_unconfirmed",
+      "at": "2026-09-18T17:03:43.598742+00:00",
+      "error": "ConnectionError",
+      "note": "本实例已停止候选流量；远端状态未确认时不声称所有实例都已回滚。"
+    }
+  },
+  "ticket_outbox": {
+    "status": "pending_submission",
+    "same_id_on_retry": true
+  },
+  "live_models": false,
+  "live_services": false,
+  "loop": {
+    "replay_pairs": 20,
+    "promoted_to": 0.2,
+    "rolled_back": 1,
+    "after_top_k": 2,
+    "financial_results_unchanged": true
+  }
+}

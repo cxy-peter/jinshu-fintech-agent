@@ -1,0 +1,54 @@
+{
+  "design_files/文枢-跨部门自进化文档处理与问答助手技术方案.md": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "7f30ec4a02f729ae0eb0cd5630692244784e3b8938b1ecd3628fcb6ab802bdcb"
+  },
+  "design_files/文枢-前端页面使用指南.md": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "17c23e8f57b98d26fcbbcbbe7df5905f1bbef9a3e603c58495d8d0627a130043"
+  },
+  "design_files/文枢-跨部门自进化文档处理与问答助手代码解读.md": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "dfcda017c0a2bca98362cd37363427003aab2e4a8f42093577fdd3e711ac36a8"
+  },
+  "department_files/中法学院/开题答辩分组安排.docx": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "90415a7e7912e3b1b9d98bdfe8d11569a44d9afad894d60f3c7d697a2a7f04e3"
+  },
+  "department_files/中法学院/心理测评操作说明.pdf": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "b0277e601f74ca5dad313f782ef61ccc131e85afc49759546664125fa3e15ee9"
+  },
+  "department_files/中法学院/中法宿舍行李寄存承诺书.docx": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "2bd005d4dd17c6592535dc7b3598061df2c4fb36db33820c68ff8cf8788d4acb"
+  },
+  "department_files/中法学院/研究生开题报告通知-中法未来.docx": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "02d65847b017394ba0c4a63b2691568a8b501557bf718ea8cbf7be75c8c5a1a6"
+  },
+  "department_files/后勤与安全保卫部/关于防御第9号超强台风“巴威”的安全提示(1)(1).pdf": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "4413a0f147242c5e4509e56e6d810fc31a2fb2d06cec4833ef8fa98371d72f66"
+  },
+  "department_files/后勤与安全保卫部/暴雨天气致全体师生的温馨提醒.docx": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "df21aa7cb9d1784dbe03cb304dab5abc91dd625f1664c16084102bd0c5de8d05"
+  },
+  "department_files/后勤与安全保卫部/关于校园防汛应急响应措施的通知.docx": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "d777eca26183cc9fcbd208f1e433a58fc9c5a0212c951878efd9e12f0d671a8f"
+  },
+  "design_files/images/architecture-overview.png": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "952a98732ed7ea23b55230bac540fdc09bdd66928eddf786901b6309c3e2de2a"
+  },
+  "design_files/images/loop-engine.png": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "77c7a3fee13f88cd34daf2262345247fc27a05cf632bd7af9eb977ba2f2ee422"
+  },
+  "design_files/images/k8s-deployment.png": {
+    "reason": "原学校业务资料或参考设计材料，公开仓库不重新分发；完整本地包保留",
+    "sha256": "ed6f1619d1f1dc51aeb780659a01584abc206ea7030e1639e37594705d2c8809"
+  }
+}

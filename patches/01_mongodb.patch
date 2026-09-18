@@ -1,0 +1,23 @@
+--- a/engine/backend/app/storage/mongodb.py
++++ b/engine/backend/app/storage/mongodb.py
+@@ -2,7 +2,10 @@
+ from __future__ import annotations
+ from typing import Optional
+ 
+-from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
++try:
++    from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
++except ImportError:  # Offline profile does not require a Mongo client.
++    AsyncIOMotorClient = AsyncIOMotorDatabase = None
+ 
+ from app.config import Settings
+ from app.utils.logging import get_logger
+@@ -19,6 +22,8 @@
+     async def connect(self) -> None:
+         if self.settings.storage_mode != "mongo":
+             return
++        if AsyncIOMotorClient is None:
++            raise RuntimeError("Mongo profile requires motor; install the full requirements")
+         self.client = AsyncIOMotorClient(self.settings.mongodb_uri)
+         self.db = self.client[self.settings.mongodb_db]
+         await self._ensure_indexes()

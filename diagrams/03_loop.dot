@@ -1,0 +1,26 @@
+digraph G {
+graph [fontname="Noto Sans CJK SC",bgcolor="#ffffff",pad="0.35",nodesep="0.35",ranksep="0.45",splines=polyline];
+node [shape=box,style="rounded,filled",fontname="Noto Sans CJK SC",fontsize=12,color="#c6d8ce",fillcolor="#edf5f0",fontcolor="#173c2e",margin="0.18,0.13"];
+edge [fontname="Noto Sans CJK SC",fontsize=10,color="#659182",fontcolor="#4b6b5d",arrowsize=.7];
+label="反馈自进化与回滚控制失败"; labelloc=t; fontsize=18;
+rankdir=TB;
+a [label="Execute / Observe
+执行Trace + 点踩 / 纠错 / 校验结果"];
+b [label="Reflect / Adapt
+归因 + 受限Skill候选
+查询扩展 / top-k / 回答模板"];
+c [label="配对Replay
+同一历史问题重跑基线与候选"];
+d [label="审核 → 5%灰度 → 20% / 50% / 100%
+稳定哈希分组，监控处理组与对照组"];
+e [label="指标劣化或人工停用
+先持久化本实例冻结标记",fillcolor="#fbf0d6",color="#dbba72"];
+f [label="请求控制侧回滚"];
+g [label="接口成功：远端已确认"];
+h [label="接口失败：远端未确认
+本实例只用base稳定策略",fillcolor="#fbf0d6"];
+i [label="重试确认 + 人工解除冻结
+不自动恢复候选流量"];
+a->b->c->d;d->a [label="继续观察"];d->e->f;f->g [label="成功"];f->h [label="失败"];g->i;h->i [label="恢复后核对"];
+
+}

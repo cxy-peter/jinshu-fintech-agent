@@ -1,0 +1,23 @@
+digraph G {
+graph [fontname="Noto Sans CJK SC",bgcolor="#ffffff",pad="0.35",nodesep="0.35",ranksep="0.45",splines=polyline];
+node [shape=box,style="rounded,filled",fontname="Noto Sans CJK SC",fontsize=12,color="#c6d8ce",fillcolor="#edf5f0",fontcolor="#173c2e",margin="0.18,0.13"];
+edge [fontname="Noto Sans CJK SC",fontsize=10,color="#659182",fontcolor="#4b6b5d",arrowsize=.7];
+label="客服支持：依据查询与人工接续"; labelloc=t; fontsize=18;
+rankdir=TB;
+a [label="问题进入服务工作流"];
+b [label="身份与部门范围
+不使用未确认的账户身份"];
+c [label="检索当前有效FAQ / SOP
+必要时补充问题，不猜测个案"];
+d [label="有依据：原文 / 获准模型草稿"];
+e [label="无依据或高风险个案
+提示人工处理，不编造业务结果",fillcolor="#fbf0d6"];
+f [label="保存工单摘要与幂等键"];
+g [label="工单接口确认编号 → submitted"];
+h [label="无接口或超时 → pending_submission
+本地保留待办，可用同一键重试"];
+i [label="用户反馈 → Loop
+知识缺项进补文档待办"];
+a->b->c;c->d;c->e;d->i;e->f;f->g [label="确认"];f->h [label="未确认"];h->f [label="重试"];g->i;
+
+}

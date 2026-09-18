@@ -1,0 +1,12 @@
+{
+  "run_url": "https://github.com/cxy-peter/jinshu-fintech-agent/actions/runs/35372039327",
+  "python": "3.13.15",
+  "passed": 123,
+  "skipped": 2,
+  "native_mock_pdfs": 8,
+  "workflow_diagrams": 6,
+  "live_llm": false,
+  "live_embedding": false,
+  "real_user_study": false,
+  "note": "GitHub-hosted runner: offline workflow, native PDF ingestion and controlled failure/replay validation. See v3_pdf_and_failure_evidence.json and loop_lab_v3.json."
+}

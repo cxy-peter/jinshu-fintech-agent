@@ -1,0 +1,10 @@
+{
+  "original_file_count": 231,
+  "unchanged": 229,
+  "modified": [
+    "backend/app/storage/mongodb.py",
+    "backend/app/harness/orchestrator.py"
+  ],
+  "missing": [],
+  "principle": "Original uploaded archives unchanged; changes limited to explicit patches; additive fintech modules elsewhere."
+}

@@ -1,0 +1,42 @@
+--- a/engine/backend/app/harness/orchestrator.py
++++ b/engine/backend/app/harness/orchestrator.py
+@@ -111,7 +111,7 @@
+ 
+         # 会话/情景记忆：append-only 记录用户输入，并构建第一阶段上下文。
+         previous = await self.working_memory.history(session_id)
+-        if previous and previous[-1].get("role") == "assistant":
++        if previous and previous[-1].get("role") == "assistant" and any(x in query for x in ("不是这个", "回答有误", "没有解决", "不对")):
+             # 同会话继续提问是一种弱负反馈，后续 Loop 会结合显式反馈共同判断。
+             await self.loop_engine.feedback_collector.collect_implicit(
+                 session_id, user_id, query, previous[-1].get("content", ""), "follow_up",
+@@ -200,10 +200,18 @@
+         answer = await self._enrich_citations(answer)
+ 
+         # 8. Verify（最多打回 2 次）
+-        for _ in range(MAX_VERIFY_RETRY):
++        for attempt in range(MAX_VERIFY_RETRY + 1):
+             verdict = await self.verifier_agent.verify(query, answer, chunks)
+             answer.verification = verdict.to_dict()
+             if verdict.passed:
++                break
++            if attempt == MAX_VERIFY_RETRY:
++                # Never return a last, unverified regeneration.
++                answer = Answer(
++                    content="本次回答未通过校验；请查看已核对的原文或联系负责人。",
++                    citations=[], dept_ids=resolved_depts,
++                    confidence=0.0, verification=verdict.to_dict(),
++                )
+                 break
+             logger.info("答案校验未通过，打回重写: %s", verdict.issues)
+             answer = await self.answer_agent.generate(
+@@ -214,8 +222,8 @@
+             answer = await self._enrich_citations(answer)
+ 
+         # 8.5 更新命中 Skill 的指标（触发次数 + 成功率）
+-        if matched_skills:
+-            await self._record_skill_usage(matched_skills, answer.verification.get("passed", True))
++        if skill_plan.treatment_skills:
++            await self._record_skill_usage(skill_plan.treatment_skills, answer.verification.get("passed", False))
+ 
+         # 9. 收尾：工作记忆 / trace / 自动反馈 / 用户&部门记忆
+         trace_id = await self._finalize(session_id, user_id, query, answer, intent.type, chunks, started)

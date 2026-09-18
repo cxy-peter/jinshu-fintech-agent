@@ -1,0 +1,63 @@
+{
+  "timestamp_utc": "2026-09-18T16:38:38.675921+00:00",
+  "python": "3.13.5",
+  "tests": {
+    "passed": 123,
+    "skipped": 2,
+    "skip_reason": "two original tests require pymongo"
+  },
+  "pdf_files": 8,
+  "pdf_chunks": 33,
+  "pdf_table_chunks": 5,
+  "pdf_queries_passed": 6,
+  "loop": {
+    "replay_pairs": 20,
+    "promoted_to": 0.2,
+    "rolled_back": 1,
+    "after_top_k": 2,
+    "financial_results_unchanged": true
+  },
+  "rollback_control_failure": {
+    "before_top_k": 8,
+    "after_top_k": 2,
+    "restart_keeps_freeze": true,
+    "result": {
+      "frozen": true,
+      "candidate": "candidate-recovery-demo",
+      "last_stable": "base_issuance",
+      "reason": "演示回滚控制请求失败",
+      "status": "local_baseline_remote_unconfirmed",
+      "at": "2026-09-18T16:38:31.857914+00:00",
+      "error": "ConnectionError",
+      "note": "本实例已停止候选流量；远端状态未确认时不声称所有实例都已回滚。"
+    }
+  },
+  "ui": {
+    "ui_url": "http://127.0.0.1:8766",
+    "native_browser_localhost": false,
+    "method": "Chromium renders real HTML; explicit fetch bridge to real local API because native localhost navigation is blocked by environment",
+    "checks": [
+      "登录与9工作流",
+      "Python材料生成与下载按钮",
+      "8PDF导入",
+      "独立审核并发布",
+      "回滚API故障演示",
+      "工单待提交",
+      "六张SVG图谱",
+      "Loop隔离实验"
+    ],
+    "javascript_errors": []
+  },
+  "real_llm_calls": 0,
+  "real_embedding_calls": 0,
+  "real_mongo_redis_milvus_verified": false,
+  "k8s_deployed": false,
+  "business_benefit_study": false,
+  "packages": {
+    "fastapi": "0.128.2",
+    "PyMuPDF": "1.26.7",
+    "reportlab": "4.4.9",
+    "pydantic": "2.13.4",
+    "pytest": "9.0.2"
+  }
+}

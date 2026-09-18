@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+node_modules/
+.next/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+workspace/
+private/
+uploads/
+*.mp4
+*.rar
+*.zip
+*.docx
+*.pdf
+
+# Synthetic native-PDF fixtures are intentionally versioned.
+!data/mock_pdf/*.pdf

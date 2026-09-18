@@ -1,0 +1,49 @@
+# Integration example, not a successful deployment/benchmark claim.
+# Requires namespace, jinshu-secrets, image, external Mongo/Redis/Milvus/pi,
+# Prometheus and Prometheus Adapter. Do not apply with placeholder image/secrets.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: jinshu-api}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: jinshu-api}}
+  template:
+    metadata:
+      labels: {app: jinshu-api}
+      annotations: {prometheus.io/scrape: "true", prometheus.io/port: "8766", prometheus.io/path: /metrics}
+    spec:
+      containers:
+        - name: api
+          image: REPLACE_REGISTRY/jinshu-fintech-agent:2.0.0
+          envFrom: [{secretRef: {name: jinshu-secrets}}]
+          env:
+            - {name: JINSHU_PROFILE, value: services}
+            - {name: JINSHU_EMBEDDED_WORKER, value: "0"}
+          ports: [{containerPort: 8766, name: http}]
+          readinessProbe: {httpGet: {path: /health, port: http}, initialDelaySeconds: 15}
+          resources:
+            requests: {cpu: 250m, memory: 512Mi}
+            limits: {cpu: "2", memory: 2Gi}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: jinshu-api}
+spec:
+  selector: {app: jinshu-api}
+  ports: [{name: http, port: 8766, targetPort: http}]
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: {name: jinshu-api}
+spec:
+  scaleTargetRef: {apiVersion: apps/v1, kind: Deployment, name: jinshu-api}
+  minReplicas: 1
+  maxReplicas: 20
+  metrics:
+    - type: Pods
+      pods:
+        metric: {name: jinshu_inflight}
+        target: {type: AverageValue, averageValue: "4"}
+  behavior:
+    scaleDown: {stabilizationWindowSeconds: 300}
+    scaleUp: {stabilizationWindowSeconds: 60}

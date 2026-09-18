@@ -1,0 +1,74 @@
+[
+  {
+    "file": "01_balance_sheet.pdf",
+    "title": "模拟资产负债表",
+    "dept_id": "dept_wealth",
+    "topic": "01_balance_sheet",
+    "version": 1,
+    "manual_sensitivity": "internal",
+    "synthetic": true
+  },
+  {
+    "file": "02_income_statement.pdf",
+    "title": "模拟利润表",
+    "dept_id": "dept_wealth",
+    "topic": "02_income_statement",
+    "version": 1,
+    "manual_sensitivity": "internal",
+    "synthetic": true
+  },
+  {
+    "file": "03_cashflow_statement.pdf",
+    "title": "模拟现金流量表",
+    "dept_id": "dept_wealth",
+    "topic": "03_cashflow_statement",
+    "version": 1,
+    "manual_sensitivity": "internal",
+    "synthetic": true
+  },
+  {
+    "file": "04_wealth_products.pdf",
+    "title": "模拟理财产品资料",
+    "dept_id": "dept_wealth",
+    "topic": "pdf-wealth-products",
+    "version": 1,
+    "manual_sensitivity": "internal",
+    "synthetic": true
+  },
+  {
+    "file": "05_issuance_sop.pdf",
+    "title": "模拟发行排期与材料SOP",
+    "dept_id": "dept_release",
+    "topic": "pdf-issuance-sop",
+    "version": 1,
+    "manual_sensitivity": "internal",
+    "synthetic": true
+  },
+  {
+    "file": "06_public_faq.pdf",
+    "title": "模拟客服公共FAQ",
+    "dept_id": "dept_service",
+    "topic": "pdf-public-faq",
+    "version": 1,
+    "manual_sensitivity": "public",
+    "synthetic": true
+  },
+  {
+    "file": "07_onboarding_sop.pdf",
+    "title": "模拟开户字段时点说明",
+    "dept_id": "dept_risk",
+    "topic": "pdf-onboarding",
+    "version": 1,
+    "manual_sensitivity": "restricted",
+    "synthetic": true
+  },
+  {
+    "file": "08_case_handoff.pdf",
+    "title": "模拟客服个案交接表",
+    "dept_id": "dept_service",
+    "topic": "pdf-case-handoff",
+    "version": 1,
+    "manual_sensitivity": "internal",
+    "synthetic": true
+  }
+]

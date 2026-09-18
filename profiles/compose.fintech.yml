@@ -1,0 +1,67 @@
+# Integration profile, NOT executed in the delivery environment.
+# Run from repository root with --env-file profiles/services.env.
+name: jinshu-fintech
+x-application: &application
+  build:
+    context: ..
+    dockerfile: Dockerfile
+  env_file: services.env
+  environment: &app-env
+    MONGODB_URI: mongodb://jinshu:${MONGO_PASSWORD:?set MONGO_PASSWORD}@mongodb:27017/jinshu?authSource=admin
+    REDIS_ADDR: redis://:${REDIS_PASSWORD:?set REDIS_PASSWORD}@redis:6379
+    JINSHU_PROFILE: services
+    JINSHU_EMBEDDED_WORKER: "0"
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  depends_on:
+    mongodb: {condition: service_healthy}
+    redis: {condition: service_healthy}
+services:
+  mongodb:
+    image: mongo:7.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: jinshu
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?set MONGO_PASSWORD}
+    volumes: ["mongo_data:/data/db"]
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet -u jinshu -p $$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase admin --eval 'db.runCommand({ping:1}).ok'"]
+      interval: 10s
+      retries: 10
+  redis:
+    image: redis:7-alpine
+    environment: {REDIS_PASSWORD: "${REDIS_PASSWORD:?set REDIS_PASSWORD}"}
+    command: ["sh", "-c", "redis-server --appendonly yes --requirepass $$REDIS_PASSWORD"]
+    volumes: ["redis_data:/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a $$REDIS_PASSWORD ping | grep PONG"]
+      interval: 10s
+      retries: 10
+  api:
+    <<: *application
+    ports: ["127.0.0.1:8766:8766"]
+  worker:
+    <<: *application
+    command: ["python", "-m", "jinshu", "worker", "--profile", "services"]
+  bootstrap:
+    <<: *application
+    profiles: [bootstrap]
+    environment:
+      <<: *app-env
+      JINSHU_BOOTSTRAP: "1"
+    command: ["python", "scripts/bootstrap_services.py"]
+  pi-agent:
+    build: ../engine/services/pi-agent
+    env_file: services.env
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8100
+      BACKEND_URL: http://api:8766
+    # Only /v1/agent/run with supplied prompt and no financial write tools is used.
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    profiles: [monitoring]
+    volumes: ["./prometheus.yml:/etc/prometheus/prometheus.yml:ro"]
+    ports: ["127.0.0.1:9090:9090"]
+volumes:
+  mongo_data:
+  redis_data:
