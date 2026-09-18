@@ -1,0 +1,122 @@
+name: Finalize Jinshu runnable project
+on:
+  push:
+    paths: ['.github/workflows/finalize-jinshu.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: jinshu-source-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Restore complete entries and apply checksum-verified completion
+        run: |
+          python - <<'PY'
+          import base64,hashlib,json,lzma,pathlib
+          root=pathlib.Path.cwd()
+          if not (root/'_bootstrap/completion.json').exists():
+              assert (root/'jinshu/runtime.py').exists(), 'No source or completion manifest'
+              print('Source already materialized; validating existing project')
+              raise SystemExit(0)
+          source={}
+          for prefix in ('source','final'):
+              parts=sorted((root/'_bootstrap').glob(prefix+'-*.b64'))
+              raw=base64.b64decode(''.join(p.read_text().strip() for p in parts))
+              decoder=lzma.LZMADecompressor()
+              text=decoder.decompress(raw).decode('utf-8',errors='ignore')
+              parser=json.JSONDecoder();pos=text.find('{')+1
+              while 0<pos<len(text):
+                  while pos<len(text) and text[pos] in ' \n\r\t,':pos+=1
+                  try:
+                      name,pos=parser.raw_decode(text,pos)
+                      while pos<len(text) and text[pos] in ' \n\r\t:':pos+=1
+                      content,pos=parser.raw_decode(text,pos)
+                  except ValueError:break
+                  if not isinstance(name,str) or not isinstance(content,str):break
+                  source[name]=content
+          spec=json.loads((root/'_bootstrap/completion.json').read_text())
+          parts=[]
+          for name in spec['parts']:
+              raw=(root/'_bootstrap'/name).read_bytes()
+              assert hashlib.sha256(raw).hexdigest()==spec['part_sha256'][name], 'Part checksum mismatch: '+name
+              parts.append(raw.decode().strip())
+          packed=base64.b64decode(''.join(parts),validate=True)
+          assert hashlib.sha256(packed).hexdigest()==spec['sha256'], 'Payload checksum mismatch'
+          delta=json.loads(lzma.decompress(packed))
+          assert len(delta)==spec['files'], 'Delta file count mismatch'
+          for name,item in delta.items():
+              if 'text' in item:content=item['text']
+              else:
+                  old=source[name]
+                  assert hashlib.sha256(old.encode()).hexdigest()==item['base_sha256'], 'Base mismatch: '+name
+                  lines=old.splitlines(keepends=True)
+                  for start,end,replacement in reversed(item['edits']):lines[start:end]=[replacement]
+                  content=''.join(lines)
+              assert hashlib.sha256(content.encode()).hexdigest()==item['sha256'], 'Final mismatch: '+name
+              source[name]=content
+          for name,content in source.items():
+              path=pathlib.PurePosixPath(name)
+              assert not path.is_absolute() and '..' not in path.parts and '.git' not in path.parts
+              assert not name.startswith('.github/'), 'Workflow changes require direct review'
+              target=root/path;target.parent.mkdir(parents=True,exist_ok=True)
+              target.write_text(content,encoding='utf-8')
+          excluded=json.loads((root/'evidence/public_exclusions.json').read_text())
+          for name in excluded:(root/'engine'/name).unlink(missing_ok=True)
+          print('Materialized UTF-8 source entries:',len(source),'Completion files:',len(delta))
+          PY
+      - name: Install runtime dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Generate synthetic data and native PDFs
+        run: |
+          python -m jinshu generate-data
+          python -m jinshu.mock_pdfs
+      - name: Run existing tests and business acceptance
+        run: |
+          set -o pipefail
+          python -m pytest -q | tee evidence/github_pytest.txt
+          python scripts/verify_source.py --public | tee evidence/github_source_preservation.json
+          python scripts/validate_v3.py
+      - name: Generate six workflow diagrams
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y graphviz fonts-noto-cjk
+          python scripts/build_diagrams.py
+      - name: Record publication environment
+        env:
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json,os,platform,pathlib,re
+          p=pathlib.Path('evidence');text=(p/'github_pytest.txt').read_text()
+          passed=re.search(r'(\d+) passed',text);skipped=re.search(r'(\d+) skipped',text)
+          result={'run_url':os.environ['RUN_URL'],'python':platform.python_version(),'passed':int(passed.group(1)) if passed else None,'skipped':int(skipped.group(1)) if skipped else 0,'native_mock_pdfs':len(list(pathlib.Path('data/mock_pdf').glob('*.pdf'))),'workflow_diagrams':len(list(pathlib.Path('diagrams').glob('*.png'))),'live_llm':False,'live_embedding':False,'real_user_study':False,'note':'GitHub-hosted runner: offline workflow, native PDF ingestion and controlled failure/replay validation. See v3_pdf_and_failure_evidence.json and loop_lab_v3.json.'}
+          (p/'github_publication.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps(result,ensure_ascii=False,indent=2))
+          PY
+      - name: Publish real source and remove interrupted transport files
+        run: |
+          rm -rf _bootstrap
+          rm -f .github/workflows/import-verified-source.yml .github/workflows/recover-interrupted-upload.yml .github/workflows/recover-complete-entries.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish Jinshu V3: original engine, PDF ingestion, Python skills, Loop recovery and Chinese manuals'
+            git push origin HEAD:main
+          fi
+      - name: Package published source
+        run: |
+          mkdir -p /tmp/jinshu-delivery
+          git archive --format=zip --prefix=jinshu-fintech-agent/ HEAD > /tmp/jinshu-delivery/jinshu-fintech-agent-v3.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jinshu-fintech-agent-v3
+          path: /tmp/jinshu-delivery/jinshu-fintech-agent-v3.zip
