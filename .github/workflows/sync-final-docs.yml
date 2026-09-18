@@ -1,0 +1,56 @@
+name: Align final documentation with source
+on:
+  push:
+    paths: ['.github/workflows/sync-final-docs.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Align counts and implementation references
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('docs/PRODUCT_MANUAL.md');s=p.read_text()
+          s=s.replace('当前128项程序测试通过；本轮只补充5项主流程验收，没有扩展安全专项测试。两项原测试因缺pymongo跳过，明确不计入通过。','当前123项程序测试通过，2项原测试因缺少pymongo跳过，不计入通过。测试覆盖既有逻辑与本轮业务主流程，没有扩展安全专项。')
+          p.write_text(s)
+          p=Path('docs/INTERVIEW_MANUAL.md');s=p.read_text()
+          changes={
+            '切成13块':'切成33块（含5个表格切片）',
+            'jinshu/mock_pdfs.py / pdf_pipeline.py':'jinshu/mock_pdfs.py / jinshu/document_service.py',
+            'PageContextChunker':'jinshu/ingestion.py:TableAwareChunker',
+            'jinshu/governance.py / pdf_pipeline.py':'jinshu/document_service.py:detect_sensitivity',
+            'ReviewedIndexer.review':'ReviewedDocumentService.review_and_publish',
+            '代码/证据：test_no_external_embeddings_before_review':'代码/证据：jinshu/document_service.py:stage_file',
+            '回答：用户权限由服务端记录确认。会话保存权限指纹，变化后要求新会话；组织记忆再次回查源文件。跨节点撤销、复杂历史保留和企业DLP仍需补齐，不能说已经绝对防泄露。':'回答：每次请求使用服务端当前身份限定部门与密级，检索及来源回查按当前范围执行；会话做了所有权检查，但还没有完整的权限指纹和历史会话撤销机制。生产化时还需处理旧摘要及历史内容，不能说权限变化后既有会话已自动清空。',
+            'ModelEgressGate / Runtime.ask':'jinshu/runtime.py:Runtime.ask / jinshu/agents.py / jinshu/retrieval.py',
+            '代码/证据：api.py dependency_error':'代码/证据：jinshu/retrieval.py / docs/FAILURE_PLAYBOOK.md',
+            '先写本地草稿并用用户/Trace形成幂等键':'先写本地草稿并按会话与请求摘要形成稳定幂等键',
+            '代码/证据：tests/test_v3_governance.py':'代码/证据：jinshu/python_skills.py:REGISTRY'}
+          for a,b in changes.items():s=s.replace(a,b)
+          p.write_text(s)
+          p=Path('docs/PDF_PIPELINE.md');s=p.read_text().replace('发行日历、新旧FAQ与敏感个案','发行日历、公共FAQ、开户SOP与敏感个案').replace('本轮8PDF产生16切片，其中4个表格片段。','本轮8PDF产生33个切片，其中5个表格片段。')
+          s=s.replace('固定现金流查询返回的结果中有5个来自这些PDF的片段；同时执行18个工作流任务并检查来源。FAQ v2发布后v1归档。','6个固定查询分别检查对应PDF来源、目标词与物理页码，均通过。另运行既有工作流与版本替换回归。')
+          p.write_text(s)
+          for name in ('jinshu/document_service.py','jinshu/python_skills.py','jinshu/ingestion.py'):assert Path(name).is_file()
+          print('Documentation only; no runtime or tests changed.')
+          PY
+      - name: Commit documentation and remove one-off workflow
+        run: |
+          rm .github/workflows/sync-final-docs.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs .github/workflows/sync-final-docs.yml
+          git commit -m 'Align manuals with 33 PDF chunks, 123 tests and actual implementation boundaries'
+          git push origin HEAD:main
+      - name: Package final published source
+        run: |
+          mkdir -p /tmp/final
+          git archive --format=zip --prefix=jinshu-fintech-agent/ HEAD > /tmp/final/jinshu-fintech-agent-v3.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jinshu-fintech-agent-v3-final
+          path: /tmp/final/jinshu-fintech-agent-v3.zip
