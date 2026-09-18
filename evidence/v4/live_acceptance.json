@@ -110,12 +110,12 @@
         "completion_tokens": 6,
         "total_tokens": 53
       },
-      "latency_ms": 6143.88
+      "latency_ms": 6841.9
     }
   ],
   "dag": {
     "answer": "本次回答未通过校验；请查看已核对的原文或联系负责人。",
-    "trace_id": "trace_418f1c48c5c247d5a9cca2f7333717f5",
+    "trace_id": "trace_4bb9ef394e0f40f18c5553203ce92566",
     "execution": {
       "user_id": "ci-reviewer",
       "workflow": "service",
@@ -148,55 +148,55 @@
         {
           "node": "Intent",
           "budget_seconds": 60.0,
-          "elapsed_ms": 0.04,
+          "elapsed_ms": 0.05,
           "status": "completed"
         },
         {
           "node": "Rewrite",
           "budget_seconds": 60.0,
-          "elapsed_ms": 2488.47,
+          "elapsed_ms": 2676.45,
           "status": "completed"
         },
         {
           "node": "Retrieval",
           "budget_seconds": 120.0,
-          "elapsed_ms": 7154.15,
+          "elapsed_ms": 8836.46,
           "status": "completed"
         },
         {
           "node": "Answer",
           "budget_seconds": 120.0,
-          "elapsed_ms": 3390.74,
+          "elapsed_ms": 3597.84,
           "status": "completed"
         },
         {
           "node": "Verify",
           "budget_seconds": 90.0,
-          "elapsed_ms": 8.14,
+          "elapsed_ms": 8.61,
           "status": "completed"
         },
         {
           "node": "Answer",
           "budget_seconds": 120.0,
-          "elapsed_ms": 2933.53,
+          "elapsed_ms": 2874.21,
           "status": "completed"
         },
         {
           "node": "Verify",
           "budget_seconds": 90.0,
-          "elapsed_ms": 8.72,
+          "elapsed_ms": 9.17,
           "status": "completed"
         },
         {
           "node": "Answer",
           "budget_seconds": 120.0,
-          "elapsed_ms": 2745.29,
+          "elapsed_ms": 2835.42,
           "status": "completed"
         },
         {
           "node": "Verify",
           "budget_seconds": 90.0,
-          "elapsed_ms": 8.36,
+          "elapsed_ms": 8.47,
           "status": "completed"
         }
       ],
@@ -211,7 +211,7 @@
             "completion_tokens": 20,
             "total_tokens": 141
           },
-          "latency_ms": 2487.87
+          "latency_ms": 2675.9
         },
         {
           "kind": "embedding",
@@ -250,7 +250,7 @@
             "completion_tokens": 12,
             "total_tokens": 504
           },
-          "latency_ms": 3390.55
+          "latency_ms": 3597.65
         },
         {
           "kind": "chat",
@@ -261,7 +261,7 @@
             "completion_tokens": 5,
             "total_tokens": 500
           },
-          "latency_ms": 2933.36
+          "latency_ms": 2874.02
         },
         {
           "kind": "chat",
@@ -272,7 +272,7 @@
             "completion_tokens": 5,
             "total_tokens": 500
           },
-          "latency_ms": 2745.12
+          "latency_ms": 2835.17
         }
       ],
       "skill_plan": {
@@ -288,7 +288,7 @@
           "base_service"
         ],
         "executions": [
-          "sx_089bad51f0104864b5045eb1ab41b458"
+          "sx_75bb72f87d4442d3adf496e3221c2f51"
         ]
       },
       "retrieval": [
@@ -303,21 +303,22 @@
           "hydrated": 8,
           "returned": 5,
           "ids": [
-            "doc_a716cf33ba2b4c07:2",
-            "doc_712012afbec64293:3",
-            "doc_712012afbec64293:2",
-            "doc_a716cf33ba2b4c07:1",
-            "doc_712012afbec64293:0"
+            "doc_e4a8b9fd702d436a:2",
+            "doc_3089c3f17bc64705:3",
+            "doc_3089c3f17bc64705:2",
+            "doc_e4a8b9fd702d436a:1",
+            "doc_3089c3f17bc64705:0"
           ],
           "degraded": [],
           "embedding_mode": "semantic_http"
         }
       ],
       "rules_applied": [],
-      "answer_mode": "llm",
+      "answer_mode": "verification_blocked",
       "answer_template": "上次回答存在以下问题，请修正：missing_or_unknown_reference_number",
       "semantic_check": "verbatim extractive + reference integrity, not learned QA accuracy",
-      "trace_id": "trace_418f1c48c5c247d5a9cca2f7333717f5"
+      "attempted_answer_mode": "llm",
+      "trace_id": "trace_4bb9ef394e0f40f18c5553203ce92566"
     }
   },
   "shared_rollback": {
@@ -327,7 +328,7 @@
       "last_stable": "base_service",
       "reason": "acceptance",
       "status": "local_baseline_remote_unconfirmed",
-      "at": "2026-09-18T18:56:11.286541+00:00",
+      "at": "2026-09-18T19:06:58.734744+00:00",
       "error": "ConnectionError",
       "note": "本实例已停止候选流量；远端状态未确认时不声称所有实例都已回滚。",
       "scope": "shared MongoDB control read at each new request; already-running requests may finish"
