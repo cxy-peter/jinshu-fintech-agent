@@ -1,0 +1,36 @@
+name: V6 final source and website package
+on:
+  push:
+    paths: ['.github/workflows/v6-package.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Package tracked source and tested website
+        run: |
+          set -euo pipefail
+          git archive --format=zip --prefix=jinshu-fintech-agent/ HEAD -o /tmp/jinshu-v6-final-source.zip
+          cd lite
+          npm ci --ignore-scripts
+          npm run build
+          printf '@echo off\r\ncd /d %%~dp0\r\necho Open http://localhost:8795\r\npython -m http.server 8795\r\npause\r\n' > dist/start_preview.bat
+          printf 'V6 built website. Run python -m http.server 8795 in this folder; open http://localhost:8795.\nReal site: https://jinshu-workbench.vercel.app\nThis static package does not host the optional server-side model function.\n' > dist/START_HERE.txt
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,os
+          root=Path('dist')
+          bad=[str(p) for p in root.rglob('*') if p.suffix.lower() in {'.ttf','.otf','.woff','.woff2'}]
+          assert not bad,bad
+          manifest={'source_commit':os.environ['GITHUB_SHA'],'scope':'static build of tracked V6 source; actual published site metadata is in production evidence','files':{str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}}
+          (root/'PACKAGE_MANIFEST.json').write_text(json.dumps(manifest,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with: {name: jinshu-v6-final-source, path: /tmp/jinshu-v6-final-source.zip}
+      - uses: actions/upload-artifact@v4
+        with: {name: jinshu-v6-final-built-site, path: lite/dist/}
