@@ -1,0 +1,58 @@
+name: V5 Lite executable acceptance
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/lite-acceptance.yml']
+permissions:
+  contents: write
+jobs:
+  lite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Build public-only static website
+        run: |
+          mkdir -p evidence/v5
+          python lite/prepare_public.py
+          cd lite
+          npm ci --ignore-scripts
+          npm test | tee ../evidence/v5/unit-tests.txt
+          npm run build
+      - name: Install real browser and synthetic PDF fixture
+        run: |
+          pip install playwright==1.55.0 reportlab
+          python -m playwright install --with-deps chromium
+          python - <<'PY'
+          from pathlib import Path
+          from reportlab.pdfgen import canvas
+          p=Path('data/mock_pdfs');p.mkdir(exist_ok=True)
+          c=canvas.Canvas(str(p/'06_public_faq.pdf'));c.drawString(60,740,'Synthetic FAQ: keep a draft if the ticket API fails.');c.save()
+          PY
+      - name: Exercise browser workflows
+        run: |
+          python -m http.server 8795 --bind 127.0.0.1 --directory lite/dist >/tmp/lite-http.log 2>&1 &
+          python lite/tests/browser.py
+      - name: Save exact execution evidence
+        if: always()
+        run: |
+          mkdir -p evidence/v5
+          printf '{"commit":"%s","run":"https://github.com/%s/actions/runs/%s","real_users":0,"vercel_deployment":false}\n' "$GITHUB_SHA" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > evidence/v5/environment.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: jinshu-v5-browser-evidence, path: evidence/v5/}
+      - name: Publish public corpus and observed results
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add lite/web/knowledge.json lite/web/fixtures.json evidence/v5
+          if ! git diff --staged --quiet; then git commit -m 'Record actual Lite browser results and public learning corpus'; git pull --rebase origin main; git push; fi
+          git archive --format=zip --prefix=jinshu-fintech-agent/ HEAD -o /tmp/jinshu-v5-source.zip
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: jinshu-v5-source, path: /tmp/jinshu-v5-source.zip}
