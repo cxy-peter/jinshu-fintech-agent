@@ -1,0 +1,14 @@
+# Merge with official prometheus-adapter Helm values; change Prometheus endpoint.
+prometheus:
+  url: http://prometheus-server.monitoring.svc
+  port: 80
+rules:
+  default: false
+  custom:
+    - seriesQuery: 'wenshu_dept_agent_inflight{namespace!="",pod!=""}'
+      resources:
+        overrides:
+          namespace: {resource: namespace}
+          pod: {resource: pod}
+      name: {matches: '^wenshu_dept_agent_inflight$', as: jinshu_inflight}
+      metricsQuery: 'sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)'

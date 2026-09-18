@@ -1,0 +1,15 @@
+# Requires Pod discovery RBAC for the Prometheus service account.
+scrape_configs:
+  - job_name: jinshu-pods
+    kubernetes_sd_configs: [{role: pod}]
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        action: keep
+        regex: jinshu-service
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod

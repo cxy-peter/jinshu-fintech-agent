@@ -1,0 +1,20 @@
+# Requires Prometheus Adapter and real per-Pod observations.
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: {name: jinshu-service}
+spec:
+  scaleTargetRef: {apiVersion: apps/v1, kind: Deployment, name: jinshu-service}
+  minReplicas: 1
+  maxReplicas: 20
+  metrics:
+    - type: Pods
+      pods:
+        metric: {name: jinshu_inflight}
+        target: {type: AverageValue, averageValue: "2"}
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies: [{type: Pods, value: 2, periodSeconds: 60}]
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies: [{type: Percent, value: 25, periodSeconds: 60}]

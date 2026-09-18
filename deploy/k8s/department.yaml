@@ -1,0 +1,51 @@
+# Capacity-test template for the read-only service workflow. Not a production rollout.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jinshu-service
+  labels: {app: jinshu-service}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: jinshu-service}}
+  template:
+    metadata:
+      labels: {app: jinshu-service}
+    spec:
+      containers:
+        - name: api
+          image: jinshu-fintech-agent:v4
+          imagePullPolicy: IfNotPresent
+          ports: [{name: http, containerPort: 8766}]
+          envFrom: [{secretRef: {name: jinshu-runtime}}]
+          env:
+            - {name: JINSHU_PROFILE, value: services}
+            - {name: JINSHU_EMBEDDED_WORKER, value: "0"}
+            - {name: DEPT_ID, value: dept_service}
+            - name: JINSHU_INSTANCE_ID
+              valueFrom: {fieldRef: {fieldPath: metadata.name}}
+          resources:
+            requests: {cpu: 250m, memory: 512Mi}
+            limits: {cpu: "2", memory: 2Gi}
+          readinessProbe:
+            httpGet: {path: /ready, port: http}
+            periodSeconds: 15
+            timeoutSeconds: 15
+          livenessProbe:
+            httpGet: {path: /health, port: http}
+            initialDelaySeconds: 60
+            periodSeconds: 20
+          startupProbe:
+            httpGet: {path: /ready, port: http}
+            failureThreshold: 40
+            periodSeconds: 10
+            timeoutSeconds: 15
+          volumeMounts: [{name: scratch, mountPath: /app/workspace}]
+      volumes: [{name: scratch, emptyDir: {}}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: jinshu-service}
+spec:
+  selector: {app: jinshu-service}
+  ports: [{port: 8766, targetPort: http}]
+  type: ClusterIP
