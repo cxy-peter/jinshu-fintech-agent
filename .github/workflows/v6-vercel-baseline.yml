@@ -1,0 +1,47 @@
+name: V6 actual Vercel baseline
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/v6-vercel-baseline.yml']
+permissions: {contents: read}
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: |
+          pip install playwright==1.55.0 reportlab
+          python -m playwright install --with-deps chromium
+          python - <<'PY'
+          from pathlib import Path
+          from reportlab.pdfgen import canvas
+          p=Path('data/mock_pdfs');p.mkdir(exist_ok=True)
+          c=canvas.Canvas(str(p/'06_public_faq.pdf'));c.drawString(60,740,'Synthetic FAQ: keep a draft if the ticket API fails.');c.save()
+          PY
+      - name: Actual remote browser operations
+        env: {LITE_TEST_URL: 'https://jinshu-workbench.vercel.app'}
+        run: python lite/tests/browser.py
+      - name: Pin served code and API availability without model cost
+        if: always()
+        run: |
+          python - <<'PY'
+          import urllib.request,urllib.error,hashlib,json
+          from pathlib import Path
+          out=Path('evidence/v6-baseline');out.mkdir(parents=True,exist_ok=True)
+          rows=[]
+          for path in ['/', '/core.mjs','/app.mjs','/knowledge.json','/api/answer']:
+            try:
+              request=urllib.request.Request('https://jinshu-workbench.vercel.app'+path,data=b'{}' if path.startswith('/api') else None,headers={'Content-Type':'application/json'})
+              with urllib.request.urlopen(request,timeout=30) as r:
+                b=r.read(); rows.append({'path':path,'status':r.status,'sha256':hashlib.sha256(b).hexdigest(),'bytes':len(b)})
+                if path in ['/core.mjs','/app.mjs','/knowledge.json']:(out/path[1:]).write_bytes(b)
+            except urllib.error.HTTPError as e: rows.append({'path':path,'status':e.code,'message':e.read().decode()[:200]})
+            except Exception as e:rows.append({'path':path,'error':str(e)})
+          (out/'transport.json').write_text(json.dumps({'site':'https://jinshu-workbench.vercel.app','checks':rows,'real_users':0},ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: actual-vercel-baseline, path: 'evidence/'}
