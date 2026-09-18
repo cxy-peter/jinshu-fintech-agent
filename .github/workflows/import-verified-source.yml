@@ -1,0 +1,55 @@
+name: Import verified source capsule
+on:
+  push:
+    paths: ['_bootstrap/publish.json']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Materialize checksum-verified UTF-8 source
+        run: |
+          python - <<'PY'
+          import base64, hashlib, json, pathlib, zlib
+          root=pathlib.Path.cwd()
+          spec=json.loads((root/'_bootstrap/publish.json').read_text())
+          encoded=''.join((root/'_bootstrap'/name).read_text().strip() for name in spec['parts'])
+          raw=base64.b64decode(encoded, validate=True)
+          assert hashlib.sha256(raw).hexdigest()==spec['sha256'], 'Capsule checksum mismatch'
+          bundle=json.loads(zlib.decompress(raw))
+          assert len(bundle)==spec['files'], 'File count mismatch'
+          for name, content in bundle.items():
+              path=root/name
+              assert path.resolve().is_relative_to(root), 'Unsafe path'
+              assert '.git' not in pathlib.Path(name).parts, 'Git metadata is forbidden'
+              assert not name.startswith('.github/'), 'Workflow mutation is forbidden in capsule'
+              assert isinstance(content,str), 'Only UTF-8 text files are accepted'
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_text(content,encoding='utf-8')
+          print('Materialized files:',len(bundle))
+          PY
+      - name: Install and test
+        run: |
+          python -m pip install -r requirements.txt
+          python -m jinshu.mock_pdfs
+          python -m pytest -q
+      - name: Generate diagram images
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y graphviz fonts-noto-cjk
+          python scripts/build_diagrams.py
+      - name: Publish source and synthetic documentation assets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add . ':!_bootstrap' ':!workspace'
+          if ! git diff --cached --quiet; then
+            git commit -m 'Materialize checksum-verified Jinshu V3 source and synthetic assets'
+            git push origin HEAD:main
+          fi
