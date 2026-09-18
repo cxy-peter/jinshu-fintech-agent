@@ -64,13 +64,6 @@ async def main():
         await r2.recovery.refresh('service')
         report['shared_rollback']={'result':result,'second_instance_frozen':r2.recovery.frozen('service')}
         report['checks']['shared_freeze']=r2.recovery.frozen('service')
-        if os.getenv('V4_TEST_PI')=='1':
-            r.c.pi_runtime.settings.pi_agent_enabled=True
-            try:
-                text=await r.c.pi_runtime.run_text('answer','只返回一句中文。','根据材料：接口失败时保留草稿。现在接口失败，怎么办？',allowed_tools=[],timeout_seconds=120)
-                report['pi_runtime']={'status':'passed' if text else 'failed','text':text,'uses_original_source':True}
-                if not text:raise AssertionError('pi did not return model output')
-            finally:r.c.pi_runtime.settings.pi_agent_enabled=False
         from scripts.evaluate_v4 import evaluate
         ev=await evaluate(r,evidence/'retrieval_eval.json');report['retrieval_eval_summary']=ev['summary']
         report['checks']['reranker_inference']=any(any(c.get('kind')=='rerank' and c.get('status')=='ok' for c in row.get('calls',[])) for row in ev['rows'])
@@ -79,6 +72,18 @@ async def main():
         async with httpx.AsyncClient(timeout=30) as c:
             res=await c.get(os.getenv('CHAT_BASE_URL').removesuffix('/v1')+'/provenance',headers={'Authorization':'Bearer '+os.environ['CHAT_API_KEY']})
             res.raise_for_status();report['model_provenance']=res.json()
+        if os.getenv('V4_TEST_PI')=='1':
+            r.c.pi_runtime.settings.pi_agent_enabled=True
+            try:
+                text=await r.c.pi_runtime.run_text('answer','只返回一句中文。','根据材料：接口失败时保留草稿。现在接口失败，怎么办？',allowed_tools=[],timeout_seconds=120)
+                report['pi_runtime']={'status':'passed' if text else 'failed','text':text,'uses_original_source':True}
+                if not text:
+                    async with httpx.AsyncClient(timeout=130) as diagnostic:
+                        response=await diagnostic.post(os.environ.get('PI_AGENT_URL','http://pi-agent:8100')+'/v1/agent/run',headers={'X-Internal-Token':os.environ['INTERNAL_API_TOKEN']},json={'agentType':'answer','systemPrompt':'只返回一句中文。','prompt':'根据材料：接口失败时保留草稿。现在接口失败，怎么办？','outputMode':'text','allowedTools':[],'timeoutMs':120000})
+                        report['pi_runtime']['diagnostic_http_status']=response.status_code
+                        report['pi_runtime']['diagnostic_body']=response.text[:2000]
+            finally:r.c.pi_runtime.settings.pi_agent_enabled=False
+        if os.getenv('V4_TEST_PI')=='1' and report.get('pi_runtime',{}).get('status')!='passed':raise AssertionError('pi did not return model output; see diagnostic')
         report['status']='passed'
     except Exception as exc:
         report['status']='failed';report['errors'].append({'type':type(exc).__name__,'message':str(exc),'traceback':traceback.format_exc()})

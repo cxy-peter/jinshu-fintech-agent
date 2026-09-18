@@ -108,7 +108,18 @@ async def chat(req:ChatRequest,authorization:str=Header(default='')):
     def work():
         import torch
         tok,model=load('chat')
-        text=tok.apply_chat_template(req.messages,tokenize=False,add_generation_prompt=True)
+        messages=[]
+        for message in req.messages:
+            content=message.get('content','')
+            if isinstance(content,list):
+                if any(part.get('type')!='text' for part in content):
+                    raise ValueError('This gateway accepts text parts only')
+                content='\n'.join(part.get('text','') for part in content)
+            if not isinstance(content,str):raise ValueError('Message content must be text')
+            role=message.get('role','user')
+            if role=='developer':role='system'
+            messages.append({'role':role,'content':content})
+        text=tok.apply_chat_template(messages,tokenize=False,add_generation_prompt=True)
         enc=tok([text],return_tensors='pt')
         if enc['input_ids'].shape[1]>int(os.getenv('CHAT_INPUT_LIMIT','6000')):
             raise ValueError('context exceeds configured budget')

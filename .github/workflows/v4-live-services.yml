@@ -43,6 +43,9 @@ jobs:
           p.write_text(json.dumps({'url':f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}",'commit':os.environ['GITHUB_SHA'],'runner':platform.platform(),'real_user_trial':False,'k8s_hpa_test':False},indent=2))
           PY
           docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml ps > evidence/v4/compose_status.txt || true
+      - name: Model and runtime diagnostics
+        if: failure()
+        run: docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml logs --tail=120 model-gateway pi-agent api worker > evidence/v4/service_diagnostics.txt 2>&1 || true
       - uses: actions/upload-artifact@v4
         if: always()
         with: {name: jinshu-v4-real-services-evidence, path: evidence/v4/}
