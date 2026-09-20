@@ -1,0 +1,48 @@
+name: Inspect FOF and actual RAG path
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/inspect-fof-jev.yml']
+permissions: {contents: read}
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install playwright==1.55.0 && python -m playwright install --with-deps chromium
+      - name: Read current site and observe genuine question execution
+        run: |
+          mkdir -p /tmp/fof-inspection
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          out=Path('/tmp/fof-inspection');base='https://jinshu-workbench.vercel.app';report={'site':base,'model_calls_requested':False,'private_uploads':False}
+          with sync_playwright() as p:
+            browser=p.chromium.launch();page=browser.new_page(viewport={'width':1400,'height':1000});requests=[]
+            page.on('request',lambda r:requests.append({'method':r.method,'url':r.url}))
+            page.goto(base,wait_until='networkidle');page.wait_for_selector('#ask-submit')
+            report['build']=page.request.get(base+'/build-info.json').json()
+            corpus=page.request.get(base+'/knowledge.json').json();report['rows']=len(corpus)
+            report['fof_rows']=[r for r in corpus if 'fof' in (r['title']+' '+r['content']).lower()]
+            report['questions']=[]
+            for q in ['FOF是什么？','基金中的基金是什么意思？','FOF保本吗？','FOF投资哪些资产？']:
+              page.get_by_role('button',name='新会话',exact=True).click();before=len(requests)
+              page.evaluate('q=>window.jinshuTest.ask(q,"auto")',q)
+              result=page.evaluate('window.jinshuTest.getState().traces.at(-1)')
+              report['questions'].append({'question':q,'flow':result.get('flow'),'mode':result.get('mode'),'answer':result.get('answer'),'sources':[s['id'] for s in result.get('sources',[])],'network_requests':requests[before:]})
+            page.evaluate('()=>window.jinshuTest.ask("FOF是什么？","auto")');page.screenshot(path=str(out/'fof-before.png'),full_page=True)
+            r=page.request.post(base+'/api/answer',data={},headers={'Content-Type':'application/json'})
+            report['optional_generation']={'status':r.status,'body':r.text()[:500]}
+            for filename in ['core.mjs','assurance.mjs','app.mjs','knowledge.json']:
+              body=page.request.get(base+'/'+filename).body();(out/filename).write_bytes(body)
+            browser.close()
+          (out/'inspection.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
+          print(json.dumps(report,ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: fof-jev-live-inspection, path: /tmp/fof-inspection/}
