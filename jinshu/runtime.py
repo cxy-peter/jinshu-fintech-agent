@@ -45,7 +45,8 @@ class FinancialOrchestrator(Orchestrator):
   return tid
 
 class Runtime:
- def __init__(self,profile='offline',settings=None,instance_id=None):
+ def __init__(self,profile='offline',settings=None,instance_id=None,bootstrap_documents=None):
+  self.bootstrap_documents=bootstrap_documents
   if settings is None:
    if profile=='offline':
     settings=Settings(_env_file=None,storage_mode='memory',vector_backend='memory',embedding_provider='hash',embedding_dim=256,reranker_enabled=False,pi_agent_enabled=False,dept_agents_enabled=False,
@@ -119,7 +120,7 @@ class Runtime:
    await self.c.mongo.connect();await self.c.session_store.connect()
   if not (DATA/'documents.json').exists():generate()
   for did,name in DEPARTMENTS.items():await self.c.store.upsert_department({'_id':did,'name':name,'description':name,'keywords':[name]})
-  should_seed=self.profile=='offline' or os.getenv('JINSHU_BOOTSTRAP')=='1'
+  should_seed=(self.profile=='offline' or os.getenv('JINSHU_BOOTSTRAP')=='1') if self.bootstrap_documents is None else self.bootstrap_documents
   if not await self.c.store.count('documents') and should_seed:
    manifest=json.loads((DATA/'documents.json').read_text())
    for d in manifest:
