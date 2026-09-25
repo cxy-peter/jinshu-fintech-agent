@@ -1,0 +1,59 @@
+name: V7 public site verification
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/v7-production-check.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  public-site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Install controlled browser tools
+        run: |
+          pip install 'playwright==1.55.0' reportlab
+          python -m playwright install --with-deps chromium
+      - name: Verify public deployment version without authentication
+        run: |
+          python - <<'PY'
+          import json,time,urllib.request,urllib.error
+          from pathlib import Path
+          target=Path('evidence/v7/production');target.mkdir(parents=True,exist_ok=True)
+          url='https://jinshu-workbench.vercel.app/build-info.json'
+          expected='94f7cfc34c0a2a785f8f7ea5f089a10bf5277ffa'
+          for attempt in range(18):
+              try:
+                  with urllib.request.urlopen(url+'?v7verify='+str(int(time.time())),timeout=20) as r:
+                      data=json.load(r)
+                  if data.get('version')=='7.0.0' and data.get('upstream_commit')==expected:
+                      (target/'build-info.json').write_text(json.dumps(data,indent=2));break
+              except urllib.error.HTTPError as e:
+                  if e.code in (401,403):raise RuntimeError('Public URL requires authorization; do not bypass access controls') from e
+                  if e.code not in (404,429,500,502,503,504):raise
+              time.sleep(10)
+          else:raise RuntimeError('Public deployment did not reach the tested upstream version')
+          PY
+      - name: Exercise public UI in isolated browser context
+        env:
+          LITE_TEST_URL: https://jinshu-workbench.vercel.app
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from reportlab.pdfgen import canvas
+          p=Path('data/mock_pdfs');p.mkdir(parents=True,exist_ok=True)
+          c=canvas.Canvas(str(p/'06_public_faq.pdf'));c.drawString(60,740,'Synthetic FAQ: keep a draft if the ticket API fails.');c.save()
+          PY
+          python lite/tests/browser_v7.py
+          cp -r evidence/v7/browser evidence/v7/production/browser
+      - name: Keep results even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jinshu-v7-public-site
+          path: |
+            evidence/v7/production/
+            evidence/v7/browser/
