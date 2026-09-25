@@ -41,7 +41,14 @@ jobs:
               assert p.suffix.lower() not in {'.ttf','.otf','.woff','.woff2'}
               assert isinstance(content,str) and not (root/name).exists(), name
           patch=Path('/tmp/jinshu-v7.patch');patch.write_text(data['patch'])
-          subprocess.run(['git','apply','--check',str(patch)],check=True)
+          subprocess.run(['git','apply','--exclude=README.md','--check',str(patch)],check=True)
+          # README in the source archive predates a documentation-only correction.
+          # Archive the exact repository version, then reconstruct the complete new
+          # 64-line README from the verified full-file hunk and verify its own hash.
+          first=data['patch'].split('diff --git ',2)[1]
+          hunk=first.split('@@ -1,119 +1,64 @@\n',1)[1]
+          readme=''.join(line[1:] for line in hunk.splitlines(keepends=True) if line.startswith(('+',' ')))
+          assert hashlib.sha256(readme.encode()).hexdigest()=='92048c535549919b1c4337ef8f721266f8e021152a60c396233d5f55ad340323'
           archive=root/'docs/V6_README_ARCHIVE.md';assert not archive.exists()
           archive.write_bytes((root/'README.md').read_bytes())
           names=subprocess.check_output(['git','ls-tree','-r','--name-only',base],text=True).splitlines()
@@ -51,7 +58,8 @@ jobs:
                   content=subprocess.check_output(['git','show',f'{base}:{name}'])
                   retained[name]=hashlib.sha256(content).hexdigest()
           assert len(retained)>=224, len(retained)
-          subprocess.run(['git','apply',str(patch)],check=True)
+          subprocess.run(['git','apply','--exclude=README.md',str(patch)],check=True)
+          (root/'README.md').write_text(readme)
           for name,content in data['files'].items():
               target=root/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(content)
           (root/'scripts/v7_preserved_sources.json').write_text(json.dumps(retained,indent=2)+'\n')
