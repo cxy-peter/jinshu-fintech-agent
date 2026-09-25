@@ -1,1 +1,1 @@
-{"name":"jinshu-lite","version":"5.0.0","private":true,"type":"module","scripts":{"build":"node build.mjs","test":"node --test tests/*.test.mjs"},"dependencies":{"jszip":"3.10.1","pdfjs-dist":"5.4.149"},"engines":{"node":">=22"}}
+{"name":"jinshu-lite","version":"7.0.0","private":true,"type":"module","scripts":{"build":"node build.mjs","test":"node --test tests/*.test.mjs"},"dependencies":{"jszip":"3.10.1","pdfjs-dist":"5.4.149"},"engines":{"node":">=22"}}

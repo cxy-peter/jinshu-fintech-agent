@@ -1,6 +1,6 @@
 """Deterministic read-only adapters; based on user's existing financial workflow patterns."""
 from __future__ import annotations
-import csv,hashlib,json,statistics
+import csv,hashlib,json,statistics,re
 from datetime import date,timedelta
 from decimal import Decimal as D,InvalidOperation
 from .fixtures import DATA
@@ -9,7 +9,10 @@ def rows(name):
  with (DATA/name).open(encoding='utf-8-sig',newline='') as f:return list(csv.DictReader(f))
 def number(x,percent=False):
  if x is None or str(x).strip() in {'','--','-','N/A'}:return None
- text=str(x).strip().replace(',','')
+ raw=str(x).strip()
+ grouped='-'+raw[1:-1] if raw.startswith('(') and raw.endswith(')') else raw
+ if ',' in raw and not re.fullmatch(r'[+-]?\d{1,3}(,\d{3})+(\.\d+)?%?',grouped):raise ValueError('千分位分组不合法')
+ text=raw.replace(',','')
  if text.startswith('(') and text.endswith(')'):text='-'+text[1:-1]
  if text.endswith('%'):
   if not percent:raise ValueError('百分数不能当金额')
@@ -57,12 +60,13 @@ def issuance(p):
 
 def weekly_report(p):
  out=[];issues=[];seen=set()
- for i,r in enumerate(rows('weekly_raw.csv'),2):
+ for i,r in enumerate(p.get('rows',rows('weekly_raw.csv')),2):
+  if not isinstance(r.get('登记编码'),str):raise ValueError('登记编码必须为字符串，不能猜测前导零')
   key=(r['登记编码'],r['数据日期'])
   if key in seen:raise ValueError('登记编码/日期重复')
   seen.add(key);rate=number(r['区间收益率'],True)
   if rate is None:issues.append({'源行':i,'字段':'区间收益率','状态':'缺失保留，需补充'})
-  out.append({'登记编码':r['登记编码'],'名称':r['名称'],'规模万元':str(number(r['规模万元'])),'区间收益率':str(rate) if rate is not None else None,'数据日期':r['数据日期'],'源行':i})
+  out.append({'登记编码':r['登记编码'],'名称':r['名称'],'规模万元':str(number(r['规模万元'])) if number(r['规模万元']) is not None else None,'区间收益率':str(rate) if rate is not None else None,'数据日期':r['数据日期'],'源行':i})
  return {'rows':out,'issues':issues,'note':'登记编码保留前导零，输入不覆盖；模拟周报'}
 
 def onboarding(p):
@@ -92,6 +96,8 @@ def statements(p):
  year=str(p.get('year',2025));r=next((x for x in rows('statements.csv') if x['year']==year),None)
  if not r:raise ValueError('未取得这个年度的模拟数据')
  v={k:number(x) for k,x in r.items() if k not in ['year','unit','scope','synthetic']}
+ missing=[k for k in ['assets','liabilities','equity','cfo','cfi','cff','fx','net_cash_change','opening_cash','ending_cash'] if v.get(k) is None]
+ if missing:return {'rows':[r],'checks':None,'passed':False,'status':'incomplete_needs_review','missing_fields':missing,'note':'必需数据缺失，不按0计算'}
  checks={'资产负债':v['assets']-v['liabilities']-v['equity'],'现金净变动':v['net_cash_change']-v['cfo']-v['cfi']-v['cff']-v['fx'],'期末现金':v['ending_cash']-v['opening_cash']-v['net_cash_change']}
  return {'rows':[r],'checks':{k:str(x) for k,x in checks.items()},'passed':all(x==0 for x in checks.values()),'note':'全部模拟金额，不做真实公司财报判断'}
 

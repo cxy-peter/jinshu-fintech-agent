@@ -42,7 +42,10 @@ class FintechRewrite(QueryRewriter):
   if models_allowed(st):queries=await super().rewrite(query,intent,memory_context)
   else:queries=self._glossary_expand(query,await self.store.list_glossary())
   if st.get('hook_terms'):queries.append(query+' '+' '.join(st['hook_terms']))
-  return list(dict.fromkeys(queries))
+  from .rewrite_contract import bounded_queries
+  queries, decisions = bounded_queries(query, queries)
+  st["rewrite_contract"] = {"original_retained": True, "decisions": decisions}
+  return queries
 
 class FintechAnswer(AnswerAgent):
  async def generate(self,query,chunks,rules=None,intent=None,user_prefs=None,extra_instructions='',memory_context=''):
