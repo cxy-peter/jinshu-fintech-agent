@@ -33,18 +33,19 @@ jobs:
           base='2a91fdb8d1f320d38d6832e7ea9b61187cdba181'
           assert data['base_commit']==base
           subprocess.run(['git','merge-base','--is-ancestor',base,'HEAD'],check=True)
+          # Workflows were created through the authorized connector. The Actions
+          # token does not have workflow-write permission and must not change them.
+          wf='.github/workflows/v7-acceptance.yml'
+          assert (root/wf).read_text()==data['files'].pop(wf)
           allowed=('docs/','evaluation/','jinshu/','lite/','scripts/','tests/','evidence/v7/')
           for name,content in data['files'].items():
               p=PurePosixPath(name)
               assert not p.is_absolute() and '..' not in p.parts and '.git' not in p.parts
-              assert name.startswith(allowed) or name=='.github/workflows/v7-acceptance.yml'
+              assert name.startswith(allowed)
               assert p.suffix.lower() not in {'.ttf','.otf','.woff','.woff2'}
               assert isinstance(content,str) and not (root/name).exists(), name
           patch=Path('/tmp/jinshu-v7.patch');patch.write_text(data['patch'])
           subprocess.run(['git','apply','--exclude=README.md','--check',str(patch)],check=True)
-          # README in the source archive predates a documentation-only correction.
-          # Archive the exact repository version, then reconstruct the complete new
-          # 64-line README from the verified full-file hunk and verify its own hash.
           first=data['patch'].split('diff --git ',2)[1]
           hunk=first.split('@@ -1,119 +1,64 @@\n',1)[1]
           readme=''.join(line[1:] for line in hunk.splitlines(keepends=True) if line.startswith(('+',' ')))
@@ -67,14 +68,14 @@ jobs:
           subprocess.run(['python','evaluation/build_toolcases.py'],check=True)
           subprocess.run(['python','scripts/v7_preservation.py'],check=True)
           shutil.rmtree(root/'.v7-delivery')
-          (root/'.github/workflows/v7-materialize.yml').unlink()
           print('Verified source applied; temporary transport removed. Main and production unchanged.')
           PY
-      - name: Commit only to upgrade branch
+      - name: Commit only source to upgrade branch
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
+          test -z "$(git diff --cached --name-only -- .github/workflows)"
           git commit -m 'feat: integrate readable V7 tasks, constraint guards and evidence-bound policy releases'
           git push origin HEAD:refs/heads/upgrade/jinshu-v7-readable-governance
