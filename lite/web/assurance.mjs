@@ -1,6 +1,6 @@
 /** V6 evidence contract. Lexical answers are quoted source assembly, not LLM inference. */
 import {answerQuestion as baseAnswer,route as baseRoute,rewrite,norm} from './core.mjs';
-export const VERSION='6.0.0';
+export const VERSION='7.0.0';
 export function normalizeQuery(q){
  const additions=[];
  if(/三大报表|资产[、，和\s]*负债[、，和\s]*权益/.test(q))additions.push('三表 勾稽');
@@ -43,13 +43,13 @@ export function makeReferences(sources,index,query){
  return references;
 }
 export function verifyReferences(refs,index){const rows=new Map(index.rows.map(r=>[r.id,r]));return refs.length>0&&refs.every(r=>{const original=rows.get(r.chunk_id);return original?.status==='active'&&original.doc_id===r.doc_id&&original.content.slice(r.start,r.end)===r.quote;});}
-export function answerQuestion(q,index,{flow=null,last='',topK=5}={}){
+export function answerQuestion(q,index,{flow=null,last='',topK=5,hints=[]}={}){
  const original=q,denied=scopeCheck(q),rw=rewrite(q,last),routing=route(rw.followup?last+' '+q:q,index);
  if(denied)return{query:q,flow:flow||routing.flow,route:routing,answer:denied,sources:[],references:[],mode:'no_evidence',verified:false,abstained:true,scope_reason:denied,stages:[{node:'Intent',status:'scope_not_supported',implementation:'capability_rule'}]};
- let flows=routing.flows||[flow||routing.flow];flows=flows.filter(Boolean);
- const expanded=normalizeQuery(q);let a=baseAnswer(expanded,index,{flow:flows[0],last,topK});
+ let flows=flow?[flow]:(routing.flows||[routing.flow]);flows=flows.filter(Boolean);
+ const expanded=normalizeQuery(q);let a=baseAnswer(expanded,index,{flow:flows[0],last,topK,hints});
  if(flows.length>1){
-  const per=flows.map(f=>baseAnswer(expanded,index,{flow:f,last,topK:Math.max(1,Math.floor(topK/flows.length))}));
+  const per=flows.map(f=>baseAnswer(expanded,index,{flow:f,last,topK:Math.max(1,Math.floor(topK/flows.length)),hints}));
   const unique=new Map();per.forEach(x=>x.sources.forEach(s=>unique.set(s.id,s)));a.sources=[...unique.values()].slice(0,topK);
   a.subtasks=per.map(x=>({flow:x.flow,evidence_ids:x.sources.map(y=>y.id),status:x.sources.length?'completed':'no_evidence'}));
  }

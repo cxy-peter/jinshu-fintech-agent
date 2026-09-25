@@ -84,6 +84,17 @@ class FeedbackLoop(LoopEngine):
   if s.get('replay',{}).get('sample_count',0)<3:raise ValueError('至少三个不同问题回放通过才允许演示灰度；这不是统计显著性门槛')
   if actor==s.get('created_by'):raise PermissionError('不能自审')
   validate_skill(s)
+  # Refresh the exact recorded sample; old passing flags cannot authorize changed code/data.
+  from .release_contract import replay_binding
+  ids = s.get('replay', {}).get('trace_ids', [])
+  traces = [t for tid in ids if (t := await self.store.get('traces', tid))]
+  old_binding = s.get('replay', {}).get('binding')
+  if not old_binding or len(traces) != len(ids) or await replay_binding(self.strategy_evaluator.c, s, traces) != old_binding:
+   raise ValueError('候选、资料、基线、样本或评测器已改变，需要重新回放')
+  fresh = await self.strategy_evaluator.replay_skill(s, traces)
+  if not fresh.get('passed') or fresh.get('binding') != old_binding:
+   raise ValueError('发布前重新回放未通过')
+  s['release_replay'] = fresh
   for e in await self.store.find('experiments',{'status':'running'}):
    other=await self.store.get_skill(e['artifact_id'])
    if other and other.get('family')==s.get('family'):raise ValueError('同一任务只运行一个灰度实验')
@@ -130,12 +141,12 @@ class SourceReplay:
  """Paired replay uses actual retrieval/answer/verifier, not hand-assigned improvement scores."""
  def __init__(self,c):self.c=c
  async def replay_skill(self,skill,traces,limit=20):
-  details=[];seen=set()
+  details=[];seen=set();sample=[]
   traces=[t for t in traces if t.get('eval_split')!='frozen_holdout']
   for trace in traces[:limit]:
    if trace['query'] in seen:continue
-   seen.add(trace['query'])
-   query=trace['query'];depts=[skill['dept_id']];token=scope.set(depts);state=run_state.set({'params':{},'tools':[],'models_enabled':self.c.embeddings.provider!='hash' and local_models(),'profile':'services' if self.c.embeddings.provider!='hash' else 'offline'});at=access.set({'departments':depts,'clearance':'internal'})
+   seen.add(trace['query']);sample.append(trace)
+   query=trace['query'];depts=[skill['dept_id']];token=scope.set(depts);state=run_state.set({'params':copy.deepcopy(trace.get('params') or {}),'workflow':skill.get('family'),'last_user_query':trace.get('last_user_query',''),'tools':[],'models_enabled':self.c.embeddings.provider!='hash' and local_models(),'profile':'services' if self.c.embeddings.provider!='hash' else 'offline'});at=access.set({'departments':depts,'clearance':'internal'})
    try:
     for label,s in [('baseline',None),('candidate',skill)]:
      original=trace.get('skill_plan') or {}
@@ -149,4 +160,5 @@ class SourceReplay:
      details.append(row)
    finally:scope.reset(token);run_state.reset(state);access.reset(at)
   pairs=list(zip(details[::2],details[1::2]));passed=bool(pairs) and all(c['source_valid'] and c['expected_terms_covered']>=b['expected_terms_covered'] for b,c in pairs)
-  return {'sample_count':len(pairs),'passed':passed,'details':details,'scope':'历史配对回放；仅本地模型模式允许回放生成，外部模式默认原文；词项覆盖和来源校验不是人工准确率','strict_improvements':sum(c['expected_terms_covered']>b['expected_terms_covered'] for b,c in pairs)}
+  from .release_contract import replay_binding
+  return {'binding':await replay_binding(self.c,skill,sample),'trace_ids':[t['_id'] for t in sample],'sample_count':len(pairs),'passed':passed,'details':details,'scope':'历史配对回放；仅本地模型模式允许回放生成，外部模式默认原文；词项覆盖和来源校验不是人工准确率','strict_improvements':sum(c['expected_terms_covered']>b['expected_terms_covered'] for b,c in pairs)}

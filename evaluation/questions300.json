@@ -1,0 +1,5396 @@
+{
+  "name": "Jinshu-PE-500 QA subset v1",
+  "generated_at_utc": "2026-09-19T01:13:56.398452+00:00",
+  "source": "self-authored from existing 68 public summaries/synthetic documents",
+  "no_new_users": true,
+  "code_frozen": true,
+  "not_blind_external_eval": true,
+  "not_independent_300_topics": true,
+  "rows": [
+    {
+      "id": "B001",
+      "question": "请完整列出货币的五项职能。",
+      "category": "definition",
+      "gold_ids": [
+        "learn-001"
+      ],
+      "key_points": [
+        "价值尺度",
+        "流通手段",
+        "贮藏手段",
+        "支付手段",
+        "世界货币"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-001"
+    },
+    {
+      "id": "B002",
+      "question": "标价、交易媒介和延期清偿分别体现货币的什么职能？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-002"
+      ],
+      "key_points": [
+        "值多少",
+        "怎样成交",
+        "怎样清偿"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-002"
+    },
+    {
+      "id": "B003",
+      "question": "劣币驱逐良币需要什么前提？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-003"
+      ],
+      "key_points": [
+        "法定",
+        "收藏"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-003"
+    },
+    {
+      "id": "B004",
+      "question": "信用货币与足值货币的基础有何区别？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-004"
+      ],
+      "key_points": [
+        "内在价值",
+        "贵金属"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-004"
+    },
+    {
+      "id": "B005",
+      "question": "金平价如何在金本位下形成？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-005"
+      ],
+      "key_points": [
+        "含金量",
+        "金平价"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-005"
+    },
+    {
+      "id": "B006",
+      "question": "特里芬难题反映了储备货币的什么矛盾？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-006"
+      ],
+      "key_points": [
+        "流动性",
+        "信心"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-006"
+    },
+    {
+      "id": "B007",
+      "question": "购买力平价的绝对形式与相对形式分别关注什么？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-007"
+      ],
+      "key_points": [
+        "价格水平",
+        "通胀"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-007"
+    },
+    {
+      "id": "B008",
+      "question": "直接标价和间接标价下，数字上升分别意味着什么？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-008"
+      ],
+      "key_points": [
+        "本币贬值",
+        "本币升值"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-008"
+    },
+    {
+      "id": "B009",
+      "question": "有效汇率为何不只看一种外币？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-009"
+      ],
+      "key_points": [
+        "一篮子",
+        "加权"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-009"
+    },
+    {
+      "id": "B010",
+      "question": "固定汇率和浮动汇率各有什么取舍？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-010"
+      ],
+      "key_points": [
+        "储备",
+        "波动"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-010"
+    },
+    {
+      "id": "B011",
+      "question": "资本化公式P=C/r成立需要什么假设？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-011"
+      ],
+      "key_points": [
+        "恒定",
+        "风险"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-011"
+    },
+    {
+      "id": "B012",
+      "question": "汇票、本票、支票的付款责任有什么不同？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-012"
+      ],
+      "key_points": [
+        "委托",
+        "承诺"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-012"
+    },
+    {
+      "id": "B013",
+      "question": "项目融资主要依靠什么还款来源？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-013"
+      ],
+      "key_points": [
+        "项目",
+        "现金流"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-013"
+    },
+    {
+      "id": "B014",
+      "question": "商业银行的四个职能分别是什么？不要遗漏第四项。",
+      "category": "definition",
+      "gold_ids": [
+        "learn-014"
+      ],
+      "key_points": [
+        "信用中介",
+        "支付中介",
+        "信用创造",
+        "金融服务"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-014"
+    },
+    {
+      "id": "B015",
+      "question": "支付中介和信用中介处理的问题有什么差别？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-015"
+      ],
+      "key_points": [
+        "划拨",
+        "盈余方"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-015"
+    },
+    {
+      "id": "B016",
+      "question": "银行资产业务、负债业务与表外业务如何划分？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-016"
+      ],
+      "key_points": [
+        "资金运用",
+        "资金来源",
+        "表外"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-016"
+    },
+    {
+      "id": "B017",
+      "question": "存款保险主要目的是什么，这份学习材料提供现行限额吗？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-017"
+      ],
+      "key_points": [
+        "保护存款人",
+        "不提供现行限额"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-017"
+    },
+    {
+      "id": "B018",
+      "question": "中央银行三类职能是什么？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-018"
+      ],
+      "key_points": [
+        "发行的银行",
+        "银行的银行",
+        "国家的银行"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-018"
+    },
+    {
+      "id": "B019",
+      "question": "最后贷款人为什么不等于无条件补偿银行损失？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-019"
+      ],
+      "key_points": [
+        "流动性",
+        "偿付能力"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-019"
+    },
+    {
+      "id": "B020",
+      "question": "金融市场具有哪些功能，风险转移等于消灭风险吗？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-020"
+      ],
+      "key_points": [
+        "配置资金",
+        "风险转移"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-020"
+    },
+    {
+      "id": "B021",
+      "question": "货币市场与资本市场如何区别？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-021"
+      ],
+      "key_points": [
+        "短期",
+        "长期"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-021"
+    },
+    {
+      "id": "B022",
+      "question": "回购协议如何理解为有抵押融资？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-022"
+      ],
+      "key_points": [
+        "证券",
+        "抵押"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-022"
+    },
+    {
+      "id": "B023",
+      "question": "远期、期货、期权、互换分别是什么？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-023"
+      ],
+      "key_points": [
+        "标准化",
+        "权利",
+        "现金流"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-023"
+    },
+    {
+      "id": "B024",
+      "question": "投资基金的专业管理是否等于保本？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-024"
+      ],
+      "key_points": [
+        "承担",
+        "不是保本"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-024"
+    },
+    {
+      "id": "B025",
+      "question": "判断直接融资与间接融资的关键是什么？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-025"
+      ],
+      "key_points": [
+        "融资关系",
+        "风险承担"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-025"
+    },
+    {
+      "id": "B026",
+      "question": "金融体系的功能观关注什么？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-026"
+      ],
+      "key_points": [
+        "跨时空",
+        "激励"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-026"
+    },
+    {
+      "id": "B027",
+      "question": "行为金融如何看待投资者的理性？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-027"
+      ],
+      "key_points": [
+        "有限理性",
+        "偏差"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-027"
+    },
+    {
+      "id": "B028",
+      "question": "影子银行涉及哪些风险转换？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-028"
+      ],
+      "key_points": [
+        "期限转换",
+        "流动性转换",
+        "杠杆"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-028"
+    },
+    {
+      "id": "B029",
+      "question": "金融市场基础设施包括哪些系统？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-029"
+      ],
+      "key_points": [
+        "支付系统",
+        "证券结算",
+        "交易数据库"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-029"
+    },
+    {
+      "id": "B030",
+      "question": "支付指令、清算与最终结算是同一环节吗？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-030"
+      ],
+      "key_points": [
+        "指令",
+        "清算",
+        "结算"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-030"
+    },
+    {
+      "id": "B031",
+      "question": "中央交易对手如何改变买卖双方关系？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-031"
+      ],
+      "key_points": [
+        "买卖双方",
+        "保证金"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-031"
+    },
+    {
+      "id": "B032",
+      "question": "名义利率与实际利率的区别是什么？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-032"
+      ],
+      "key_points": [
+        "购买力",
+        "通胀"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-032"
+    },
+    {
+      "id": "B033",
+      "question": "古典利率理论、流动性偏好和可贷资金理论各自强调什么？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-033"
+      ],
+      "key_points": [
+        "实际因素",
+        "货币供求"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-033"
+    },
+    {
+      "id": "B034",
+      "question": "利率市场化意味着央行退出政策吗？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-034"
+      ],
+      "key_points": [
+        "定价",
+        "不意味着"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-034"
+    },
+    {
+      "id": "B035",
+      "question": "利率走廊上下限分别对应什么便利？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-035"
+      ],
+      "key_points": [
+        "上限",
+        "下限"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-035"
+    },
+    {
+      "id": "B036",
+      "question": "交易、预防、投机三种持币动机分别是什么？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-036"
+      ],
+      "key_points": [
+        "日常",
+        "意外",
+        "利率"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-036"
+    },
+    {
+      "id": "B037",
+      "question": "流动性陷阱为什么会影响货币政策传导？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-037"
+      ],
+      "key_points": [
+        "很低",
+        "传导"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-037"
+    },
+    {
+      "id": "B038",
+      "question": "费雪方程式与剑桥方程式的分析重点有什么不同？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-038"
+      ],
+      "key_points": [
+        "MV=PT",
+        "M=kPY"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-038"
+    },
+    {
+      "id": "B039",
+      "question": "恒久性收入如何区别于临时收入？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-039"
+      ],
+      "key_points": [
+        "长期平均",
+        "临时"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-039"
+    },
+    {
+      "id": "B040",
+      "question": "原始存款、派生存款与信用创造如何联系？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-040"
+      ],
+      "key_points": [
+        "准备金",
+        "派生"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-040"
+    },
+    {
+      "id": "B041",
+      "question": "基础货币与货币乘数的关系是什么？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-041"
+      ],
+      "key_points": [
+        "货币供给量",
+        "基础货币"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-041"
+    },
+    {
+      "id": "B042",
+      "question": "存款扩张倍数和货币乘数能直接画等号吗？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-042"
+      ],
+      "key_points": [
+        "现金漏损",
+        "不能"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-042"
+    },
+    {
+      "id": "B043",
+      "question": "从央行视角看，正回购与逆回购的流动性方向是什么？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-043"
+      ],
+      "key_points": [
+        "回笼",
+        "投放"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-043"
+    },
+    {
+      "id": "B044",
+      "question": "货币幻觉为什么会使人忽略通货膨胀？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-044"
+      ],
+      "key_points": [
+        "总体价格",
+        "购买力"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-044"
+    },
+    {
+      "id": "B045",
+      "question": "菲利普斯曲线为什么不能当作恒定替代关系？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-045"
+      ],
+      "key_points": [
+        "预期",
+        "供给冲击"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-045"
+    },
+    {
+      "id": "B046",
+      "question": "货币政策的传统工具有哪些？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-046"
+      ],
+      "key_points": [
+        "准备金率",
+        "再贴现",
+        "公开市场业务"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-046"
+    },
+    {
+      "id": "B047",
+      "question": "宏观审慎和货币政策双支柱如何配合？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-047"
+      ],
+      "key_points": [
+        "顺周期",
+        "相互配合"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-047"
+    },
+    {
+      "id": "B048",
+      "question": "泰勒规则与货币政策时滞分别说明什么？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-048"
+      ],
+      "key_points": [
+        "产出缺口",
+        "时滞"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-048"
+    },
+    {
+      "id": "B049",
+      "question": "收益率曲线的期限结构与风险结构有什么区别？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-049"
+      ],
+      "key_points": [
+        "可比风险",
+        "同期限"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-049"
+    },
+    {
+      "id": "B050",
+      "question": "预期理论、市场分割和流动性溢价如何解释期限结构？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-050"
+      ],
+      "key_points": [
+        "预期",
+        "独立供需",
+        "补偿"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-050"
+    },
+    {
+      "id": "B051",
+      "question": "逆向选择与道德风险分别发生在什么时候？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-051"
+      ],
+      "key_points": [
+        "交易前",
+        "交易后"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-051"
+    },
+    {
+      "id": "B052",
+      "question": "市场、信用、流动性与操作风险如何区分？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-052"
+      ],
+      "key_points": [
+        "价格变化",
+        "不履约",
+        "融资",
+        "流程"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-052"
+    },
+    {
+      "id": "B053",
+      "question": "啄序理论讨论怎样的融资顺序？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-053"
+      ],
+      "key_points": [
+        "内部资金",
+        "债务",
+        "股权"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-053"
+    },
+    {
+      "id": "B054",
+      "question": "MM定理的税盾是否支持无限举债？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-054"
+      ],
+      "key_points": [
+        "完善市场",
+        "无限举债"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-054"
+    },
+    {
+      "id": "B055",
+      "question": "金融脱媒是否意味着所有金融中介功能消失？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-055"
+      ],
+      "key_points": [
+        "新渠道",
+        "中介功能"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-055"
+    },
+    {
+      "id": "B056",
+      "question": "资产证券化是否自动改善基础资产质量？",
+      "category": "definition",
+      "gold_ids": [
+        "learn-056"
+      ],
+      "key_points": [
+        "现金流",
+        "不自动"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-056"
+    },
+    {
+      "id": "B057",
+      "question": "手里看似钱更多了，却买不起以前的东西，金融学怎样解释？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-044"
+      ],
+      "key_points": [
+        "购买力",
+        "货币幻觉"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-044"
+    },
+    {
+      "id": "B058",
+      "question": "资金直接交给发债企业和先存进银行再放贷，这两条融资路径怎么区分？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-025"
+      ],
+      "key_points": [
+        "直接融资",
+        "间接融资"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-025"
+    },
+    {
+      "id": "B059",
+      "question": "银行帮我转账就等于给我发放了一笔贷款吗？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-015"
+      ],
+      "key_points": [
+        "不自动",
+        "新增贷款"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-015"
+    },
+    {
+      "id": "B060",
+      "question": "长期平均能挣多少与这一个月的奖金，在收入理论里怎么区分？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-039"
+      ],
+      "key_points": [
+        "长期平均",
+        "临时"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-039"
+    },
+    {
+      "id": "B061",
+      "question": "为什么同样一元的两种硬币，含金量高的会被收藏？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-003"
+      ],
+      "key_points": [
+        "法定",
+        "收藏"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-003"
+    },
+    {
+      "id": "B062",
+      "question": "货币发行国之外开设的非传统信用中介，为什么关注期限和杠杆？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-028"
+      ],
+      "key_points": [
+        "期限转换",
+        "杠杆"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-028"
+    },
+    {
+      "id": "B063",
+      "question": "先用留存收益、不够再借债、最后才发新股，是哪类融资理论？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-053"
+      ],
+      "key_points": [
+        "内部资金",
+        "债务",
+        "股权"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-053"
+    },
+    {
+      "id": "B064",
+      "question": "发生意外要花钱，所以保留现金，这属于哪一种持币动机？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-036"
+      ],
+      "key_points": [
+        "预防动机",
+        "意外"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-036"
+    },
+    {
+      "id": "B065",
+      "question": "借款之前藏着风险，借到钱以后又改做高风险项目，这两类问题叫什么？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-051"
+      ],
+      "key_points": [
+        "逆向选择",
+        "道德风险"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-051"
+    },
+    {
+      "id": "B066",
+      "question": "一个系统站在所有买方和卖方中间成为共同交易对象，叫什么？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-031"
+      ],
+      "key_points": [
+        "中央交易对手",
+        "买卖双方"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-031"
+    },
+    {
+      "id": "B067",
+      "question": "把未来能收回的钱打包做成可交易证券，这是什么方法？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-056"
+      ],
+      "key_points": [
+        "资产证券化",
+        "现金流"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-056"
+    },
+    {
+      "id": "B068",
+      "question": "我只想看购买力变化，为什么不能只比较名义收益？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-032"
+      ],
+      "key_points": [
+        "实际利率",
+        "购买力"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-032"
+    },
+    {
+      "id": "B069",
+      "question": "长期债收益低于短期债，就一定意味着衰退吗？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-049"
+      ],
+      "key_points": [
+        "倒挂",
+        "不能"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-049"
+    },
+    {
+      "id": "B070",
+      "question": "央行把证券买入再约定以后卖回，是投放还是收回流动性？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-043"
+      ],
+      "key_points": [
+        "逆回购",
+        "投放"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-043"
+    },
+    {
+      "id": "B071",
+      "question": "是不是把风险卖给别人，就意味着社会总体没有风险了？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-020"
+      ],
+      "key_points": [
+        "风险转移",
+        "并不"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-020"
+    },
+    {
+      "id": "B072",
+      "question": "统一看人民币对许多贸易伙伴货币的变化，该用什么指标？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-009"
+      ],
+      "key_points": [
+        "有效汇率",
+        "加权"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-009"
+    },
+    {
+      "id": "B073",
+      "question": "银行如果暂时借不到现金，和资不抵债是否应当区分？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-019"
+      ],
+      "key_points": [
+        "流动性",
+        "偿付能力"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-019"
+    },
+    {
+      "id": "B074",
+      "question": "专业基金经理替我管钱，亏损风险仍由投资者承担吗？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-024"
+      ],
+      "key_points": [
+        "承担",
+        "不是保本"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-024"
+    },
+    {
+      "id": "B075",
+      "question": "银行表外做担保是不是就不存在风险？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-016"
+      ],
+      "key_points": [
+        "表外",
+        "不等于"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-016"
+    },
+    {
+      "id": "B076",
+      "question": "为什么不能把准备金率的倒数视为现实固定不变的货币乘数？",
+      "category": "paraphrase",
+      "gold_ids": [
+        "learn-042"
+      ],
+      "key_points": [
+        "严格简化",
+        "现金漏损"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-042"
+    },
+    {
+      "id": "B077",
+      "question": "理财对标先要统一哪些产品口径？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-benchmark"
+      ],
+      "key_points": [
+        "投资性质",
+        "运作模式",
+        "风险等级"
+      ],
+      "expected_routes": [
+        "wealth_benchmark"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-benchmark"
+    },
+    {
+      "id": "B078",
+      "question": "理财产品最大回撤等于净值标准差吗？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-benchmark"
+      ],
+      "key_points": [
+        "最大回撤",
+        "不等于"
+      ],
+      "expected_routes": [
+        "wealth_benchmark"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-benchmark"
+    },
+    {
+      "id": "B079",
+      "question": "拟成立日遇到非工作日，募集结束日怎么确定？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-calendar"
+      ],
+      "key_points": [
+        "顺延",
+        "前一个营业日"
+      ],
+      "expected_routes": [
+        "issuance"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-calendar"
+    },
+    {
+      "id": "B080",
+      "question": "发行排期是否可以直接套用中国假期到所有市场？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-calendar"
+      ],
+      "key_points": [
+        "不得默认",
+        "所有市场"
+      ],
+      "expected_routes": [
+        "issuance"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-calendar"
+    },
+    {
+      "id": "B081",
+      "question": "周报缺数首先检查什么？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-weekly"
+      ],
+      "key_points": [
+        "源文件",
+        "字段名",
+        "观察日"
+      ],
+      "expected_routes": [
+        "weekly_report"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-weekly"
+    },
+    {
+      "id": "B082",
+      "question": "周报登记编码前面有零，清洗时能转成数字吗？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-weekly"
+      ],
+      "key_points": [
+        "字符串",
+        "前导零"
+      ],
+      "expected_routes": [
+        "weekly_report"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-weekly"
+    },
+    {
+      "id": "B083",
+      "question": "开户首次入金后才拿到的字段，能用于之前的初始风险判断吗？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-onboarding"
+      ],
+      "key_points": [
+        "首次入金后",
+        "不能"
+      ],
+      "expected_routes": [
+        "onboarding"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-onboarding"
+    },
+    {
+      "id": "B084",
+      "question": "KYC候选字段能否使用，应该核对哪些时点条件？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-onboarding"
+      ],
+      "key_points": [
+        "已经采集",
+        "授权"
+      ],
+      "expected_routes": [
+        "onboarding"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-onboarding"
+    },
+    {
+      "id": "B085",
+      "question": "案件邮件用案件号没有查到时，该怎么处理？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-kep"
+      ],
+      "key_points": [
+        "参考号",
+        "未找到"
+      ],
+      "expected_routes": [
+        "kep"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-kep"
+    },
+    {
+      "id": "B086",
+      "question": "KEP邮件查到发送记录，就等于确认送达吗？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-kep"
+      ],
+      "key_points": [
+        "发送记录",
+        "送达"
+      ],
+      "expected_routes": [
+        "kep"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-kep"
+    },
+    {
+      "id": "B087",
+      "question": "计数特征使用success过滤后，还需要检查去重吗？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-feature"
+      ],
+      "key_points": [
+        "success",
+        "去重"
+      ],
+      "expected_routes": [
+        "strategy"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-feature"
+    },
+    {
+      "id": "B088",
+      "question": "自然语言生成特征策略后是否可以直接发布？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-feature"
+      ],
+      "key_points": [
+        "候选JSON",
+        "权限"
+      ],
+      "expected_routes": [
+        "strategy"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-feature"
+    },
+    {
+      "id": "B089",
+      "question": "客服知识库能直接告诉我具体账户的实时状态吗？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-service"
+      ],
+      "key_points": [
+        "授权业务查询",
+        "没有账户实时状态"
+      ],
+      "expected_routes": [
+        "service"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-service"
+    },
+    {
+      "id": "B090",
+      "question": "客服回答用了旧政策译文，应该核查什么？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-service"
+      ],
+      "key_points": [
+        "旧政策",
+        "原文版本"
+      ],
+      "expected_routes": [
+        "service"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-service"
+    },
+    {
+      "id": "B091",
+      "question": "三大报表中资产、负债、权益如何核对？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-financial"
+      ],
+      "key_points": [
+        "资产",
+        "负债加权益"
+      ],
+      "expected_routes": [
+        "statements"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-financial"
+    },
+    {
+      "id": "B092",
+      "question": "三表中的时点数、期间数、单位和缺失值应该怎样处理？",
+      "category": "business_precision",
+      "gold_ids": [
+        "sim-financial"
+      ],
+      "key_points": [
+        "期间数",
+        "时点数",
+        "空数据不当零"
+      ],
+      "expected_routes": [
+        "statements"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-financial"
+    },
+    {
+      "id": "B093",
+      "question": "刚才谈到银行转账，那它与提供贷款的职能有什么不同？",
+      "category": "followup",
+      "gold_ids": [
+        "learn-015"
+      ],
+      "key_points": [
+        "划拨",
+        "盈余方"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "previous": "支付中介与信用中介",
+      "suite": "legacy_regression",
+      "family": "learn-015"
+    },
+    {
+      "id": "B094",
+      "question": "那遇到非工作日怎么办？",
+      "category": "followup",
+      "gold_ids": [
+        "sim-calendar"
+      ],
+      "key_points": [
+        "顺延",
+        "营业日"
+      ],
+      "expected_routes": [
+        "issuance"
+      ],
+      "expect_abstain": false,
+      "previous": "发行排期的拟成立日",
+      "suite": "legacy_regression",
+      "family": "sim-calendar"
+    },
+    {
+      "id": "B095",
+      "question": "请分别说明基础货币的构成，以及为什么存款扩张倍数不能等同货币乘数。",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-041",
+        "learn-042"
+      ],
+      "key_points": [
+        "公众现金",
+        "现金漏损"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "learn-041/learn-042"
+    },
+    {
+      "id": "B096",
+      "question": "核查三表勾稽之后，还需要做周报缺数的哪些检查？",
+      "category": "multi_source",
+      "gold_ids": [
+        "sim-financial",
+        "sim-weekly"
+      ],
+      "key_points": [
+        "负债加权益",
+        "源文件"
+      ],
+      "expected_routes": [
+        "statements",
+        "weekly_report"
+      ],
+      "expect_abstain": false,
+      "suite": "legacy_regression",
+      "family": "sim-financial/sim-weekly"
+    },
+    {
+      "id": "B097",
+      "question": "请告诉我明天某只股票一定涨多少。",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": true,
+      "suite": "legacy_regression",
+      "family": "unanswerable"
+    },
+    {
+      "id": "B098",
+      "question": "现在我个人账户的提现是否已经到账？",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [
+        "service"
+      ],
+      "expect_abstain": true,
+      "suite": "legacy_regression",
+      "family": "unanswerable"
+    },
+    {
+      "id": "B099",
+      "question": "请列出本公司尚未提供的2027年财务报表真实利润。",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [
+        "statements"
+      ],
+      "expect_abstain": true,
+      "suite": "legacy_regression",
+      "family": "unanswerable"
+    },
+    {
+      "id": "B100",
+      "question": "月球种植许可证要怎么申请？",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "legacy_regression",
+      "family": "unanswerable"
+    },
+    {
+      "id": "N001",
+      "question": "纸币既用于标价又用于付钱，这两项分别属于什么职能？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-001"
+      ],
+      "key_points": [
+        "价值尺度",
+        "流通手段"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-001"
+    },
+    {
+      "id": "N002",
+      "question": "把货币当作财富保留下来，和用货币购买商品有什么不同？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-001"
+      ],
+      "key_points": [
+        "价值尺度",
+        "流通手段"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-001"
+    },
+    {
+      "id": "N003",
+      "question": "商场挂着价格标签但顾客没付款，是否已经体现价值尺度？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-002"
+      ],
+      "key_points": [
+        "值多少",
+        "怎样成交"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-002"
+    },
+    {
+      "id": "N004",
+      "question": "今天买东西与下个月偿还欠款，在货币职能上如何区分？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-002"
+      ],
+      "key_points": [
+        "值多少",
+        "怎样成交"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-002"
+    },
+    {
+      "id": "N005",
+      "question": "为什么两种硬币按固定比例兑换时，含金量高的反而退出流通？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-003"
+      ],
+      "key_points": [
+        "法定",
+        "收藏"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-003"
+    },
+    {
+      "id": "N006",
+      "question": "没有法定比价约束，能否直接套用劣币驱逐良币解释竞争？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-003"
+      ],
+      "key_points": [
+        "法定",
+        "收藏"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-003"
+    },
+    {
+      "id": "N007",
+      "question": "面额与金属自身价值一致的货币叫什么？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-004"
+      ],
+      "key_points": [
+        "内在价值",
+        "贵金属"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-004"
+    },
+    {
+      "id": "N008",
+      "question": "现代纸币不承诺兑换同等贵金属，为什么仍能执行货币职能？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-004"
+      ],
+      "key_points": [
+        "内在价值",
+        "贵金属"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-004"
+    },
+    {
+      "id": "N009",
+      "question": "两种金币的含金量不同，早期如何确定货币之间的兑换基础？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-005"
+      ],
+      "key_points": [
+        "含金量",
+        "金平价"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-005"
+    },
+    {
+      "id": "N010",
+      "question": "金块本位、金币本位和金汇兑本位属于哪一种历史制度？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-005"
+      ],
+      "key_points": [
+        "含金量",
+        "金平价"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-005"
+    },
+    {
+      "id": "N011",
+      "question": "储备货币要不断提供国际流动性，为什么又可能伤害兑换承诺？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-006"
+      ],
+      "key_points": [
+        "流动性",
+        "信心"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-006"
+    },
+    {
+      "id": "N012",
+      "question": "布雷顿森林体系中的美元供应与黄金兑换信心为何存在矛盾？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-006"
+      ],
+      "key_points": [
+        "流动性",
+        "信心"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-006"
+    },
+    {
+      "id": "N013",
+      "question": "两国相同商品的购买能力不同，购买力平价如何比较汇率？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-007"
+      ],
+      "key_points": [
+        "价格水平",
+        "通胀"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-007"
+    },
+    {
+      "id": "N014",
+      "question": "只比较两国通胀率差异，属于绝对购买力平价还是相对形式？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-007"
+      ],
+      "key_points": [
+        "价格水平",
+        "通胀"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-007"
+    },
+    {
+      "id": "N015",
+      "question": "一美元需要更多本币购买，是本币升值还是贬值？请说明标价方式。",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-008"
+      ],
+      "key_points": [
+        "本币贬值",
+        "本币升值"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-008"
+    },
+    {
+      "id": "N016",
+      "question": "一单位本币能够兑换更多外币，这属于哪种标价变化？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-008"
+      ],
+      "key_points": [
+        "本币贬值",
+        "本币升值"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-008"
+    },
+    {
+      "id": "N017",
+      "question": "为什么判断一国货币整体变化不能只看美元这一个交易对？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-009"
+      ],
+      "key_points": [
+        "一篮子",
+        "加权"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-009"
+    },
+    {
+      "id": "N018",
+      "question": "根据贸易伙伴权重合成的一篮子汇率指标叫什么？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-009"
+      ],
+      "key_points": [
+        "一篮子",
+        "加权"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-009"
+    },
+    {
+      "id": "N019",
+      "question": "保持汇率稳定会不会占用储备并限制货币政策空间？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-010"
+      ],
+      "key_points": [
+        "储备",
+        "波动"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-010"
+    },
+    {
+      "id": "N020",
+      "question": "让汇率随供求变化有什么好处，又会增加什么不确定性？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-010"
+      ],
+      "key_points": [
+        "储备",
+        "波动"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-010"
+    },
+    {
+      "id": "N021",
+      "question": "把未来稳定收益除以折现率来估值，为什么不能适用于任何资产？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-011"
+      ],
+      "key_points": [
+        "恒定",
+        "风险"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-011"
+    },
+    {
+      "id": "N022",
+      "question": "永久恒定现金流的资本化简式和真实企业估值之间还差哪些假设？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-011"
+      ],
+      "key_points": [
+        "恒定",
+        "风险"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-011"
+    },
+    {
+      "id": "N023",
+      "question": "出票人自己承诺付款和委托第三方付款，在票据类型上如何区分？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-012"
+      ],
+      "key_points": [
+        "委托",
+        "承诺"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-012"
+    },
+    {
+      "id": "N024",
+      "question": "汇票、本票及支票为什么要分别看承诺主体和付款人？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-012"
+      ],
+      "key_points": [
+        "委托",
+        "承诺"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-012"
+    },
+    {
+      "id": "N025",
+      "question": "一项融资主要依靠项目自己的收入还款，而非发起人的所有资产，属于什么思路？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-013"
+      ],
+      "key_points": [
+        "项目",
+        "现金流"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-013"
+    },
+    {
+      "id": "N026",
+      "question": "评估项目融资为什么需要看合同安排和现金流，而不只看股东信用？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-013"
+      ],
+      "key_points": [
+        "项目",
+        "现金流"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-013"
+    },
+    {
+      "id": "N027",
+      "question": "商业银行除了存贷款、转账与存款创造，还能提供哪一类职能？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-014"
+      ],
+      "key_points": [
+        "信用中介",
+        "支付中介"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-014"
+    },
+    {
+      "id": "N028",
+      "question": "财务咨询、融资代理和代收代付属于商业银行的哪项职能？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-014"
+      ],
+      "key_points": [
+        "信用中介",
+        "支付中介"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-014"
+    },
+    {
+      "id": "N029",
+      "question": "银行把甲账户的钱转给乙，与把储户的钱贷给企业，分别提供什么服务？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-015"
+      ],
+      "key_points": [
+        "划拨",
+        "盈余方"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-015"
+    },
+    {
+      "id": "N030",
+      "question": "一次普通转账为什么不能直接视为商业银行新增贷款？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-015"
+      ],
+      "key_points": [
+        "划拨",
+        "盈余方"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-015"
+    },
+    {
+      "id": "N031",
+      "question": "银行吸收存款与向客户贷款，分别处在资金来源还是运用一侧？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-016"
+      ],
+      "key_points": [
+        "资金运用",
+        "资金来源"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-016"
+    },
+    {
+      "id": "N032",
+      "question": "担保没有按普通贷款列在表内，是否就不会发生信用风险？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-016"
+      ],
+      "key_points": [
+        "资金运用",
+        "资金来源"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-016"
+    },
+    {
+      "id": "N033",
+      "question": "存款保险除了保护个别储户，还希望实现什么体系层面的目标？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-017"
+      ],
+      "key_points": [
+        "保护存款人",
+        "不提供现行限额"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-017"
+    },
+    {
+      "id": "N034",
+      "question": "这份学习材料是否能确定今天每家银行适用的保险限额？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-017"
+      ],
+      "key_points": [
+        "保护存款人",
+        "不提供现行限额"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-017"
+    },
+    {
+      "id": "N035",
+      "question": "中央银行代理国库和管理货币发行，是同一项职能吗？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-018"
+      ],
+      "key_points": [
+        "发行的银行",
+        "银行的银行"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-018"
+    },
+    {
+      "id": "N036",
+      "question": "准备金与银行间清算为什么属于中央银行作为银行的银行的职责？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-018"
+      ],
+      "key_points": [
+        "发行的银行",
+        "银行的银行"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-018"
+    },
+    {
+      "id": "N037",
+      "question": "暂时无法借到钱与资产不足偿还债务，为什么不能用同一种救助逻辑？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-019"
+      ],
+      "key_points": [
+        "流动性",
+        "偿付能力"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-019"
+    },
+    {
+      "id": "N038",
+      "question": "最后贷款人支持流动性，是否等于承诺赔偿金融机构的一切亏损？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-019"
+      ],
+      "key_points": [
+        "流动性",
+        "偿付能力"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-019"
+    },
+    {
+      "id": "N039",
+      "question": "金融市场怎样帮助资金从盈余方到需求方，并形成资产价格？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-020"
+      ],
+      "key_points": [
+        "配置资金",
+        "风险转移"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-020"
+    },
+    {
+      "id": "N040",
+      "question": "把损失风险交给其他交易者之后，社会总风险是否已经消失？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-020"
+      ],
+      "key_points": [
+        "配置资金",
+        "风险转移"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-020"
+    },
+    {
+      "id": "N041",
+      "question": "短期周转资金的融资与企业长期资本筹集，应怎样区分市场类型？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-021"
+      ],
+      "key_points": [
+        "短期",
+        "长期"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-021"
+    },
+    {
+      "id": "N042",
+      "question": "国库券、同业拆借和股票为什么不宜都归为同一种融资市场？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-021"
+      ],
+      "key_points": [
+        "短期",
+        "长期"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-021"
+    },
+    {
+      "id": "N043",
+      "question": "先卖出证券再约定购回，从融资的角度如何理解这笔交易？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-022"
+      ],
+      "key_points": [
+        "证券",
+        "抵押"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-022"
+    },
+    {
+      "id": "N044",
+      "question": "回购交易有证券担保，是否仍需要考察交易对手和抵押品条件？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-022"
+      ],
+      "key_points": [
+        "证券",
+        "抵押"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-022"
+    },
+    {
+      "id": "N045",
+      "question": "购买一项未来交易权利，和必须履行未来交易义务有什么区别？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-023"
+      ],
+      "key_points": [
+        "标准化",
+        "权利"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-023"
+    },
+    {
+      "id": "N046",
+      "question": "企业约定交换两种现金流，属于哪类金融衍生安排？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-023"
+      ],
+      "key_points": [
+        "标准化",
+        "权利"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-023"
+    },
+    {
+      "id": "N047",
+      "question": "专业人士集合大家的钱进行投资，是不是意味着每个投资者没有风险？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-024"
+      ],
+      "key_points": [
+        "承担",
+        "不是保本"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-024"
+    },
+    {
+      "id": "N048",
+      "question": "评价投资基金时，除了经理能力还应该看哪些产品要素？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-024"
+      ],
+      "key_points": [
+        "承担",
+        "不是保本"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-024"
+    },
+    {
+      "id": "N049",
+      "question": "企业卖债券给投资者，虽然有承销机构参与，仍可能是直接融资吗？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-025"
+      ],
+      "key_points": [
+        "融资关系",
+        "风险承担"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-025"
+    },
+    {
+      "id": "N050",
+      "question": "储户先把钱交给银行再由银行放贷，为什么属于间接融资？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-025"
+      ],
+      "key_points": [
+        "融资关系",
+        "风险承担"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-025"
+    },
+    {
+      "id": "N051",
+      "question": "评价金融体系时为什么不能只罗列银行、证券公司等机构名称？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-026"
+      ],
+      "key_points": [
+        "跨时空",
+        "激励"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-026"
+    },
+    {
+      "id": "N052",
+      "question": "资源跨时间转移、分担风险与改善激励，在金融功能观中有什么意义？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-026"
+      ],
+      "key_points": [
+        "跨时空",
+        "激励"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-026"
+    },
+    {
+      "id": "N053",
+      "question": "投资者会因为心理偏差而判断失误，这种观点属于什么分析方向？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-027"
+      ],
+      "key_points": [
+        "有限理性",
+        "偏差"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-027"
+    },
+    {
+      "id": "N054",
+      "question": "为什么研究市场价格时，有时需要放松所有参与者完全理性的假设？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-027"
+      ],
+      "key_points": [
+        "有限理性",
+        "偏差"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-027"
+    },
+    {
+      "id": "N055",
+      "question": "非传统银行渠道做期限转换和杠杆融资，为何值得关注？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-028"
+      ],
+      "key_points": [
+        "期限转换",
+        "流动性转换"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-028"
+    },
+    {
+      "id": "N056",
+      "question": "影子银行是否能仅凭某个机构不是商业银行就完成界定？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-028"
+      ],
+      "key_points": [
+        "期限转换",
+        "流动性转换"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-028"
+    },
+    {
+      "id": "N057",
+      "question": "支付、证券保管、清算、结算各类系统为什么要按职责区分？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-029"
+      ],
+      "key_points": [
+        "支付系统",
+        "证券结算"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-029"
+    },
+    {
+      "id": "N058",
+      "question": "中央证券托管机构与中央交易对手是否承担相同的基础设施功能？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-029"
+      ],
+      "key_points": [
+        "支付系统",
+        "证券结算"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-029"
+    },
+    {
+      "id": "N059",
+      "question": "支付页面显示请求已提交，是否能据此认定最终结算已经完成？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-030"
+      ],
+      "key_points": [
+        "指令",
+        "清算"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-030"
+    },
+    {
+      "id": "N060",
+      "question": "支付指令发出后，机构之间还要经历哪些不同处理环节？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-030"
+      ],
+      "key_points": [
+        "指令",
+        "清算"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-030"
+    },
+    {
+      "id": "N061",
+      "question": "由同一机构分别对买方和卖方承担交易对手角色的安排叫什么？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-031"
+      ],
+      "key_points": [
+        "买卖双方",
+        "保证金"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-031"
+    },
+    {
+      "id": "N062",
+      "question": "设立中央交易对手以后，是否还需要保证金和违约管理？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-031"
+      ],
+      "key_points": [
+        "买卖双方",
+        "保证金"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-031"
+    },
+    {
+      "id": "N063",
+      "question": "账面利息收入增加但物价也上涨，应该怎样比较真实收益？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-032"
+      ],
+      "key_points": [
+        "购买力",
+        "通胀"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-032"
+    },
+    {
+      "id": "N064",
+      "question": "实际利率计算中，预期通胀与已经发生的通胀为什么不能不加说明地混用？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-032"
+      ],
+      "key_points": [
+        "购买力",
+        "通胀"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-032"
+    },
+    {
+      "id": "N065",
+      "question": "从储蓄与投资分析利率，与从持币意愿分析利率有什么不同？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-033"
+      ],
+      "key_points": [
+        "实际因素",
+        "货币供求"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-033"
+    },
+    {
+      "id": "N066",
+      "question": "可贷资金理论如何把实际因素和货币因素放进同一分析框架？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-033"
+      ],
+      "key_points": [
+        "实际因素",
+        "货币供求"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-033"
+    },
+    {
+      "id": "N067",
+      "question": "让市场决定更多融资价格后，金融机构需要提高哪些能力？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-034"
+      ],
+      "key_points": [
+        "定价",
+        "不意味着"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-034"
+    },
+    {
+      "id": "N068",
+      "question": "利率市场化为什么不等于中央银行不再影响利率？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-034"
+      ],
+      "key_points": [
+        "定价",
+        "不意味着"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-034"
+    },
+    {
+      "id": "N069",
+      "question": "短期市场利率的上界一般与央行贷款便利还是存款便利相关？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-035"
+      ],
+      "key_points": [
+        "上限",
+        "下限"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-035"
+    },
+    {
+      "id": "N070",
+      "question": "在利率走廊中，存款便利和贷款便利分别约束哪一侧利率？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-035"
+      ],
+      "key_points": [
+        "上限",
+        "下限"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-035"
+    },
+    {
+      "id": "N071",
+      "question": "日常付账、准备意外支出以及等待债券价格变化，分别是什么持币动机？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-036"
+      ],
+      "key_points": [
+        "日常",
+        "意外"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-036"
+    },
+    {
+      "id": "N072",
+      "question": "为预防突然失业而持有现金，与预期利率上升而持币有什么区别？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-036"
+      ],
+      "key_points": [
+        "日常",
+        "意外"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-036"
+    },
+    {
+      "id": "N073",
+      "question": "利率已经很低时，为什么增发货币仍可能无法明显扩大支出？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-037"
+      ],
+      "key_points": [
+        "很低",
+        "传导"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-037"
+    },
+    {
+      "id": "N074",
+      "question": "每个处于低利率的国家都必然进入流动性陷阱吗？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-037"
+      ],
+      "key_points": [
+        "很低",
+        "传导"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-037"
+    },
+    {
+      "id": "N075",
+      "question": "MV=PT与M=kPY分别从交易流量还是持币余额出发？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-038"
+      ],
+      "key_points": [
+        "MV=PT",
+        "M=kPY"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-038"
+    },
+    {
+      "id": "N076",
+      "question": "费雪和剑桥货币需求理论为什么不能只看公式长得类似就混用变量？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-038"
+      ],
+      "key_points": [
+        "MV=PT",
+        "M=kPY"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-038"
+    },
+    {
+      "id": "N077",
+      "question": "估算长期持币需求时，只用某个月突然收到的一笔奖金合理吗？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-039"
+      ],
+      "key_points": [
+        "长期平均",
+        "临时"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-039"
+    },
+    {
+      "id": "N078",
+      "question": "恒久性收入关注的是预期长期水平还是当期收入的所有波动？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-039"
+      ],
+      "key_points": [
+        "长期平均",
+        "临时"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-039"
+    },
+    {
+      "id": "N079",
+      "question": "银行存贷循环形成更多存款，是否意味着实际商品也同时增加？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-040"
+      ],
+      "key_points": [
+        "准备金",
+        "派生"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-040"
+    },
+    {
+      "id": "N080",
+      "question": "原始存款与派生存款之间如何通过准备金和贷款联系起来？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-040"
+      ],
+      "key_points": [
+        "准备金",
+        "派生"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-040"
+    },
+    {
+      "id": "N081",
+      "question": "基础货币里除了公众持有的现金，还涉及银行体系的什么资金？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-041"
+      ],
+      "key_points": [
+        "货币供给量",
+        "基础货币"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-041"
+    },
+    {
+      "id": "N082",
+      "question": "货币乘数是货币供给和基础货币的比例，为什么不应被当作固定常数？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-041"
+      ],
+      "key_points": [
+        "货币供给量",
+        "基础货币"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-041"
+    },
+    {
+      "id": "N083",
+      "question": "忽略现金漏损和超额准备金，为什么会高估简单乘数公式的适用性？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-042"
+      ],
+      "key_points": [
+        "现金漏损",
+        "不能"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-042"
+    },
+    {
+      "id": "N084",
+      "question": "存款扩张倍数与货币乘数采用的分子和分母是否完全相同？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-042"
+      ],
+      "key_points": [
+        "现金漏损",
+        "不能"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-042"
+    },
+    {
+      "id": "N085",
+      "question": "央行卖出证券并约定将来买回，对当期流动性产生什么方向的影响？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-043"
+      ],
+      "key_points": [
+        "回笼",
+        "投放"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-043"
+    },
+    {
+      "id": "N086",
+      "question": "为什么判断正回购、逆回购的资金方向前必须先确定观察主体？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-043"
+      ],
+      "key_points": [
+        "回笼",
+        "投放"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-043"
+    },
+    {
+      "id": "N087",
+      "question": "只有一种商品短期涨价，足以认定总体通货膨胀吗？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-044"
+      ],
+      "key_points": [
+        "总体价格",
+        "购买力"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-044"
+    },
+    {
+      "id": "N088",
+      "question": "工资数额变高但生活购买力降低，只看名义收入会造成什么判断偏差？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-044"
+      ],
+      "key_points": [
+        "总体价格",
+        "购买力"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-044"
+    },
+    {
+      "id": "N089",
+      "question": "成本上升导致物价上涨，与需求过旺引发通胀有什么不同？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-045"
+      ],
+      "key_points": [
+        "预期",
+        "供给冲击"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-045"
+    },
+    {
+      "id": "N090",
+      "question": "滞胀为什么让简单的失业与通胀替代关系受到挑战？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-045"
+      ],
+      "key_points": [
+        "预期",
+        "供给冲击"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-045"
+    },
+    {
+      "id": "N091",
+      "question": "准备金率、再贴现和公开市场业务如何归入货币政策工具框架？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-046"
+      ],
+      "key_points": [
+        "准备金率",
+        "再贴现"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-046"
+    },
+    {
+      "id": "N092",
+      "question": "物价、就业、增长和国际收支目标之间为什么需要政策协调？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-046"
+      ],
+      "key_points": [
+        "准备金率",
+        "再贴现"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-046"
+    },
+    {
+      "id": "N093",
+      "question": "只监管一家机构的稳健经营，能否完全替代宏观审慎的系统视角？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-047"
+      ],
+      "key_points": [
+        "顺周期",
+        "相互配合"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-047"
+    },
+    {
+      "id": "N094",
+      "question": "货币政策与宏观审慎为什么不是两套互不相关的工作？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-047"
+      ],
+      "key_points": [
+        "顺周期",
+        "相互配合"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-047"
+    },
+    {
+      "id": "N095",
+      "question": "泰勒规则为什么同时考虑通胀偏离和产出偏离？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-048"
+      ],
+      "key_points": [
+        "产出缺口",
+        "时滞"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-048"
+    },
+    {
+      "id": "N096",
+      "question": "政策制定者认识问题、采取行动到效果显现，分别涉及什么时滞？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-048"
+      ],
+      "key_points": [
+        "产出缺口",
+        "时滞"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-048"
+    },
+    {
+      "id": "N097",
+      "question": "比较同期限不同信用条件的债券收益，是期限结构还是风险结构？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-049"
+      ],
+      "key_points": [
+        "可比风险",
+        "同期限"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-049"
+    },
+    {
+      "id": "N098",
+      "question": "收益率曲线倒挂时，为什么不能直接断定经济衰退一定发生？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-049"
+      ],
+      "key_points": [
+        "可比风险",
+        "同期限"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-049"
+    },
+    {
+      "id": "N099",
+      "question": "预期未来短期利率，与期限市场独立供求分别对应哪类理论？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-050"
+      ],
+      "key_points": [
+        "预期",
+        "独立供需"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-050"
+    },
+    {
+      "id": "N100",
+      "question": "长期债券收益里除了短期利率预期，为什么还可能需要流动性补偿？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-050"
+      ],
+      "key_points": [
+        "预期",
+        "独立供需"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-050"
+    },
+    {
+      "id": "N101",
+      "question": "申请贷款时隐瞒风险和贷款到账后改变用途，分别是什么信息问题？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-051"
+      ],
+      "key_points": [
+        "交易前",
+        "交易后"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-051"
+    },
+    {
+      "id": "N102",
+      "question": "逆向选择更依赖事前筛选还是事后监督，为什么？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-051"
+      ],
+      "key_points": [
+        "交易前",
+        "交易后"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-051"
+    },
+    {
+      "id": "N103",
+      "question": "资产价格下跌、对手违约、卖不掉资产和系统故障应如何区分风险？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-052"
+      ],
+      "key_points": [
+        "价格变化",
+        "不履约"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-052"
+    },
+    {
+      "id": "N104",
+      "question": "同一金融事件为什么可能同时伴随信用风险与流动性风险？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-052"
+      ],
+      "key_points": [
+        "价格变化",
+        "不履约"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-052"
+    },
+    {
+      "id": "N105",
+      "question": "为什么有些企业优先使用内部资金，再借债，最后发行新股？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-053"
+      ],
+      "key_points": [
+        "内部资金",
+        "债务"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-053"
+    },
+    {
+      "id": "N106",
+      "question": "啄序理论描述的融资偏好是否等于适用于所有企业的强制顺序？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-053"
+      ],
+      "key_points": [
+        "内部资金",
+        "债务"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-053"
+    },
+    {
+      "id": "N107",
+      "question": "MM无税结论依赖什么市场假设，有税版本又增加了什么影响？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-054"
+      ],
+      "key_points": [
+        "完善市场",
+        "无限举债"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-054"
+    },
+    {
+      "id": "N108",
+      "question": "债务利息有税盾，为什么仍不能推导企业应该无限举债？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-054"
+      ],
+      "key_points": [
+        "完善市场",
+        "无限举债"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-054"
+    },
+    {
+      "id": "N109",
+      "question": "资金绕开银行直接融资，是否代表中介服务从此不再需要？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-055"
+      ],
+      "key_points": [
+        "新渠道",
+        "中介功能"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-055"
+    },
+    {
+      "id": "N110",
+      "question": "金融脱媒之后为什么还可能出现新的专业金融中介？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-055"
+      ],
+      "key_points": [
+        "新渠道",
+        "中介功能"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-055"
+    },
+    {
+      "id": "N111",
+      "question": "把流动性弱但有现金流的资产做成证券，改变了什么，没保证什么？",
+      "category": "concept_application",
+      "gold_ids": [
+        "learn-056"
+      ],
+      "key_points": [
+        "现金流",
+        "不自动"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-056"
+    },
+    {
+      "id": "N112",
+      "question": "讨论资产证券化时为何必须回到基础资产和现金流的风险分配？",
+      "category": "concept_boundary",
+      "gold_ids": [
+        "learn-056"
+      ],
+      "key_points": [
+        "现金流",
+        "不自动"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-056"
+    },
+    {
+      "id": "N113",
+      "question": "固定收益和混合类产品为什么不应该直接放在一起做收益排名？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-benchmark"
+      ],
+      "key_points": [
+        "投资性质",
+        "运作模式"
+      ],
+      "expected_routes": [
+        "wealth_benchmark"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-benchmark"
+    },
+    {
+      "id": "N114",
+      "question": "同业产品收益分位可以作为整个行业排名直接宣传吗？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-benchmark"
+      ],
+      "key_points": [
+        "投资性质",
+        "运作模式"
+      ],
+      "expected_routes": [
+        "wealth_benchmark"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-benchmark"
+    },
+    {
+      "id": "N115",
+      "question": "对标本司产品时，为什么必须使用相同的净值起止日期？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-benchmark"
+      ],
+      "key_points": [
+        "投资性质",
+        "运作模式"
+      ],
+      "expected_routes": [
+        "wealth_benchmark"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-benchmark"
+    },
+    {
+      "id": "N116",
+      "question": "模拟净值没有分红，真实份额的收益口径还需要补哪项核对？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-benchmark"
+      ],
+      "key_points": [
+        "投资性质",
+        "运作模式"
+      ],
+      "expected_routes": [
+        "wealth_benchmark"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-benchmark"
+    },
+    {
+      "id": "N117",
+      "question": "顺延后的实际产品天数可能变化，应该怎样展示给发行人员？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-calendar"
+      ],
+      "key_points": [
+        "顺延",
+        "前一个营业日"
+      ],
+      "expected_routes": [
+        "issuance"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-calendar"
+    },
+    {
+      "id": "N118",
+      "question": "排期的Skill是否有权直接更改产品合同约定期限？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-calendar"
+      ],
+      "key_points": [
+        "顺延",
+        "前一个营业日"
+      ],
+      "expected_routes": [
+        "issuance"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-calendar"
+    },
+    {
+      "id": "N119",
+      "question": "复核发行时间表除了到期日，还需要看时区和什么版本信息？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-calendar"
+      ],
+      "key_points": [
+        "顺延",
+        "前一个营业日"
+      ],
+      "expected_routes": [
+        "issuance"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-calendar"
+    },
+    {
+      "id": "N120",
+      "question": "周发行和双周发行由什么配置决定，能让模型自行猜吗？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-calendar"
+      ],
+      "key_points": [
+        "顺延",
+        "前一个营业日"
+      ],
+      "expected_routes": [
+        "issuance"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-calendar"
+    },
+    {
+      "id": "N121",
+      "question": "周报有重复业务主键，是取第一条就够了还是要报告冲突？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-weekly"
+      ],
+      "key_points": [
+        "源文件",
+        "字段名"
+      ],
+      "expected_routes": [
+        "weekly_report"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-weekly"
+    },
+    {
+      "id": "N122",
+      "question": "自动处理周报时可以默认表头总在第一行吗？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-weekly"
+      ],
+      "key_points": [
+        "源文件",
+        "字段名"
+      ],
+      "expected_routes": [
+        "weekly_report"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-weekly"
+    },
+    {
+      "id": "N123",
+      "question": "金额、百分比、括号负数是否可以使用同一套无差别数值转换？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-weekly"
+      ],
+      "key_points": [
+        "源文件",
+        "字段名"
+      ],
+      "expected_routes": [
+        "weekly_report"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-weekly"
+    },
+    {
+      "id": "N124",
+      "question": "重跑周报流程时应该覆盖源文件还是保留可追溯输入？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-weekly"
+      ],
+      "key_points": [
+        "源文件",
+        "字段名"
+      ],
+      "expected_routes": [
+        "weekly_report"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-weekly"
+    },
+    {
+      "id": "N125",
+      "question": "初始风险评级为什么要按当前采集节点判断字段能否使用？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-onboarding"
+      ],
+      "key_points": [
+        "首次入金后",
+        "不能"
+      ],
+      "expected_routes": [
+        "onboarding"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-onboarding"
+    },
+    {
+      "id": "N126",
+      "question": "开户字段需求单应包括来源、使用节点和哪些责任信息？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-onboarding"
+      ],
+      "key_points": [
+        "首次入金后",
+        "不能"
+      ],
+      "expected_routes": [
+        "onboarding"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-onboarding"
+    },
+    {
+      "id": "N127",
+      "question": "使用这个开户模拟工具是否等于对真实客户完成风险定级？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-onboarding"
+      ],
+      "key_points": [
+        "首次入金后",
+        "不能"
+      ],
+      "expected_routes": [
+        "onboarding"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-onboarding"
+    },
+    {
+      "id": "N128",
+      "question": "银行关联信息首次入金后才采集，为什么不能反推之前评分？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-onboarding"
+      ],
+      "key_points": [
+        "首次入金后",
+        "不能"
+      ],
+      "expected_routes": [
+        "onboarding"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-onboarding"
+    },
+    {
+      "id": "N129",
+      "question": "案件邮件出现多个候选，是否能随意选择第一个并结束核查？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-kep"
+      ],
+      "key_points": [
+        "参考号",
+        "未找到"
+      ],
+      "expected_routes": [
+        "kep"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-kep"
+    },
+    {
+      "id": "N130",
+      "question": "无法检索、查询报错、编号缺失为什么应分别记录？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-kep"
+      ],
+      "key_points": [
+        "参考号",
+        "未找到"
+      ],
+      "expected_routes": [
+        "kep"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-kep"
+    },
+    {
+      "id": "N131",
+      "question": "案件号分隔符兼容后，还需要检查邮件哪些上下文信息？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-kep"
+      ],
+      "key_points": [
+        "参考号",
+        "未找到"
+      ],
+      "expected_routes": [
+        "kep"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-kep"
+    },
+    {
+      "id": "N132",
+      "question": "案件核查中技术错误与真实业务回复状态应分别由谁确认？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-kep"
+      ],
+      "key_points": [
+        "参考号",
+        "未找到"
+      ],
+      "expected_routes": [
+        "kep"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-kep"
+    },
+    {
+      "id": "N133",
+      "question": "特征窗口、唯一键和数据刷新频率为何需要同时写进需求？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-feature"
+      ],
+      "key_points": [
+        "success",
+        "去重"
+      ],
+      "expected_routes": [
+        "strategy"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-feature"
+    },
+    {
+      "id": "N134",
+      "question": "按小时更新的特征，能否被描述为实时计数？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-feature"
+      ],
+      "key_points": [
+        "success",
+        "去重"
+      ],
+      "expected_routes": [
+        "strategy"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-feature"
+    },
+    {
+      "id": "N135",
+      "question": "自然语言策略生成后，发布目标保持什么状态？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-feature"
+      ],
+      "key_points": [
+        "success",
+        "去重"
+      ],
+      "expected_routes": [
+        "strategy"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-feature"
+    },
+    {
+      "id": "N136",
+      "question": "算法、数据、产品与业务负责人在策略候选核对中分别负责什么？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-feature"
+      ],
+      "key_points": [
+        "success",
+        "去重"
+      ],
+      "expected_routes": [
+        "strategy"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-feature"
+    },
+    {
+      "id": "N137",
+      "question": "多个站点FAQ语义近似，是否可以直接混用中文与土耳其语版本？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-service"
+      ],
+      "key_points": [
+        "授权业务查询",
+        "没有账户实时状态"
+      ],
+      "expected_routes": [
+        "service"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-service"
+    },
+    {
+      "id": "N138",
+      "question": "客服无法找到有效资料时应该保留哪些信息再转人工？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-service"
+      ],
+      "key_points": [
+        "授权业务查询",
+        "没有账户实时状态"
+      ],
+      "expected_routes": [
+        "service"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-service"
+    },
+    {
+      "id": "N139",
+      "question": "旧政策译文看起来很新，为什么仍要核查对应原文版本？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-service"
+      ],
+      "key_points": [
+        "授权业务查询",
+        "没有账户实时状态"
+      ],
+      "expected_routes": [
+        "service"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-service"
+    },
+    {
+      "id": "N140",
+      "question": "知识库没有账户实时状态，是否可以推断冻结或退款已完成？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-service"
+      ],
+      "key_points": [
+        "授权业务查询",
+        "没有账户实时状态"
+      ],
+      "expected_routes": [
+        "service"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-service"
+    },
+    {
+      "id": "N141",
+      "question": "经营净现金流下降时，助手是否能直接编一个经营恶化的原因？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-financial"
+      ],
+      "key_points": [
+        "资产",
+        "负债加权益"
+      ],
+      "expected_routes": [
+        "statements"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-financial"
+    },
+    {
+      "id": "N142",
+      "question": "母公司与合并报表的金额，能不能不加说明直接相加比较？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-financial"
+      ],
+      "key_points": [
+        "资产",
+        "负债加权益"
+      ],
+      "expected_routes": [
+        "statements"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-financial"
+    },
+    {
+      "id": "N143",
+      "question": "为什么利润表和资产负债表的期间或时点口径不能混为一谈？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-financial"
+      ],
+      "key_points": [
+        "资产",
+        "负债加权益"
+      ],
+      "expected_routes": [
+        "statements"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-financial"
+    },
+    {
+      "id": "N144",
+      "question": "报表有空值时，为了勾稽平衡可以先统一补成零吗？",
+      "category": "business_spec",
+      "gold_ids": [
+        "sim-financial"
+      ],
+      "key_points": [
+        "资产",
+        "负债加权益"
+      ],
+      "expected_routes": [
+        "statements"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-financial"
+    },
+    {
+      "id": "N145",
+      "question": "制作发行Word草稿之前，需要确认哪些产品输入？",
+      "category": "business_spec",
+      "gold_ids": [
+        "guide-material"
+      ],
+      "key_points": [
+        "先确认标题、产品"
+      ],
+      "expected_routes": [
+        "material_fill"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "guide-material"
+    },
+    {
+      "id": "N146",
+      "question": "材料草稿生成之后，真实业务处理之前还需要谁复核？",
+      "category": "business_spec",
+      "gold_ids": [
+        "guide-material"
+      ],
+      "key_points": [
+        "先确认标题、产品"
+      ],
+      "expected_routes": [
+        "material_fill"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "guide-material"
+    },
+    {
+      "id": "N147",
+      "question": "FOF研究开始前，为什么要确定目标、风险预算和基金池？",
+      "category": "business_spec",
+      "gold_ids": [
+        "guide-fof"
+      ],
+      "key_points": [
+        "先确认FOF投资"
+      ],
+      "expected_routes": [
+        "fund_research"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "guide-fof"
+    },
+    {
+      "id": "N148",
+      "question": "比较FOF底层基金应同时观察费用、策略与哪些一致性信息？",
+      "category": "business_spec",
+      "gold_ids": [
+        "guide-fof"
+      ],
+      "key_points": [
+        "先确认FOF投资"
+      ],
+      "expected_routes": [
+        "fund_research"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "guide-fof"
+    },
+    {
+      "id": "N149",
+      "question": "使用研报观点时，为什么不能把历史表现当作将来保证？",
+      "category": "business_spec",
+      "gold_ids": [
+        "guide-date"
+      ],
+      "key_points": [
+        "研究观点应与机构"
+      ],
+      "expected_routes": [
+        "fund_research"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "guide-date"
+    },
+    {
+      "id": "N150",
+      "question": "研究资料的机构名称、发布日期与样本区间应该如何一起展示？",
+      "category": "business_spec",
+      "gold_ids": [
+        "guide-date"
+      ],
+      "key_points": [
+        "研究观点应与机构"
+      ],
+      "expected_routes": [
+        "fund_research"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "guide-date"
+    },
+    {
+      "id": "N151",
+      "question": "网页关键词分词查询是否意味着使用了语义Embedding？",
+      "category": "business_spec",
+      "gold_ids": [
+        "guide-guide"
+      ],
+      "key_points": [
+        "浏览器分词、中文"
+      ],
+      "expected_routes": [],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "guide-guide"
+    },
+    {
+      "id": "N152",
+      "question": "这个工作台的本地文件和反馈默认保存在什么位置？",
+      "category": "business_spec",
+      "gold_ids": [
+        "guide-guide"
+      ],
+      "key_points": [
+        "浏览器分词、中文"
+      ],
+      "expected_routes": [],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "guide-guide"
+    },
+    {
+      "id": "N153",
+      "question": "请分别解释双边汇率的标价方式与一篮子有效汇率的用途。",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-008",
+        "learn-009"
+      ],
+      "key_points": [
+        "本币贬值",
+        "本币升值",
+        "一篮子",
+        "加权"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-008/learn-009"
+    },
+    {
+      "id": "N154",
+      "question": "资本化使用的折现率假设，与名义和实际收益的区别应如何分别说明？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-011",
+        "learn-032"
+      ],
+      "key_points": [
+        "恒定",
+        "风险",
+        "购买力",
+        "通胀"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-011/learn-032"
+    },
+    {
+      "id": "N155",
+      "question": "商业银行和中央银行分别有哪些职能？请分开列出。",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-014",
+        "learn-018"
+      ],
+      "key_points": [
+        "信用中介",
+        "支付中介",
+        "发行的银行",
+        "银行的银行"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-014/learn-018"
+    },
+    {
+      "id": "N156",
+      "question": "存款保险与最后贷款人的目的和使用边界有什么不同？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-017",
+        "learn-019"
+      ],
+      "key_points": [
+        "保护存款人",
+        "不提供现行限额",
+        "流动性",
+        "偿付能力"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-017/learn-019"
+    },
+    {
+      "id": "N157",
+      "question": "金融市场的功能与金融基础设施的职责分别是什么？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-020",
+        "learn-029"
+      ],
+      "key_points": [
+        "配置资金",
+        "风险转移",
+        "支付系统",
+        "证券结算"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-020/learn-029"
+    },
+    {
+      "id": "N158",
+      "question": "短期与长期融资市场的区别，与直接和间接融资的区别是同一维度吗？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-021",
+        "learn-025"
+      ],
+      "key_points": [
+        "短期",
+        "长期",
+        "融资关系",
+        "风险承担"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-021/learn-025"
+    },
+    {
+      "id": "N159",
+      "question": "先解释回购的融资实质，再说明央行正回购的资金方向。",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-022",
+        "learn-043"
+      ],
+      "key_points": [
+        "证券",
+        "抵押",
+        "回笼",
+        "投放"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-022/learn-043"
+    },
+    {
+      "id": "N160",
+      "question": "请分别说明期权与互换的定义，以及信用和市场风险的区别。",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-023",
+        "learn-052"
+      ],
+      "key_points": [
+        "标准化",
+        "权利",
+        "价格变化",
+        "不履约"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-023/learn-052"
+    },
+    {
+      "id": "N161",
+      "question": "集合资金进行投资与把资产现金流证券化，是同一类安排吗？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-024",
+        "learn-056"
+      ],
+      "key_points": [
+        "承担",
+        "不是保本",
+        "现金流",
+        "不自动"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-024/learn-056"
+    },
+    {
+      "id": "N162",
+      "question": "金融体系从功能观察，与传统银行发生金融脱媒应该怎样分别理解？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-026",
+        "learn-055"
+      ],
+      "key_points": [
+        "跨时空",
+        "激励",
+        "新渠道",
+        "中介功能"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-026/learn-055"
+    },
+    {
+      "id": "N163",
+      "question": "请区分支付清算系统的环节与中央交易对手的角色。",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-030",
+        "learn-031"
+      ],
+      "key_points": [
+        "指令",
+        "清算",
+        "买卖双方",
+        "保证金"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-030/learn-031"
+    },
+    {
+      "id": "N164",
+      "question": "名义利息增长怎样结合通货膨胀和货币幻觉理解？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-032",
+        "learn-044"
+      ],
+      "key_points": [
+        "购买力",
+        "通胀",
+        "总体价格"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-032/learn-044"
+    },
+    {
+      "id": "N165",
+      "question": "请分别列出利率理论的三种观点和凯恩斯持币的三种动机。",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-033",
+        "learn-036"
+      ],
+      "key_points": [
+        "实际因素",
+        "货币供求",
+        "日常",
+        "意外"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-033/learn-036"
+    },
+    {
+      "id": "N166",
+      "question": "利率走廊的上下界是什么，传统货币政策工具又有哪些？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-035",
+        "learn-046"
+      ],
+      "key_points": [
+        "上限",
+        "下限",
+        "准备金率",
+        "再贴现"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-035/learn-046"
+    },
+    {
+      "id": "N167",
+      "question": "流动性陷阱和货币政策时滞分别解释了哪种传导困难？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-037",
+        "learn-048"
+      ],
+      "key_points": [
+        "很低",
+        "传导",
+        "产出缺口",
+        "时滞"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-037/learn-048"
+    },
+    {
+      "id": "N168",
+      "question": "剑桥现金余额说与恒久性收入概念分别关注什么？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-038",
+        "learn-039"
+      ],
+      "key_points": [
+        "MV=PT",
+        "M=kPY",
+        "长期平均",
+        "临时"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-038/learn-039"
+    },
+    {
+      "id": "N169",
+      "question": "原始存款如何引出派生存款，以及为什么简单存款扩张倍数并不固定？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-040",
+        "learn-042"
+      ],
+      "key_points": [
+        "准备金",
+        "派生",
+        "现金漏损",
+        "不能"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-040/learn-042"
+    },
+    {
+      "id": "N170",
+      "question": "通胀和失业之间的关系，与宏观审慎关注的风险如何分别说明？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-045",
+        "learn-047"
+      ],
+      "key_points": [
+        "预期",
+        "供给冲击",
+        "顺周期",
+        "相互配合"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-045/learn-047"
+    },
+    {
+      "id": "N171",
+      "question": "收益率曲线倒挂是什么，期限结构三种理论又怎样解释曲线？",
+      "category": "multi_source",
+      "gold_ids": [
+        "learn-049",
+        "learn-050"
+      ],
+      "key_points": [
+        "可比风险",
+        "同期限",
+        "预期",
+        "独立供需"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-049/learn-050"
+    },
+    {
+      "id": "N172",
+      "question": "发行排期和周报清洗分别应检查哪些日期与数据口径？",
+      "category": "multi_source",
+      "gold_ids": [
+        "sim-calendar",
+        "sim-weekly"
+      ],
+      "key_points": [
+        "顺延",
+        "前一个营业日",
+        "源文件",
+        "字段名"
+      ],
+      "expected_routes": [
+        "issuance",
+        "weekly_report"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-calendar/sim-weekly"
+    },
+    {
+      "id": "N173",
+      "question": "那它成立需要什么条件？",
+      "category": "followup",
+      "gold_ids": [
+        "learn-003"
+      ],
+      "key_points": [
+        "法定",
+        "收藏"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-003",
+      "previous": "劣币驱逐良币"
+    },
+    {
+      "id": "N174",
+      "question": "那相对形式看什么变化？",
+      "category": "followup",
+      "gold_ids": [
+        "learn-007"
+      ],
+      "key_points": [
+        "价格水平",
+        "通胀"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-007",
+      "previous": "购买力平价"
+    },
+    {
+      "id": "N175",
+      "question": "那维护稳定会带来什么代价？",
+      "category": "followup",
+      "gold_ids": [
+        "learn-010"
+      ],
+      "key_points": [
+        "储备",
+        "波动"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-010",
+      "previous": "固定汇率与浮动汇率"
+    },
+    {
+      "id": "N176",
+      "question": "那第四项具体是什么？",
+      "category": "followup",
+      "gold_ids": [
+        "learn-014"
+      ],
+      "key_points": [
+        "信用中介",
+        "支付中介"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-014",
+      "previous": "商业银行的四个职能"
+    },
+    {
+      "id": "N177",
+      "question": "那这份资料能说明目前限额吗？",
+      "category": "followup",
+      "gold_ids": [
+        "learn-017"
+      ],
+      "key_points": [
+        "保护存款人",
+        "不提供现行限额"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-017",
+      "previous": "存款保险制度"
+    },
+    {
+      "id": "N178",
+      "question": "那流动性问题与偿付能力能混同吗？",
+      "category": "followup",
+      "gold_ids": [
+        "learn-019"
+      ],
+      "key_points": [
+        "流动性",
+        "偿付能力"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-019",
+      "previous": "最后贷款人"
+    },
+    {
+      "id": "N179",
+      "question": "那专业管理是不是保本？",
+      "category": "followup",
+      "gold_ids": [
+        "learn-024"
+      ],
+      "key_points": [
+        "承担",
+        "不是保本"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-024",
+      "previous": "投资基金"
+    },
+    {
+      "id": "N180",
+      "question": "那应该用哪种口径看购买力？",
+      "category": "followup",
+      "gold_ids": [
+        "learn-032"
+      ],
+      "key_points": [
+        "购买力",
+        "通胀"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-032",
+      "previous": "名义利率与实际利率"
+    },
+    {
+      "id": "N181",
+      "question": "那上限对应哪一种便利？",
+      "category": "followup",
+      "gold_ids": [
+        "learn-035"
+      ],
+      "key_points": [
+        "上限",
+        "下限"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-035",
+      "previous": "利率走廊"
+    },
+    {
+      "id": "N182",
+      "question": "那商品数量也跟着增加吗？",
+      "category": "followup",
+      "gold_ids": [
+        "learn-040"
+      ],
+      "key_points": [
+        "准备金",
+        "派生"
+      ],
+      "expected_routes": [
+        "finance_learning"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "learn-040",
+      "previous": "原始存款、派生存款与信用创造"
+    },
+    {
+      "id": "N183",
+      "question": "那合同期限能由Skill调整吗？",
+      "category": "followup",
+      "gold_ids": [
+        "sim-calendar"
+      ],
+      "key_points": [
+        "顺延",
+        "前一个营业日"
+      ],
+      "expected_routes": [
+        "issuance"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-calendar",
+      "previous": "发行排期"
+    },
+    {
+      "id": "N184",
+      "question": "那缺失金额可以填零吗？",
+      "category": "followup",
+      "gold_ids": [
+        "sim-weekly"
+      ],
+      "key_points": [
+        "源文件",
+        "字段名"
+      ],
+      "expected_routes": [
+        "weekly_report"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-weekly",
+      "previous": "周报质检"
+    },
+    {
+      "id": "N185",
+      "question": "那首次入金之后的信息能前移吗？",
+      "category": "followup",
+      "gold_ids": [
+        "sim-onboarding"
+      ],
+      "key_points": [
+        "首次入金后",
+        "不能"
+      ],
+      "expected_routes": [
+        "onboarding"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-onboarding",
+      "previous": "开户字段时点"
+    },
+    {
+      "id": "N186",
+      "question": "那找到发送记录意味着什么？",
+      "category": "followup",
+      "gold_ids": [
+        "sim-kep"
+      ],
+      "key_points": [
+        "参考号",
+        "未找到"
+      ],
+      "expected_routes": [
+        "kep"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-kep",
+      "previous": "案件邮件核查"
+    },
+    {
+      "id": "N187",
+      "question": "那它能立即生效吗？",
+      "category": "followup",
+      "gold_ids": [
+        "sim-feature"
+      ],
+      "key_points": [
+        "success",
+        "去重"
+      ],
+      "expected_routes": [
+        "strategy"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-feature",
+      "previous": "特征策略预检"
+    },
+    {
+      "id": "N188",
+      "question": "那现金下降的原因怎么确认？",
+      "category": "followup",
+      "gold_ids": [
+        "sim-financial"
+      ],
+      "key_points": [
+        "资产",
+        "负债加权益"
+      ],
+      "expected_routes": [
+        "statements"
+      ],
+      "expect_abstain": false,
+      "suite": "new_capability",
+      "family": "sim-financial",
+      "previous": "模拟三表核对"
+    },
+    {
+      "id": "N189",
+      "question": "请根据知识库给出本公司2028年未上传的真实利润数字。",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "new_capability",
+      "family": "unanswerable"
+    },
+    {
+      "id": "N190",
+      "question": "我个人账户现在的USDT提现已经到账了吗？",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "new_capability",
+      "family": "unanswerable"
+    },
+    {
+      "id": "N191",
+      "question": "我个人账户的实时可用余额是多少？",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "new_capability",
+      "family": "unanswerable"
+    },
+    {
+      "id": "N192",
+      "question": "明天某只股票一定会涨到多少钱？",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "new_capability",
+      "family": "unanswerable"
+    },
+    {
+      "id": "N193",
+      "question": "下周基金的回报能保证是多少？",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "new_capability",
+      "family": "unanswerable"
+    },
+    {
+      "id": "N194",
+      "question": "请列出量子引力实验设备的维修保养流程。",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "new_capability",
+      "family": "unanswerable"
+    },
+    {
+      "id": "N195",
+      "question": "木星卫星上的居住资格如何申请？",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "new_capability",
+      "family": "unanswerable"
+    },
+    {
+      "id": "N196",
+      "question": "吉他第七弦的制造工艺标准是什么？",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "new_capability",
+      "family": "unanswerable"
+    },
+    {
+      "id": "N197",
+      "question": "本公司尚未提供财务附注，告诉我真实收入确认差错金额。",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "new_capability",
+      "family": "unanswerable"
+    },
+    {
+      "id": "N198",
+      "question": "我本人账户的冻结资金现在是否已恢复成可用余额？",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "new_capability",
+      "family": "unanswerable"
+    },
+    {
+      "id": "N199",
+      "question": "哪个基金能够保证涨而不承受任何价格波动？",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "new_capability",
+      "family": "unanswerable"
+    },
+    {
+      "id": "N200",
+      "question": "根据现有资料判断土星农业保险的保费。",
+      "category": "unanswerable",
+      "gold_ids": [],
+      "key_points": [],
+      "expected_routes": [],
+      "expect_abstain": true,
+      "suite": "new_capability",
+      "family": "unanswerable"
+    }
+  ]
+}

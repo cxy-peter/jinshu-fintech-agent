@@ -1,0 +1,23 @@
+{
+  "scope": "local controlled tests; no real LLM/API/production/user claims",
+  "node_tests": {
+    "passed": 116,
+    "failed": 0
+  },
+  "python_tests": {
+    "passed": 142,
+    "skipped": 2,
+    "skip_reason": "pymongo unavailable"
+  },
+  "eval500": {
+    "passed": 489,
+    "total": 500,
+    "qa": 289,
+    "qa_total": 300,
+    "tool": 100,
+    "evidence": 60,
+    "legacy_loop": 40
+  },
+  "http_browser": "blocked by managed container policy; CI verification separate",
+  "base_commit": "2a91fdb8d1f320d38d6832e7ea9b61187cdba181"
+}

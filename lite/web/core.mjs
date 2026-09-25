@@ -1,3 +1,4 @@
+import {retrievalPlan} from './constraints.mjs';
 /** Browser-first lexical retrieval. No embeddings or learned inference are simulated. */
 export const FLOWS = {
  finance_learning:['金融基础学习','知识','货币 利率 汇率 商业银行 信用创造 支付中介 金融学 概念 区别 名词解释 通胀 债券 央行'],
@@ -63,10 +64,11 @@ export function readingEvidence(hits,index,flow){
   return {...hit,source_chunk_ids:chosen.map(r=>r.id),source_pages:[...new Set(chosen.map(r=>r.page))],content:chosen.map(r=>`【原文第${r.page??'未标'}页 · 片段${r.id}】\n${r.content}`).join('\n\n'),context_expansion:'adjacent_chunks_not_additional_ranked_hits'};
  });
 }
-export function answerQuestion(q,index,{flow=null,last='',topK=5}={}){
+export function answerQuestion(q,index,{flow=null,last='',topK=5,hints=[]}={}){
  const started=performance.now(),rw=rewrite(q,last);const routing=flow?{flow,mode:'manual',reason:'用户明确选择'}:route(rw.followup?last:q,index);flow=routing.flow;
  if(!flow)return{query:q,route:routing,answer:routing.reason,sources:[],verified:false,mode:'clarification',stages:[{node:'Intent',status:'needs_clarification',implementation:'rules'}]};
- const hits=index.search(rw.expanded,{flow,limit:topK});const sourceTerms=[...new Set(tokens(rw.followup?last+' '+q:q))].filter(t=>t.length>1&&!['什么','如何','怎么','为什么','金融','问题'].includes(t));
+ const plan=retrievalPlan(q,hints);rw.retrieval_plan=plan;
+ const hits=index.search(rw.expanded+' '+plan.accepted.join(' '),{flow,limit:topK});const sourceTerms=[...new Set(tokens(rw.followup?last+' '+q:q))].filter(t=>t.length>1&&!['什么','如何','怎么','为什么','金融','问题'].includes(t));
  const direct=hits.some(h=>sourceTerms.some(t=>norm(h.content+' '+h.title).includes(t)));
  const sources=direct?readingEvidence(hits,index,flow):[];
  let answer=sources.length?'依据当前资料，相关内容如下（检索整理，未调用生成模型）：\n\n'+sources.map((h,i)=>`【来源${i+1}】${h.title}${h.page?' · 第'+h.page+'页':''}\n${h.content}`).join('\n\n'):'当前资料中未找到足够的直接依据。请补充资料、改写问题或转人工；不编造规定和账户状态。';
