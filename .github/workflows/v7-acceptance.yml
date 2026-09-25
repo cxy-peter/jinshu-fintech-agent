@@ -1,0 +1,51 @@
+name: V7 readable workflow acceptance
+on:
+  pull_request:
+    paths: ['lite/**', 'jinshu/**', 'tests/**', 'evaluation/**', 'scripts/v7*', '.github/workflows/v7-acceptance.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Restore unchanged PE500 labels and verify preservation
+        run: |
+          python evaluation/build_questions.py
+          python evaluation/build_toolcases.py
+          python scripts/v7_preservation.py
+      - name: Unit tests and static build
+        run: |
+          set -euo pipefail
+          cd lite
+          npm ci --ignore-scripts
+          npm test | tee ../evidence/v7/node-tests.txt
+          npm run build
+      - name: Python adapter regressions and controlled browser setup
+        run: |
+          set -euo pipefail
+          pip install -r requirements.txt pymongo 'playwright==1.55.0'
+          PYTHONPATH=engine/backend:. pytest -q | tee evidence/v7/python-tests.txt
+          python -m playwright install --with-deps chromium
+      - name: Same-label PE500 regression
+        run: node evaluation/run500_v7.mjs
+      - name: Real browser on local HTTP
+        run: |
+          python - <<'PYCODE'
+          from pathlib import Path
+          from reportlab.pdfgen import canvas
+          p=Path('data/mock_pdfs');p.mkdir(exist_ok=True)
+          c=canvas.Canvas(str(p/'06_public_faq.pdf'));c.drawString(60,740,'Synthetic FAQ: keep a draft if the ticket API fails.');c.save()
+          PYCODE
+          python -m http.server 8795 --directory lite/dist > /tmp/jinshu-v7-http.log 2>&1 &
+          sleep 2
+          python lite/tests/browser_v7.py
+      - name: Keep all results including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with: {name: jinshu-v7-acceptance, path: evidence/v7/}
