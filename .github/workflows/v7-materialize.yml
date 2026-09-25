@@ -1,0 +1,72 @@
+name: Materialize verified V7 source
+on:
+  push:
+    branches: ['upgrade/jinshu-v7-readable-governance']
+    paths: ['.github/workflows/v7-materialize.yml']
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: jinshu-v7-materialize, cancel-in-progress: false}
+jobs:
+  materialize:
+    if: github.ref == 'refs/heads/upgrade/jinshu-v7-readable-governance'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: upgrade/jinshu-v7-readable-governance
+          fetch-depth: 0
+      - name: Verify transport and apply readable source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path, PurePosixPath
+          import base64, hashlib, json, lzma, shutil, subprocess
+          root=Path.cwd()
+          expected='2fa0fffa3267d2e405f8c6c8ed75389fa6e27e6355d207576ecd219cf3156419'
+          parts=sorted((root/'.v7-delivery').glob('part-*.b64'))
+          assert [p.name for p in parts]==[f'part-{i:02}.b64' for i in range(9)]
+          raw=base64.b64decode(''.join(p.read_text().strip() for p in parts), validate=True)
+          assert hashlib.sha256(raw).hexdigest()==expected, 'Source transport checksum mismatch; no source changes made'
+          data=json.loads(lzma.decompress(raw))
+          base='2a91fdb8d1f320d38d6832e7ea9b61187cdba181'
+          assert data['base_commit']==base
+          subprocess.run(['git','merge-base','--is-ancestor',base,'HEAD'],check=True)
+          allowed=('docs/','evaluation/','jinshu/','lite/','scripts/','tests/','evidence/v7/')
+          for name,content in data['files'].items():
+              p=PurePosixPath(name)
+              assert not p.is_absolute() and '..' not in p.parts and '.git' not in p.parts
+              assert name.startswith(allowed) or name=='.github/workflows/v7-acceptance.yml'
+              assert p.suffix.lower() not in {'.ttf','.otf','.woff','.woff2'}
+              assert isinstance(content,str) and not (root/name).exists(), name
+          patch=Path('/tmp/jinshu-v7.patch');patch.write_text(data['patch'])
+          subprocess.run(['git','apply','--check',str(patch)],check=True)
+          archive=root/'docs/V6_README_ARCHIVE.md';assert not archive.exists()
+          archive.write_bytes((root/'README.md').read_bytes())
+          names=subprocess.check_output(['git','ls-tree','-r','--name-only',base],text=True).splitlines()
+          retained={}
+          for name in names:
+              if name.startswith(('engine/','services/pi-agent-overlay/')) or name in {'lite/api/answer.js','jinshu/budgets.py','jinshu/policy.py'}:
+                  content=subprocess.check_output(['git','show',f'{base}:{name}'])
+                  retained[name]=hashlib.sha256(content).hexdigest()
+          assert len(retained)>=224, len(retained)
+          subprocess.run(['git','apply',str(patch)],check=True)
+          for name,content in data['files'].items():
+              target=root/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(content)
+          (root/'scripts/v7_preserved_sources.json').write_text(json.dumps(retained,indent=2)+'\n')
+          subprocess.run(['python','evaluation/build_questions.py'],check=True)
+          subprocess.run(['python','evaluation/build_toolcases.py'],check=True)
+          subprocess.run(['python','scripts/v7_preservation.py'],check=True)
+          shutil.rmtree(root/'.v7-delivery')
+          (root/'.github/workflows/v7-materialize.yml').unlink()
+          print('Verified source applied; temporary transport removed. Main and production unchanged.')
+          PY
+      - name: Commit only to upgrade branch
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'feat: integrate readable V7 tasks, constraint guards and evidence-bound policy releases'
+          git push origin HEAD:refs/heads/upgrade/jinshu-v7-readable-governance
