@@ -4,8 +4,7 @@
   "buildCommand": "python scripts/build_unified.py",
   "functions": {
     "index.py": {
-      "maxDuration": 300,
-      "excludeFiles": "{lite/**,engine/frontend/**,engine/pi-agent/**,services/**,tests/**,evaluation/**,evidence/**,workspace/**,docs/**,deploy/**,**/node_modules/**,**/__pycache__/**,**/.env,**/.env.*,**/*.zip,**/*.ttf,**/*.otf,**/*.woff,**/*.woff2,private_corpus/**,private_reference/**,models/**,uploads/**,**/*.pem,**/*.key}"
+      "maxDuration": 300
     }
   },
   "git": {
