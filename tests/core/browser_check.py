@@ -90,7 +90,7 @@ try:
         page.locator('#ws-user').fill('editor');page.locator('#ws-pass').fill('wrong');page.locator('#ws-login').click()
         expect(page.locator('#ws-auth-message')).to_contain_text('错误');passed('workspace_rejects_wrong_password')
         page.locator('#ws-pass').fill('demo-editor');page.locator('#ws-login').click();expect(page.locator('#workspace-account')).to_contain_text('editor')
-        page.locator('[data-tab="library"]').click();page.locator('#lib-example').click();page.locator('#lib-submit').click()
+        page.locator('[data-tab="library"]').click();page.locator('.personal-options > summary').click();page.locator('#lib-example').click();page.locator('#lib-submit').click()
         expect(page.locator('#library-list')).to_contain_text('pending');passed('upload_creates_pending_chunks')
         page.locator('#ws-user').fill('reviewer');page.locator('#ws-pass').fill('demo-reviewer');page.locator('#ws-login').click()
         expect(page.locator('#workspace-account')).to_contain_text('reviewer')

@@ -264,6 +264,8 @@ def create_app(*, env=None, transport=None, clock=time.monotonic):
                 'elapsed_ms': round((time.monotonic()-start)*1000),
                 'persistence': 'not_stored_server_side', 'business_action_executed': False}
         if governed:
+            from .reference_library import verify as verify_references
+            await verify_references(workspace,sources,request)
             result['graph']=governed['graph']
             result['trace']=[{'stage':'intent','workflow':d.workflow,'department':d.department,'method':'explicit_workspace_scope'},
                 {'stage':'rewrite','query':governed['query'],'method':governed['rewrite_mode']},
