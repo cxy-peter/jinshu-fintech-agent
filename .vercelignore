@@ -1,0 +1,34 @@
+# Full Python engine is intentionally INCLUDED.
+.git
+.venv
+venv
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+**/.env
+**/.env.*
+*.zip
+*.tar.gz
+*.patch
+lite
+engine/frontend
+engine/pi-agent
+evidence
+evaluation
+workspace
+docs
+deploy
+tests
+services
+**/*.ttf
+**/*.otf
+**/*.woff
+**/*.woff2
+
+# Explicitly exclude private/local-only data for direct CLI uploads too.
+private_corpus
+private_reference
+models
+uploads
+**/*.pem
+**/*.key

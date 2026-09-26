@@ -13,6 +13,7 @@ from app.storage.mongodb import MongoDB
 from app.storage.redis_store import RedisSessionStore
 from app.retrieval.bm25 import BM25Index
 from .context import run_state
+from .model_config import resolve_chat
 
 
 def local_models() -> bool:
@@ -54,6 +55,14 @@ class AsyncMongo(MongoDB):
 
 class LiveRedis(RedisSessionStore):
     """Only working memory may degrade to single-turn. Jobs never fake ACKs."""
+    async def connect(self):
+        import redis.asyncio as aioredis
+        self._redis = aioredis.from_url(self.settings.redis_addr,
+            db=self.settings.redis_db, decode_responses=True,
+            socket_connect_timeout=5, socket_timeout=10,
+            max_connections=20, health_check_interval=30)
+        await self._redis.ping()
+
     async def get_session(self, session_id):
         try:
             return await asyncio.wait_for(super().get_session(session_id), 2)
@@ -71,21 +80,28 @@ class LiveRedis(RedisSessionStore):
 class ChatClient(LLMClient):
     """Reusable HTTP pool; real returned token counts are recorded, not estimated."""
     def __init__(self, settings):
-        super().__init__(os.getenv('CHAT_BASE_URL', settings.relay_base_url),
-            os.getenv('CHAT_API_KEY', settings.relay_api_key),
-            os.getenv('CHAT_MODEL', settings.relay_model),
-            timeout=float(os.getenv('MODEL_TIMEOUT', '120')),
-            max_tokens=int(os.getenv('CHAT_MAX_TOKENS', '384')))
-        self.http = httpx.AsyncClient(timeout=self.timeout)
+        chat = resolve_chat(fallback=(settings.relay_base_url, settings.relay_api_key, settings.relay_model))
+        if chat.missing or chat.invalid:
+            raise ValueError('chat_configuration_incomplete')
+        self.provider = chat.provider
+        super().__init__(chat.base_url, chat.api_key, chat.model,
+            timeout=float(os.getenv('MODEL_TIMEOUT') or '90'),
+            max_tokens=int(os.getenv('CHAT_MAX_TOKENS') or '2048'))
+        self.http = httpx.AsyncClient(timeout=httpx.Timeout(self.timeout, connect=10),
+            limits=httpx.Limits(max_connections=20, max_keepalive_connections=10),
+            follow_redirects=False)
 
     def name(self):
-        return 'private_openai_compatible' if local_models() else 'approved_external'
+        return 'private_openai_compatible' if local_models() else self.provider
 
     async def complete(self, messages, *, temperature=None, max_tokens=None, response_format=None):
         started = time.perf_counter()
         payload = {'model': self.model, 'messages': messages,
                    'temperature': self.temperature if temperature is None else temperature,
                    'max_tokens': self.max_tokens if max_tokens is None else max_tokens, 'stream': False}
+        if self.provider == 'deepseek':
+            # Bounded multi-stage harness: budget is for the answer, not hidden reasoning.
+            payload['thinking'] = {'type': 'disabled'}
         if response_format:
             payload['response_format'] = response_format
         try:
@@ -95,11 +111,13 @@ class ChatClient(LLMClient):
             content = data['choices'][0]['message']['content']
             if not isinstance(content, str) or not content.strip():
                 raise LLMError('empty completion')
-            event('chat', model=data.get('model', self.model), status='ok',
+            if data['choices'][0].get('finish_reason') == 'length':
+                raise LLMError('completion_token_budget_exhausted')
+            event('chat', provider=self.provider, model=data.get('model', self.model), status='ok',
                   usage=data.get('usage'), latency_ms=round((time.perf_counter()-started)*1000, 2))
             return content
         except Exception as exc:
-            event('chat', model=self.model, status='failed', error=type(exc).__name__)
+            event('chat', provider=self.provider, model=self.model, status='failed', error=type(exc).__name__)
             raise LLMError('model endpoint failed: '+type(exc).__name__) from exc
 
     async def close(self):

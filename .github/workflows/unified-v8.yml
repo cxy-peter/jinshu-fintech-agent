@@ -1,11 +1,11 @@
 name: Unified V8 verification
 on:
   push:
-    branches: ['upgrade/unified-v8-runtime']
+    branches: ['main', 'upgrade/unified-v8-runtime']
   pull_request:
-    paths: ['unified/**','jinshu/**','tests/**','requirements.txt','vercel.json','.github/workflows/unified-v8.yml']
+    paths: ['unified/**','jinshu/**','tests/**','scripts/**','requirements.txt','pyproject.toml','vercel.json','.github/workflows/**']
   workflow_dispatch:
-permissions: {contents: write}
+permissions: {contents: read}
 concurrency:
   group: unified-v8-${{ github.ref }}
   cancel-in-progress: true
@@ -15,32 +15,12 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Apply exact readable adapter delta on upgrade branch
-        if: github.ref == 'refs/heads/upgrade/unified-v8-runtime'
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import subprocess
-          from pathlib import Path
-          p=Path('unified/legacy_delta.patch')
-          if p.exists():
-              names=[r.split('\t')[-1] for r in subprocess.check_output(['git','apply','--numstat',str(p)],text=True).splitlines()]
-              assert names and all(f in {'unified/app.py','tests/test_unified_v8.py','jinshu/tools.py','jinshu/skills.py','jinshu/runtime.py','jinshu/retrieval.py'} for f in names)
-              subprocess.run(['git','apply','--check',str(p)],check=True)
-              subprocess.run(['git','apply',str(p)],check=True)
-              subprocess.run(['git','add',*names],check=True)
-              subprocess.run(['git','rm',str(p)],check=True)
-          PY
-          if ! git diff --cached --quiet; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'Keep archive source identity and refresh department revision after deactivation'
-            git push origin HEAD:upgrade/unified-v8-runtime
-          fi
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
+      - name: Manual deployment safety tests
+        run: node --test tests/manual_deploy.test.mjs
       - name: Complete Python dependencies and regressions
         run: |
           set -euo pipefail

@@ -13,3 +13,12 @@ models/
 *.rar
 *.log
 deploy/compose/.env
+
+# Local credentials, CLI project links and private runtime files
+.env.*
+**/.env.*
+.vercel/
+**/.vercel/
+*.pem
+*.key
+uploads/
