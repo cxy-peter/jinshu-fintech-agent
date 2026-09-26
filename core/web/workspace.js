@@ -12,6 +12,7 @@
   function pct(n){return n===null||n===undefined?'暂无样本':(n*100).toFixed(1)+'%';}
   async function bootstrap(){
     workspace=await api('/api/workspace/bootstrap');
+    by('shared-chat-status').textContent=workspace.shared_reference_count?`共享资料 ${workspace.shared_reference_count} 份 · ${workspace.actor?'问答已可自动检索':'登录后可阅读并检索'}`:'';
     by('persistence-label').textContent=workspace.store==='sqlite'?'保存对话与引用到本机':workspace.store==='unconfigured'?'保存对话（持久化服务未配置）':'保存对话与引用到云端';
     by('workspace-account').textContent=workspace.actor?`${workspace.actor.name} · ${workspace.actor.username} · ${workspace.actor.role}`:'资料审核与运营账号 · 点击展开';
     by('ws-logout').hidden=!workspace.actor;
@@ -39,8 +40,21 @@
   async function libraryLoad(){
     const data=await api('/api/library');library=data.documents;
     by('library-list').replaceChildren(el('h2',`资料版本 · ${library.length}`));
+    if(data.reference_locked)by('library-list').append(el('p',`已恢复 ${data.reference_count} 份学习资料、${data.reference_pages} 页。登录后可查看全文和自动检索。`),button('登录查看共享资料',()=>{const account=by('workspace-account');account.parentElement.open=true;account.scrollIntoView({block:'center'});by('ws-user').focus();}));
+    if(data.reference_count&&!data.reference_locked){
+      by('library-list').append(el('p',`共享学习资料 ${data.reference_count} 份 · ${data.reference_pages} 页 · 恢复版本 ${data.reference_release.slice(0,12)}。所有登录账号可阅读；问答默认检索。`,'muted'));
+      const searchBox=el('input');searchBox.placeholder='查全部资料原文，例如：风险平价';searchBox.setAttribute('aria-label','检索共享资料');
+      const results=el('div');
+      const run=async()=>{const r=await api('/api/library/reference-search?q='+encodeURIComponent(searchBox.value));results.replaceChildren();for(const s of r.sources){const c=card(s.title+' · 第'+s.page+'页');c.append(el('p',s.text),button('查看该页原文',()=>openReference(s.doc_id,s.page)));results.append(c);}if(!r.sources.length)results.append(el('p','没有找到充分匹配的正文，可调整关键词。'));};
+      const bar=el('div','','document-actions');bar.append(searchBox,button('检索共享原文',run),button('下载完整目录',()=>download(library,'jinshu-library-catalog.json')));searchBox.onkeydown=e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();run().catch(report);}};
+      by('library-list').append(bar,results);
+    }
     if(!library.length)by('library-list').append(el('p','还没有可用的共享资料。登录资料编辑后提交，另一账号审核通过才进入问答。'));
     for(const d of library){
+      if(d.origin==='shared_reference'){
+        const c=card(d.title);c.append(el('p',`${d.pages} 页 · 已恢复 · 学习参考 · 版本 ${d.version.slice(0,12)}`,'muted'),button('阅读原文',()=>openReference(d.id,1)));
+        c.append(details('来源与版本',{id:d.id,file_sha256:d.file_sha256,content_hash:d.content_hash,restored_at:d.published_at,scope:d.review_note}));by('library-list').append(c);continue;
+      }
       const c=card(d.title),badges=el('p',`${gName(d.department)} · v${d.version} · ${d.status} · ${d.chunks.length}条款 · ID ${d.id}`,'muted');
       c.append(badges,el('p',`索引：${d.embedding}；提交：${d.author}${d.reviewer?'；审核：'+d.reviewer:''}`,'muted'));
       if(d.source_url){const a=el('a','打开原始来源 ↗');a.href=d.source_url;a.target='_blank';a.rel='noopener';c.append(a);}
@@ -52,6 +66,16 @@
       }
       by('library-list').append(c);
     }
+  }
+  async function openReference(id,page){
+    const data=await api(`/api/library/reference/${encodeURIComponent(id)}/page/${page}`);
+    document.getElementById('reference-reader')?.remove();
+    const dialog=el('dialog','','reference-reader');dialog.id='reference-reader';
+    const title=el('h2',data.title);dialog.setAttribute('aria-labelledby','reference-reader-title');title.id='reference-reader-title';
+    const pages=el('select');pages.setAttribute('aria-label','原文页码');for(const p of data.pages){const option=el('option',`第 ${p} 页`);option.value=p;pages.append(option);}pages.value=data.page;
+    const nav=el('div','','document-actions');nav.append(pages,button('关闭',()=>dialog.close()));
+    dialog.append(title,el('p',`原文提取 · 第 ${data.page} 页 · 版本 ${data.version.slice(0,12)}。表格与扫描图请对照本机原文件。`,'muted'),nav,el('pre',data.text,'reference-page'));
+    pages.onchange=()=>openReference(id,Number(pages.value)).catch(report);dialog.onclose=()=>dialog.remove();document.body.append(dialog);dialog.showModal();
   }
   function gName(id){return workspace?.department_options[id]||id;}
   function feedbackForm(node,traceId,conversationId){
@@ -100,6 +124,7 @@
     const p=current?.preferences||{};by('memory-language').value=p.language||'zh';by('memory-format').value=p.format||'direct';by('memory-consent').checked=!!p.remember;
   }
   window.workspaceBridge={
+    openReference,
     chatFields:()=>({use_library:by('use-library').checked,persist:by('persist-chat').checked,conversation_id:current?.id||'',conversation_revision:current?.revision||0,department:by('chat-department').value,workflow:by('chat-workflow').value,reranker:by('chat-reranker').value}),
     async answered(answer,node){
       if(answer.conversation_id){current={...(current||{}),id:answer.conversation_id,revision:answer.conversation_revision,title:current?.title||'当前对话'};feedbackForm(node,answer.trace_id,current.id);try{await bootstrap();}catch(e){report(e);}}

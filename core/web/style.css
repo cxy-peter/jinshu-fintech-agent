@@ -22,3 +22,5 @@
 @media(max-width:700px){.messages{min-height:80px}.composer{padding:15px}.personal-inline{padding:0 15px}.section-heading h1{font-size:22px}}
 
 .personal-original{width:min(850px,90vw);border:1px solid #d3dfd6;border-radius:12px;padding:24px}.personal-original::backdrop{background:#1237}.personal-original pre{white-space:pre-wrap;max-height:60vh;overflow:auto}.personal-original h2{font-size:18px}#personal-results pre{white-space:pre-wrap;max-height:240px;overflow:auto}
+
+.reference-reader{width:min(880px,92vw);border:1px solid #ccdcd3;border-radius:16px;padding:24px}.reference-reader::backdrop{background:#1237}.reference-reader h2{font-size:19px}.reference-page{white-space:pre-wrap;overflow-wrap:anywhere;max-height:62vh;overflow:auto;line-height:1.8}.personal-options{margin-top:20px}.personal-options>summary{padding:16px;cursor:pointer}#library-list>.card{padding:16px;margin:12px 0}#library-list>.card h3{font-size:16px}#library-list .document-actions input{flex:1;min-width:180px}

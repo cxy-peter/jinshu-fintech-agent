@@ -171,6 +171,8 @@ def source_graph(documents, sources):
         if d.get('replaces'):
             edges.append({'from':d['id'],'to':d['replaces'],'kind':'supersedes'})
     for s in sources:
+        if not any(n['id']==s['doc_id'] for n in nodes):
+            nodes.append({'id':s['doc_id'],'kind':'document','label':s['title'],'version':s['version'],'origin':s.get('origin')})
         nodes.append({'id':s['chunk_id'],'kind':'chunk','label':s['section']})
         edges.append({'from':s['doc_id'],'to':s['chunk_id'],'kind':'contains'})
         edges.append({'from':'answer','to':s['chunk_id'],'kind':'retrieved'})

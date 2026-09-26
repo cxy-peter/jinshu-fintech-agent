@@ -13,6 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Literal
 from . import governance as g
 from .store import Store, StoreUnavailable
+from . import reference_library as references
 from .rag import chunk_text,index_chunks,active_documents,search,source_graph,encoder_available,digest,MODEL_ID
 
 class Input(BaseModel):
@@ -60,6 +61,7 @@ class Parse(Input):
 def install(app,authorize,env=None,clock=time.monotonic):
     e=os.environ if env is None else env
     store=Store(e);app.state.workspace_store=store
+    references.install(app,store,authorize)
     from .security import Budget
     auth_limit=Budget(clock)
 
@@ -87,7 +89,9 @@ def install(app,authorize,env=None,clock=time.monotonic):
     async def bootstrap(request:Request,c=Depends(authorize)):
         from jinshu.fixtures import WORKFLOWS
         state=await store.read();who=g.actor(state,request);oid=g.owner(request)
+        reference_head=await references.ReferenceStore(store).get('head')
         result={'store':store.kind,'actor':who and {k:who[k] for k in ('username','name','role')},
+            'shared_reference_count':reference_head['documents'] if reference_head else 0,
             'accounts':g.ACCOUNTS if e.get('JINSHU_DEMO_ACCOUNTS')=='1' else [],
             'conversations':[{'id':x['id'],'title':x['title'],'revision':x['revision'],'updated_at':x['updated_at']} for x in state['conversations'].values() if x['owner']==oid],
             'semantic':{'configured':encoder_available(),'model':MODEL_ID,'verified_this_request':False},
@@ -115,7 +119,11 @@ def install(app,authorize,env=None,clock=time.monotonic):
     async def library(request:Request,c=Depends(authorize)):
         s=await store.read();who=g.actor(s,request)
         docs=list(s['documents'].values()) if who else [d for d in active_documents(s) if d['external_allowed']]
-        return {'documents':[{k:v for k,v in d.items() if k not in ('chunks',)}|{'chunks':[{k:v for k,v in ch.items() if k!='vector'} for ch in d['chunks']]} for d in docs]}
+        head=await references.ReferenceStore(store).get('head')
+        shared=references.records(head) if head and who else []
+        return {'documents':shared+[{k:v for k,v in d.items() if k not in ('chunks',)}|{'chunks':[{k:v for k,v in ch.items() if k!='vector'} for ch in d['chunks']]} for d in docs],
+                'reference_count':head['documents'] if head else 0,'reference_pages':head['pages'] if head else 0,
+                'reference_locked':bool(head and not who),'reference_release':head['release'] if head and who else None}
 
     @app.post('/api/library')
     async def document(d:Document,request:Request,c=Depends(authorize)):
@@ -261,6 +269,10 @@ async def prepare(store,d,request):
            x.get('topic','').startswith(('synthetic-', 'v10-acceptance-'))))] if d.use_library else []
     query,rewrite_mode=await pi_rewrite(store.env,query)
     sources,mode=await search(query,docs,top_k,env=store.env)
+    if d.use_library:
+        shared,shared_mode=await references.search(store,query,g.actor(state,request),4)
+        sources=(sources[:4]+shared)[:8]
+        mode+=' + '+shared_mode
     return {'state':state,'owner':oid,'conversation':conversation,'history':history,'query':query,'sources':sources,
             'retrieval_mode':mode,'working_mode':working_mode,'rewrite_mode':rewrite_mode,'instructions':instructions,'skill':skill,'group':group,'graph':source_graph(docs,sources)}
 
