@@ -14,7 +14,7 @@
   async function read(){return new Promise((resolve,reject)=>{const q=db.transaction('packs').objectStore('packs').get('current');q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error);});}
   async function write(value){return new Promise((resolve,reject)=>{const t=db.transaction('packs','readwrite');t.objectStore('packs').put(value,'current');t.oncomplete=resolve;t.onerror=()=>reject(t.error);t.onabort=()=>reject(t.error);});}
   function original(id,page){
-    const d=(pack?.documents||pack?.docs||[]).find(d=>String(d.id||d.sha256||d.title)===id);
+    const d=(pack?.documents||pack?.docs||[]).find(d=>String(d.id||d.sha256||d.title).slice(0,120)===id);
     if(!d)return notice('当前浏览器没有这份原文，请先导入对应资料包。');
     const pages=d.pages?.length?d.pages:d.chunks.map((c,i)=>({page:c.page||c.metadata?.page||i+1,text:c.content||c.text||''}));
     const dialog=document.createElement('dialog'),heading=text('h2',d.title),select=document.createElement('select'),body=text('pre',''),close=text('button','关闭原文');

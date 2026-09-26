@@ -12,6 +12,7 @@
   function pct(n){return n===null||n===undefined?'暂无样本':(n*100).toFixed(1)+'%';}
   async function bootstrap(){
     workspace=await api('/api/workspace/bootstrap');
+    by('persistence-label').textContent=workspace.store==='sqlite'?'保存对话与引用到本机':workspace.store==='unconfigured'?'保存对话（持久化服务未配置）':'保存对话与引用到云端';
     by('workspace-account').textContent=workspace.actor?`${workspace.actor.name} · ${workspace.actor.username} · ${workspace.actor.role}`:'资料审核与运营账号 · 点击展开';
     by('ws-logout').hidden=!workspace.actor;
     by('ws-accounts').replaceChildren();
