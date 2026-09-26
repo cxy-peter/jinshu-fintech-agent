@@ -1,37 +1,39 @@
-# 金枢 V8.1｜统一完整工作台（发布验证中）
+# 金枢 V9｜同一套本地与线上运行代码
 
-**查得到依据，算得清结果，改得动流程。**
+金融中后台助手：真实 DeepSeek 对话、当前资料问答、八类确定性业务工具。
 
-个人 AI 辅助工程项目，面向金融资料查询、理财对标、发行排期、周报核查和合规支持，不是机构正式上线系统。
+**本次目标是先可靠运行，而不是要求先搭好数据库、向量库和审批平台。** 默认入口统一为 `index.py → core.app`，本地与 Vercel 完全相同。旧 V8 企业服务模块保留，但不在默认入口中启动，也不冒充已运行的功能。
 
-## 手动 Deploy：以后只用这一个仓库
+## 先运行
 
-**维护与发布源：本仓库 `main`；不再同步到另一个私有仓库发版。** 原 `jinshu-workbench` 私有仓库保留作旧版本备份，不删除、不公开。Vercel 项目名仍可保留 `jinshu-workbench`，不影响使用本仓库代码。
+- Vercel：设置服务端 `DEEPSEEK_API_KEY`（Preview 与 Production 分别配置），双击根目录 `deploy_vercel.bat` 发布预览；或在 GitHub Actions 的 **Manual Vercel Deploy** 手动发布。
+- 本地：Python 3.12 / 3.13，在根目录 `.env` 写入密钥，双击 `start_local.bat`。macOS/Linux 用 `bash start_local.sh`。打开 `http://127.0.0.1:8766`。
+- 无密钥也能打开页面、查看配置并使用业务计算工具；模型问答会明确提示缺少配置，不输出假答案。
 
-[▶ 打开手动发布（GitHub Actions）](https://github.com/cxy-peter/jinshu-fintech-agent/actions/workflows/manual-vercel-deploy.yml) · [首次配置与步骤](DEPLOY.md)
+首次设置和部署见 [DEPLOY.md](DEPLOY.md)。密钥不能写进前端、GitHub 或聊天。公开分享前建议设置 `JINSHU_ACCESS_CODE`，并在 Vercel 设置费用限制。
 
-点击 **Run workflow**，选 `main`，再选 `preview` 或 `production`。默认预览；正式版需输入 **DEPLOY PRODUCTION**。首次配置三个 GitHub Actions secrets：`VERCEL_TOKEN`、`VERCEL_ORG_ID`、`VERCEL_PROJECT_ID`。业务/模型密钥仍在 Vercel 服务端环境变量中设置。
+## 当前确实提供什么
 
-也可在自己的电脑双击 **deploy_vercel.bat**（Windows）或运行 **bash deploy_vercel.sh**（macOS/Linux），用自己的 Vercel 登录手动选择项目发版。普通 Git push 的自动部署默认关闭，代码合并不等于已替换线上版本。没有创建会再次克隆仓库的 Deploy Button。
+当前文字/Markdown/CSV/JSON → 小规模关键词检索 → 一次有预算的 DeepSeek 调用 → 引用编号检查 → 本次执行记录。
 
-## 一个完整入口
+八类工具复用原 `jinshu.tools` / `unified.tools`：理财对标、发行排期、材料要素预览、周报质检、开户字段时点、案件邮件匹配、策略候选预检、三表核对。计算在服务器执行，不靠 LLM 猜数。示例必须显式选择；导出需要用户本人复核。输入更新后旧结果不再可导出。
 
-本地启动与 Vercel 都运行 `index.py → unified.app → jinshu.runtime.Runtime(profile=services)`。前端展示和调用服务端 API，不再另跑一套浏览器 RAG 或业务计算。保留原 Harness、BM25/Milvus/RRF/重排、生成/验证、Memory、Trace、反馈与受限迭代、八类工具、资料独立审核以及版本化任务和导出。
+聊天历史及本次资料只留在当前浏览器内存，刷新即清除；服务器不把它们存到共享知识库。支持 JSON / CSV 导出，不宣称有持久化、独立审批或真实业务处置。
 
-**开始使用：[完整启动与配置](START_HERE.md)。** Windows 使用 `start_local.bat`；macOS/Linux 使用 `bash start_local.sh`。需要 Python 3.12。无配置时仅展示设置页，不启用默认测试账号，也不自动退回离线模式。
+## 当前未启用的内容
 
-## DeepSeek 与服务边界
+MongoDB、Redis、Milvus、Embedding、Reranker、共享资料独立审核、持久化 Memory/反馈 Loop、灰度发布及原 pi 服务，不是本次核心版的运行前提，也不在后台偷偷启用。PDF/Word 解析和 Word 成品导出暂不提供；可以复制文字进行本次问答。
 
-DeepSeek 通过服务端 `DEEPSEEK_API_KEY` 等配置接入；完整的旧 `CHAT_*` 组合仍兼容。页面区分“待配置”“配置存在”和真实调用结果；离线夹具不冒充 DeepSeek。密钥不放前端或 GitHub。
+原代码位于 `unified/`、`jinshu/`、`engine/`，重型依赖另存 `requirements-enterprise.txt`。旧工作流移至 `docs/legacy-workflows`，避免点错后重新发布旧网页。历史内容保留不代表 V9 验收了全部企业能力。
 
-完整服务还需要 MongoDB、Redis、Milvus 和独立 Embedding / Reranker 配置；一个对话模型 key 不等于整个 RAG 已可用。真实机构资料需先获得授权。本项目不执行真实资金、账户或策略平台处置。
+## 一个维护仓库
 
-## 发布与验证状态
+只维护 `cxy-peter/jinshu-fintech-agent/main`。原 private `jinshu-workbench` 是旧版本备份；现有 Vercel 项目仍可叫 `jinshu-workbench`，名字不影响代码运行。Git 自动发布默认关闭，源码合并不等于已替换正式网站。
 
-V8.1 应用已通过代码、浏览器及隔离服务验证；DeepSeek 协议用受控 HTTP 测试，不是实际模型质量验收。最新 Vercel 预览失败，目标团队的构建日志读取被403权限拒绝，根因尚未确定。原生产站尚未切换。
+## 验证
 
-当前进展见 [V8.1 修复 PR](https://github.com/cxy-peter/jinshu-fintech-agent/pull/3)、[单仓库发布说明](DEPLOY.md) 和 [部署审计](docs/VERCEL_AUDIT_V81.md)。文档不是实时状态接口。
+`python -m pytest` 默认只验证当前核心运行模式；`node --test tests/manual_deploy.test.mjs` 验证部署打包与启动器。
 
-## 历史资料保留
+**Core V9 runtime acceptance** 在独立虚拟环境中先仅安装四个生产直接依赖，验证真实默认入口和实际发布目录，再安装测试工具，执行 API、Windows 启动器及浏览器验收。协议模拟测试明确标注，不计为真实 DeepSeek 调用。真实账户连通性要在“服务状态与配置”页点“实际测试 DeepSeek”。
 
-原 V7 README 完整保留在 [历史说明](docs/README_V7_HISTORY.md)，浏览器实现仍在 `lite/`。其中旧网站、默认离线账号、运行方式和历史测试数字只适用于相应旧版本，不代表 V8.1 已部署成功。原 CLI 离线模式只用于显式选择的测试与回归。
+详见 [本次复查与运行边界](docs/CORE_V9_AUDIT.md)。这是个人工程项目，不执行资金、账户冻结、监管报送或策略发布。

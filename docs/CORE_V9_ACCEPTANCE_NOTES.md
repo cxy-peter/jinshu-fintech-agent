@@ -1,0 +1,9 @@
+# V9 Windows 与部署验收补充
+
+首次独立 Windows 验收发现发行排期/材料示例接口500，根因是原共享工具读取中文 calendar.json 时未指定编码（UnicodeDecodeError）。现已将实际读取改为UTF-8/BOM，并添加编码回归测试；未通过改变Windows测试环境的默认编码掩盖问题。
+
+公共CI没有Vercel账户凭据，直接运行CLI dry-run会返回No existing credentials。需要授权的dry-run和实际云构建仍保留在用户自己的手动发布链路中；无密钥公共CI只检查官方公开配置Schema、生产依赖安装、实际发布目录启动、API、浏览器及Windows子进程调用，不宣称实际云端已发版。没有绕过授权，也没有新建第三个临时项目。
+
+Vercel公开Schema在不使用的实验字段中混用了新旧schema关键字；验证器验证本项目实际配置，同时用超长excludeFiles、错误maxDuration类型和未知framework三项负例确认能拒绝错误配置，不对上游整个Schema的元模式符合性作背书。
+
+原企业服务模块与历史测试保留，但当前默认运行模式是V9 core；本次验收不代表独立审核、持久化历史、Milvus或完整反馈Loop已运行。真实DeepSeek账户是否可用，应在当前工作台“实际测试DeepSeek”获得非模拟成功响应后再确认。

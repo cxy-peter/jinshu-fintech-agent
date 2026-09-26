@@ -1,0 +1,97 @@
+name: Core V9 runtime acceptance
+on:
+  push:
+    branches: [main, fix/core-runtime-v9]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: core-v9-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  production-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '24'}
+      - name: Boot with ONLY production dependencies before installing test tools
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/core-v9
+          python -m venv "$RUNNER_TEMP/core-runtime"
+          PY="$RUNNER_TEMP/core-runtime/bin/python"
+          "$PY" -m pip install -r requirements.txt
+          "$PY" -m pip check
+          "$PY" -m pip freeze > evidence/core-v9/production-dependencies.txt
+          "$PY" -c "import importlib.util; assert all(importlib.util.find_spec(x) is None for x in ['pytest','numpy','pymongo','pymilvus','redis','sklearn'])"
+          "$PY" scripts/build_unified.py | tee evidence/core-v9/clean-boot.txt
+          node scripts/prepare_deployment.mjs "$RUNNER_TEMP/core-staged"
+          (cd "$RUNNER_TEMP/core-staged" && "$PY" scripts/build_unified.py)
+      - name: Actual default app and provider protocol/error tests
+        run: |
+          set -euo pipefail
+          PY="$RUNNER_TEMP/core-runtime/bin/python"
+          "$PY" -m pip install pytest pytest-asyncio
+          "$PY" -m pytest -q tests/core | tee evidence/core-v9/python-tests.txt
+          node --test tests/manual_deploy.test.mjs | tee evidence/core-v9/node-tests.txt
+          node --check core/web/app.js
+      - name: Validate Vercel public configuration schema (no account credentials)
+        run: |
+          set -euo pipefail
+          PY="$RUNNER_TEMP/core-runtime/bin/python"
+          "$PY" -m pip install jsonschema
+          "$PY" tests/core/validate_vercel_config.py "$RUNNER_TEMP/core-staged/vercel.json" | tee evidence/core-v9/vercel-schema-check.json
+      - name: Real Chromium over local HTTP
+        run: |
+          set -euo pipefail
+          PY="$RUNNER_TEMP/core-runtime/bin/python"
+          "$PY" -m pip install playwright
+          "$PY" -m playwright install --with-deps chromium
+          "$PY" tests/core/browser_check.py | tee evidence/core-v9/browser-tests.txt
+      - name: Export exact source and evidence, never keys or fonts
+        if: always()
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess, zipfile
+          root=Path.cwd()
+          out=root/'evidence/core-v9';out.mkdir(parents=True,exist_ok=True)
+          (out/'source-commit.txt').write_text(subprocess.check_output(['git','rev-parse','HEAD'],text=True))
+          with zipfile.ZipFile(out/'jinshu-v9-source.zip','w',zipfile.ZIP_DEFLATED) as z:
+            for name in subprocess.check_output(['git','ls-files'],text=True).splitlines():
+              p=Path(name)
+              if not p.is_file() or p.is_symlink():continue
+              if p.suffix.lower() in {'.ttf','.otf','.woff','.woff2','.pem','.key','.zip'}:continue
+              if any(x=='.env' or x.startswith('.env.') or x in {'private_corpus','private_reference','workspace','.vercel'} for x in p.parts):continue
+              z.write(p,p)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jinshu-v9-core-acceptance
+          path: evidence/core-v9/
+  windows-runtime-and-launcher:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '24'}
+      - name: Windows default app and real child-process launcher with a stub Vercel CLI
+        shell: pwsh
+        run: |
+          python -m pip install -r requirements.txt pytest pytest-asyncio
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m pytest -q tests/core
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node --test tests/manual_deploy.test.mjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/build_unified.py
+          exit $LASTEXITCODE

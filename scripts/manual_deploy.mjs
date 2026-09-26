@@ -49,6 +49,8 @@ function cli(args, cwd, {quiet=false}={}) {
 }
 
 function copyLink(localLink, staged) {
+  if (fs.lstatSync(localLink).isSymbolicLink() || fs.lstatSync(path.dirname(localLink)).isSymbolicLink())
+    throw new Error('本地项目关联不可为符号链接。');
   const link = JSON.parse(fs.readFileSync(localLink, 'utf8'));
   if (!link.projectId || !link.orgId) throw new Error('本地 Vercel 项目关联无效。');
   fs.mkdirSync(path.join(staged, '.vercel'), { recursive: true });
@@ -56,6 +58,16 @@ function copyLink(localLink, staged) {
     orgId: link.orgId, projectId: link.projectId, projectName: link.projectName
   }, null, 2));
   return link;
+}
+
+export function cleanupTemporary(temporary, remove = fs.rmSync, warn = console.warn) {
+  try {
+    remove(temporary, {recursive: true, force: true, maxRetries: 8, retryDelay: 250});
+    return true;
+  } catch {
+    warn(`临时目录暂未删除，可稍后手工清理：${temporary}`);
+    return false;
+  }
 }
 
 async function main() {
@@ -94,7 +106,7 @@ async function main() {
       }, null, 2));
     }
 
-    console.log(`目标：${link.projectName || link.projectId}\n环境：${target}`);
+    console.log(`目标：${link.projectName || link.projectId}\n环境：${target}\n运行模式：金枢 V9 core（不依赖 MongoDB / Milvus）`);
 
     // Read-only target check, then a dry run. Both fail before any real deployment.
     console.log('核对项目和部署配置…');
@@ -103,26 +115,19 @@ async function main() {
 
     let confirmation = '';
     if (target === 'production') {
+      console.log('公开分享前请设置 JINSHU_ACCESS_CODE 和 Vercel 费用限制；仅凭页面可访问就能消耗模型额度。');
       if (!process.stdin.isTTY) throw new Error('正式发布需要交互确认。');
       const prompt = createInterface({ input: process.stdin, output: process.stdout });
       try { confirmation = (await prompt.question('输入 DEPLOY PRODUCTION 才会替换正式版：')).trim(); }
       finally { prompt.close(); }
     } else {
-      console.log('Preview 配置检查通过，开始发布（不会替换正式域名）…');
+      console.log('运行文件与配置检查通过，开始发布 Preview（模型连通性仍需上线后测试）…');
     }
 
     cli(deployArguments(target, confirmation), staged);
     console.log('发布命令成功结束。请打开上方 URL，再检查 /api/status 和真实服务状态。');
   } finally {
-    if (temporary) {
-      try {
-        fs.rmSync(temporary, { recursive: true, force: true, maxRetries: 8, retryDelay: 250 });
-      } catch (error) {
-        // Windows may briefly retain a Vercel/Node file handle after a failed build.
-        // Cleanup failure must never hide the actual deployment result.
-        console.warn(`临时目录暂未删除，可稍后手工清理：${temporary}`);
-      }
-    }
+    if (temporary) cleanupTemporary(temporary);
   }
 }
 
