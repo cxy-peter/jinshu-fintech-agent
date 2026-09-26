@@ -172,3 +172,10 @@ async def test_read_only_migration_preserves_state(tmp_path):
     s=Store({'JINSHU_DATA_DIR':str(tmp_path),'JINSHU_STORE_READ_ONLY':'1'})
     with pytest.raises(StoreUnavailable):await s.mutate(lambda x:x['audit'].append({}))
     assert (await s.read())['revision']==0
+
+
+def test_loop_cannot_validate_against_non_external_material(env):
+    with make(env) as c:
+        c.get('/api/workspace/bootstrap');did=document(c);publish(c,did,False);a=chat(c)
+        r=c.post('/api/feedback',json={'conversation_id':a['conversation_id'],'trace_id':a['trace_id'],'resolved':False,'category':'retrieval','expected_docs':[did],'share_context':True})
+        assert r.status_code==409

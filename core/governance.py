@@ -78,7 +78,7 @@ def publish(state,did,who,decision,reason,external_allowed):
 
 def binding(state,skill):
     data={'skill':{k:skill[k] for k in ('id','terms','top_k','template','department')},
-          'documents':[(d['id'],d['version'],[c['hash'] for c in d['chunks']]) for d in active_documents(state,skill['department'])],
+          'documents':[(d['id'],d['version'],[c['hash'] for c in d['chunks']]) for d in [d for d in active_documents(state,skill['department']) if d['external_allowed']]],
           'cases':[state['feedback'].get(x) for x in skill['feedback_ids']], 'evaluator':'paired-retrieval-v1'}
     return digest(json.dumps(data,ensure_ascii=False,sort_keys=True))
 
@@ -90,7 +90,7 @@ def propose(state,who,feedback_ids,top_k,terms,template):
     if any(c['department']!=department for c in cases): raise ValueError('不同部门的问题请分开建候选')
     if all(c['category']=='knowledge_gap' for c in cases):
         raise ValueError('知识缺口先补资料并独立审核，不能让 Skill 编造事实。')
-    source_text='\n'.join(c['text'] for d in active_documents(state,department) for c in d['chunks'])
+    source_text='\n'.join(c['text'] for d in active_documents(state,department) if d['external_allowed'] for c in d['chunks'])
     if any(t not in source_text for t in terms): raise ValueError('扩展词必须能在当前有效资料中找到；请先补齐知识缺口。')
     skill=dict(id=uid(),author=who['username'],department=department,terms=terms,top_k=top_k,template=template,
         status='draft',rollout=0,feedback_ids=[c['id'] for c in cases],created_at=now(),replay=None)
@@ -102,7 +102,7 @@ def replay(state,sid,who):
     require(who,'editor','reviewer','operator')
     skill=state['skills'].get(sid)
     if not skill or skill['status'] not in ('draft','evaluated'): raise ValueError('只回放未发布候选')
-    rows=candidates(active_documents(state,skill['department'])); details=[]; seen=set()
+    rows=candidates([d for d in active_documents(state,skill['department']) if d['external_allowed']]); details=[]; seen=set()
     for fid in skill['feedback_ids']:
         case=state['feedback'].get(fid)
         if not case or case['query'] in seen: continue
@@ -138,7 +138,7 @@ def release(state,sid,who,action):
     elif action=='promote':
         if skill['status']!='active' or skill['replay']['binding']!=binding(state,skill): raise ValueError('策略或资料已变，请重新回放')
         metrics=skill_metrics(state,sid)
-        if min(metrics[g]['n'] for g in ('control','treatment'))<5: raise ValueError('每组至少五位不同用户明确反馈后才允许扩量；仍不是统计显著性证明')
+        if min(metrics[g]['n'] for g in ('control','treatment'))<5: raise ValueError('每组至少五个不同浏览器标识明确反馈后才允许扩量；不是实名用户或统计显著性证明')
         if metrics['treatment']['rate']<metrics['control']['rate']: raise ValueError('处理组低于基线，请先检查或回滚')
         steps=[5,20,50,100];skill['rollout']=steps[min(steps.index(skill['rollout'])+1,3)]
     audit(state,'skill_'+action,who['username'],skill_id=sid,rollout=skill['rollout'])

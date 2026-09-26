@@ -1,0 +1,80 @@
+{
+  "checks": [
+    "workspace_private_store",
+    "pinned_embedding_files_present",
+    "11_workflow_choices",
+    "anonymous_ops_denied",
+    "wrong_password_denied",
+    "login_editor",
+    "synthetic_material_pending",
+    "real_cpu_embedding_on_vercel",
+    "author_cannot_publish",
+    "login_reviewer",
+    "independent_review",
+    "live_deepseek_with_reviewed_context",
+    "real_provider_response",
+    "approved_document_retrieved",
+    "hybrid_semantic_trace",
+    "valid_citation_ids",
+    "conversation_saved",
+    "feedback_linked_to_context",
+    "different_browser_cannot_read",
+    "login_operations",
+    "operations_context_visible",
+    "delete_smoke_conversation_and_feedback",
+    "smoke_feedback_removed"
+  ],
+  "count": 23,
+  "model_call": {
+    "provider": "deepseek",
+    "requested_model": "deepseek-flash",
+    "model": "deepseek-flash",
+    "usage": {
+      "prompt_tokens": 457,
+      "completion_tokens": 77,
+      "total_tokens": 534,
+      "prompt_cache_hit_tokens": 128,
+      "prompt_cache_miss_tokens": 329
+    },
+    "latency_ms": 982,
+    "status": "ok",
+    "inference_verified": true,
+    "verification_scope": "real_provider_response"
+  },
+  "answer": "根据发行排期示例，募集开始日须明确，遇节假日依据已确认的日历顺延（[S3][S4]）；输入参数改变后必须重新计算并重新确认导出，不能直接沿用旧结果（[S1][S2]）。上述为合成示例内容，具体节假日日历及导出规则以实际业务工具和机构制度为准。",
+  "sources": [
+    {
+      "title": "发行排期复核示例（合成，非机构制度）",
+      "origin": "reviewed_library",
+      "retrieval_routes": [
+        "bm25",
+        "semantic"
+      ]
+    },
+    {
+      "title": "发行排期复核示例（合成，非机构制度）",
+      "origin": "reviewed_library",
+      "retrieval_routes": [
+        "bm25",
+        "semantic"
+      ]
+    },
+    {
+      "title": "发行排期复核示例（合成，非机构制度）",
+      "origin": "reviewed_library",
+      "retrieval_routes": [
+        "bm25",
+        "semantic"
+      ]
+    },
+    {
+      "title": "发行排期复核示例（合成，非机构制度）",
+      "origin": "reviewed_library",
+      "retrieval_routes": [
+        "bm25",
+        "semantic"
+      ]
+    }
+  ],
+  "scope": "Only public synthetic test material; no claim of full factual accuracy or business improvement."
+}

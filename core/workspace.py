@@ -192,7 +192,7 @@ def install(app,authorize,env=None,clock=time.monotonic):
             at=next((i for i,t in enumerate(row['turns']) if t.get('trace_id')==d.trace_id),None)
             if at is None or row['turns'][at]['role']!='assistant':raise ValueError('回答记录不存在')
             turn=row['turns'][at];labelled=set(d.expected_docs)
-            if not labelled<={doc['id'] for doc in active_documents(s,turn['department'])}:raise ValueError('目标资料不在当前有效资料库')
+            if not labelled<={doc['id'] for doc in active_documents(s,turn['department']) if doc['external_allowed']}:raise ValueError('目标资料不在当前有效资料库')
             feedback_id=digest(d.conversation_id+'|'+d.trace_id)[:32]
             if len(s['feedback'])>=200 and feedback_id not in s['feedback']:raise ValueError('反馈演示上限200，请归档后继续')
             f=d.model_dump()|dict(id=feedback_id,owner=row['owner'],query=row['turns'][at-1]['content'],answer=turn['content'],
