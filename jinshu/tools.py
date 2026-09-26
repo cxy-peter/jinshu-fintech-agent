@@ -12,7 +12,7 @@ def source(name):
  if values is not None:
   if name not in values:raise ValueError("缺少本次输入资料："+name)
   return values[name]
- if name.endswith(".json"):return json.loads((DATA/name).read_text())
+ if name.endswith(".json"):return json.loads((DATA/name).read_text(encoding="utf-8-sig"))
  with (DATA/name).open(encoding="utf-8-sig",newline="") as f:return list(csv.DictReader(f))
 
 def rows(name):return source(name)

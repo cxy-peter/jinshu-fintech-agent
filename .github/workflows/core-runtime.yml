@@ -37,13 +37,15 @@ jobs:
           set -euo pipefail
           PY="$RUNNER_TEMP/core-runtime/bin/python"
           "$PY" -m pip install pytest pytest-asyncio
-          "$PY" -m pytest -q tests/core/test_app.py | tee evidence/core-v9/python-tests.txt
+          "$PY" -m pytest -q tests/core | tee evidence/core-v9/python-tests.txt
           node --test tests/manual_deploy.test.mjs | tee evidence/core-v9/node-tests.txt
           node --check core/web/app.js
-      - name: Vercel CLI dry run on the actual staged runtime
+      - name: Validate Vercel public configuration schema (no account credentials)
         run: |
           set -euo pipefail
-          npx --yes vercel@60.1.3 deploy --dry --cwd "$RUNNER_TEMP/core-staged" | tee evidence/core-v9/vercel-dry-run.txt
+          PY="$RUNNER_TEMP/core-runtime/bin/python"
+          "$PY" -m pip install jsonschema
+          "$PY" tests/core/validate_vercel_config.py "$RUNNER_TEMP/core-staged/vercel.json" | tee evidence/core-v9/vercel-schema-check.json
       - name: Real Chromium over local HTTP
         run: |
           set -euo pipefail
@@ -87,7 +89,7 @@ jobs:
         run: |
           python -m pip install -r requirements.txt pytest pytest-asyncio
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          python -m pytest -q tests/core/test_app.py
+          python -m pytest -q tests/core
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node --test tests/manual_deploy.test.mjs
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
