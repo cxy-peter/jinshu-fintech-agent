@@ -32,7 +32,8 @@ async def test_missing_configuration_is_not_a_demo(monkeypatch):
  async with httpx.AsyncClient(transport=httpx.ASGITransport(create_app()),base_url='http://localhost') as c:
   assert (await c.get('/')).status_code==200
   status=(await c.get('/api/status')).json();assert not status['configured'] and status['mode']=='complete_server'
-  assert (await c.post('/api/ask',json={'query':'发行排期'})).status_code==503
+  assert (await c.post('/api/ask',json={'query':'发行排期'})).status_code==401
+  assert (await c.post('/api/login',json={'username':'test','password':'not-a-credential'})).status_code==503
   assert (await c.get('/ready')).status_code==503
 @pytest.mark.parametrize('path',['/api/catalog','/api/tasks','/api/documents','/api/traces','/api/loop','/api/memory/x'])
 async def test_no_unauthenticated_workspace(client,path):assert (await client.get(path)).status_code==401

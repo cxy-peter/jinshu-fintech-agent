@@ -1,0 +1,9 @@
+{
+  "local_python_passed": 221,
+  "local_python_skipped": 2,
+  "local_paid_model_tested": false,
+  "local_browser": "blocked_by_environment_policy; GitHub CI pending",
+  "production_deployed": false,
+  "provider_credentials_available": false,
+  "test_note": "Model adapter responses are mocked. Existing V7/V8 functionality regression preserved."
+}

@@ -42,7 +42,7 @@ def create_app(runtime=None,task_repository=None):
  async def lifespan(app):
   yield
   if manager.runtime is not None:await manager.runtime.close()
- app=FastAPI(title='金枢｜统一完整后端',version='8.0.0',lifespan=lifespan)
+ app=FastAPI(title='金枢｜统一完整后端',version='8.1.0',lifespan=lifespan)
  from .body_limit import BodyLimitMiddleware
  app.add_middleware(BodyLimitMiddleware);app.state.manager=manager
  removed={'/','/health','/ready','/metrics','/api/login','/api/tickets','/api/tickets/{ticket_id}/retry','/api/operations','/api/outputs/{filename}','/api/documents/pdf','/api/feedback'}
@@ -81,8 +81,17 @@ def create_app(runtime=None,task_repository=None):
    except ValueError:return JSONResponse({'detail':'无效请求长度'},400)
    if size>4_000_000:return JSONResponse({'detail':'请求最多4MB；请拆分资料后上传'},413)
   if request.url.path.startswith('/api/') and request.url.path not in {'/api/status','/api/login','/api/setup/user'}:
+   # Reject unsigned traffic before any database or vector initialization.
+   bearer=request.headers.get('authorization','')
+   if not bearer.startswith('Bearer ') or len(bearer)>4096:return JSONResponse({'detail':'请先登录'},401,headers={'Cache-Control':'no-store'})
+   if manager.runtime is None:
+    from app.auth import AuthService
+    from types import SimpleNamespace
+    secret=os.getenv('AUTH_SECRET','')
+    verifier=AuthService(None,SimpleNamespace(auth_secret=secret))
+    if len(secret)<32 or not verifier.verify_token(bearer[7:]):return JSONResponse({'detail':'账号或会话已过期'},401,headers={'Cache-Control':'no-store'})
    try:await rt()
-   except HTTPException as e:return JSONResponse({'detail':e.detail},e.status_code)
+   except HTTPException as e:return JSONResponse({'detail':e.detail},e.status_code,headers={'Cache-Control':'no-store'})
   try:response=await call_next(request)
   except Exception as exc:response=JSONResponse({'detail':'服务请求失败，请复核输入与连接状态','error_type':type(exc).__name__},500)
   response.headers['X-Content-Type-Options']='nosniff';response.headers['X-Frame-Options']='DENY';response.headers['Referrer-Policy']='same-origin'
@@ -243,8 +252,10 @@ def create_app(runtime=None,task_repository=None):
   token=run_state.set({'models_enabled':True,'allow_external':True})
   try:
    from app.llm.client import ChatMessage
-   answer=await r.c.llm.complete([ChatMessage.user('这是公开的连接测试。请仅回答：连接成功。')],max_tokens=32)
-   return {'model_called':True,'answer':answer,'calls':run_state.get().get('model_calls',[]),'scope':'仅生成接口连接测试，不是完整RAG质量验收'}
+   answer=await r.c.llm.complete([ChatMessage.user('这是公开的连接测试。请仅回答：连接成功。')],max_tokens=128)
+   calls=run_state.get().get('model_calls',[])
+   verified=any(x.get('kind')=='chat' and x.get('status')=='ok' for x in calls)
+   return {'model_called':verified,'inference_verified':verified,'answer':answer,'calls':calls,'scope':'仅当前请求生成接口连接测试，不是完整RAG质量验收；离线测试响应不计作真实模型调用'}
   finally:run_state.reset(token)
  # All remaining original APIs use this SAME Runtime; no duplicate browser computation.
  app.mount('/',backend)
