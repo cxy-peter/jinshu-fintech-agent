@@ -8,6 +8,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+if os.getenv('JINSHU_BUILD_EMBEDDINGS') == '1':
+    from fetch_embedding import fetch
+    fetch()
 required = ('index.py', 'core/app.py', 'core/config.py', 'core/provider.py',
             'core/web/index.html', 'core/web/app.js', 'core/web/style.css',
             'jinshu/tools.py', 'jinshu/fixtures.py', 'jinshu/model_config.py',

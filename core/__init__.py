@@ -1,2 +1,2 @@
-"""Default Jinshu runtime: stateless DeepSeek chat and deterministic tools."""
-VERSION = '9.0.0'
+"""Jinshu runtime: optional governed RAG, durable workspace and deterministic tools."""
+VERSION = '10.0.0'

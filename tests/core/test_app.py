@@ -250,14 +250,16 @@ def test_new_app_instance_does_not_lose_conversation_because_history_is_request_
 
 def test_no_enterprise_endpoints_are_misrepresented_as_working():
     with client() as c:
-        for path in ['/api/tasks','/api/documents','/api/operations','/api/loop']:
+        for path in ['/api/tasks','/api/documents','/api/loop']:
             assert c.get(path).status_code==404
-        assert not c.get('/api/status').json()['capabilities']['enterprise_review']
+        assert c.get('/api/operations').status_code==403
+        assert c.get('/api/status').json()['capabilities']['enterprise_review']
 
 
 def test_dependencies_are_small_and_pip_and_pyproject_match():
     import tomllib
     deps=tomllib.loads((ROOT/'pyproject.toml').read_text())['project']['dependencies']
     pip=[s for s in (ROOT/'unified/requirements.txt').read_text().splitlines() if s and not s.startswith('#')]
-    assert deps==pip and len(deps)==4
-    assert not any(x in '\n'.join(deps) for x in ('numpy','milvus','redis','mongo','scikit'))
+    assert deps==pip
+    assert all(x in [d.split('==')[0] for d in deps] for x in ['onnxruntime','tokenizers','pymongo','redis'])
+    assert not any(x in '\n'.join(deps) for x in ('torch','tensorflow','scikit-learn','pymilvus'))
