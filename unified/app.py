@@ -169,10 +169,25 @@ def create_app(runtime=None,task_repository=None):
   if len(raw)>3_500_000:raise HTTPException(413,'单文件最多3.5MB，请拆分后上传')
   from .documents import check_container
   name=Path(file.filename or 'upload.txt').name;check_container(raw,name);r=await rt()
-  with tempfile.TemporaryDirectory() as tmp:
-   p=Path(tmp)/name;p.write_bytes(raw);doc=await r.c.documents.stage_file(p,dept_id,u['id'],topic,version,manual_sensitivity)
-  await r.c.store.update_document(doc['_id'],{'source_kind':source_kind,'synthetic':source_kind=='synthetic'})
-  return await r.c.store.get_document(doc['_id'])
+  imports=[(name,raw,topic)]
+  if name.lower().endswith('.zip'):
+   import io,zipfile
+   from .documents import page_blocks
+   with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+    imports=[]
+    for entry in archive.infolist():
+     if entry.is_dir():continue
+     content=archive.read(entry);page_blocks(json.loads(content))
+     suffix=hashlib.sha256(entry.filename.encode()).hexdigest()[:12]
+     imports.append((Path(entry.filename).name,content,topic[:80]+'-'+suffix))
+   if not imports or len(imports)>30:raise ValueError('每次ZIP导入1至30份分页JSON，分别保留文件身份和页码')
+  docs=[]
+  for filename,content,topic_id in imports:
+   with tempfile.TemporaryDirectory() as tmp:
+    p=Path(tmp)/filename;p.write_bytes(content);doc=await r.c.documents.stage_file(p,dept_id,u['id'],topic_id,version,manual_sensitivity)
+   await r.c.store.update_document(doc['_id'],{'source_kind':source_kind,'synthetic':source_kind=='synthetic'})
+   docs.append(await r.c.store.get_document(doc['_id']))
+  return docs[0] if len(docs)==1 else {'documents':docs,'note':'每份资料独立待审；部分导入失败时，已保存资料仍保留，不宣称批量事务。'}
  @app.post('/api/documents/{did}/archive')
  async def archive(did:str,request:Request,u=Depends(admin)):
   d=await request.json();reason=str(d.get('reason','')).strip()
@@ -180,7 +195,7 @@ def create_app(runtime=None,task_repository=None):
   r=await rt();doc=await r.c.store.get_document(did)
   if not doc or doc['dept_id'] not in departments(u):raise HTTPException(403,'无权停用')
   await r.c.store.update_document(did,{'status':'archived','archived_by':u['id'],'archive_reason':reason})
-  if r.profile=='services':await r.c.mongo.db['corpus_revisions'].update_one({'_id':'global'},{'$inc':{'revision':1}},upsert=True)
+  if r.profile=='services':await r.c.store.increment('corpus_revisions',doc['dept_id'],'value')
   for c in await r.c.store.list_chunks_by_doc(did):r.c.bm25.remove(c['_id'])
   await r.c.organization_memory.invalidate_document(did,'document_archived')
   return {'status':'archived','doc_id':did,'note':'原文与审核留痕保留，后续查询不再作为活动依据。'}

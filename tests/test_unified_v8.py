@@ -125,3 +125,13 @@ def test_config_never_returns_secrets():
 @pytest.mark.parametrize('value',['=cmd',' +1+2','@SUM(1)','-cmd'])
 def test_csv_formula_injection(value):
  row={'result':{'result':{'rows':[{'name':value}]}}};raw,_=render_export(row,'csv');assert "'"+value in raw.decode()
+
+async def test_zip_documents_keep_separate_source_identity(client):
+ h=await headers(client);b=io.BytesIO()
+ with zipfile.ZipFile(b,'w') as z:
+  for n in ['a.json','b.json']:z.writestr(n,json.dumps({'pages':[{'page':1,'text':n+'说明，分别保留每个源文件的页码。'*25}]}))
+ res=await client.post('/api/documents/upload',headers=h,data={'dept_id':'dept_wealth','topic':'multi-zip','version':'1','source_kind':'learning_reference'},files={'file':('notes.zip',b.getvalue(),'application/zip')})
+ assert res.status_code==200,res.text
+ docs=res.json()['documents'];assert len(docs)==2 and len({d['_id'] for d in docs})==2
+ assert {d['source']['file_name'] for d in docs}=={'a.json','b.json'}
+ assert all(d['status']=='pending_review' for d in docs)
