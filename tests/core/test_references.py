@@ -7,8 +7,9 @@ import httpx
 import pytest
 from fastapi.testclient import TestClient
 from core.app import create_app
-from core.reference_library import ReferenceStore, unpack, MAX_TEXT
+from core.reference_library import ReferenceStore, ReferenceIndex, unpack, MAX_TEXT
 from core.store import Store
+from core.knowledge import citation_check
 
 @pytest.fixture
 def env(tmp_path):
@@ -99,3 +100,22 @@ def test_read_only_and_invalid_archive(env):
     with pytest.raises(Exception,match='只读'):asyncio.run(ReferenceStore(Store(env)).put('x',b'1'))
     with pytest.raises(ValueError):unpack(pack()+b'junk')
     with pytest.raises(ValueError):unpack(gzip.compress(b'x'*(MAX_TEXT+1)))
+
+@pytest.mark.parametrize('query',[
+    '风险平价是什么？请结合共享资料简明解释，注明原文页码。',
+    '请根据资料解释一下风险平价是什么，并标注页码。',
+    '根据原文，简单说明风险平价的定义，给出出处。',
+])
+def test_format_instructions_do_not_dilute_the_retrieval_topic(query):
+    idx=ReferenceIndex(unpack(pack())[0])
+    assert idx.search(query)[0]['page']==10
+    assert idx.search('发行排期是什么？请结合共享资料简明解释，注明原文页码。')==[]
+
+@pytest.mark.parametrize('text',['依据[S1]','依据[S1，原文页码 10]','依据[S1, page 10]','依据[S1；原文第10页]'])
+def test_page_annotated_citations_are_recognized(text):
+    check,valid=citation_check(text,[{'source_id':'S1','page':10}])
+    assert valid and check['status']=='references_present' and check['cited_ids']==['S1']
+
+@pytest.mark.parametrize('text',['依据[S99，原文页码 10]','依据[S1,S99]','依据[S1, page 999]'])
+def test_false_annotated_source_or_page_is_not_accepted(text):
+    assert not citation_check(text,[{'source_id':'S1','page':10}])[1]

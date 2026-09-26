@@ -38,12 +38,20 @@ def retrieve(query: str, documents: list, include_examples: bool):
     return [dict(source_id=f'S{i+1}', **row) for i, row in enumerate(ranked)]
 
 def citation_check(answer: str, sources: list):
-    cited = set(re.findall(r'\[(S\d+)\]', answer))
+    blocks=re.findall(r'\[(S\d+(?=[\s,，;；\]])[^\]\r\n]{0,160})\]',answer)
+    cited={identifier for block in blocks for identifier in re.findall(r'\bS\d+\b',block)}
     known = {s['source_id'] for s in sources}
     unknown = sorted(cited - known)
     if unknown:
         # Reject fabricated reference identifiers; don't silently bless the answer.
         return {'status': 'invalid_source_ids', 'unknown_ids': unknown,
                 'scope': '仅检查引用编号，不验证全部事实'}, False
+    by_id={s['source_id']:s for s in sources}
+    for block in blocks:
+        ids=re.findall(r'\bS\d+\b',block)
+        pages=re.findall(r'(?:原文页码|page|p\.)\s*(\d+)|(?:原文)?第\s*(\d+)\s*页',block,re.I)
+        if len(ids)==1 and any(int(a or b)!=by_id[ids[0]].get('page') for a,b in pages):
+            return {'status':'invalid_source_pages','source_id':ids[0],
+                    'scope':'引用括号内的页码与本次原文不一致'},False
     return {'status': 'references_present' if cited else 'no_citations',
             'cited_ids': sorted(cited), 'scope': '仅检查引用编号与本次检索结果一致，不等于事实全部正确'}, True

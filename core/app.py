@@ -249,7 +249,7 @@ def create_app(*, env=None, transport=None, clock=time.monotonic):
         answer, call = await invoke(request, c, messages)
         verification, valid = citation_check(answer, sources)
         if not valid:
-            raise ModelFailure('MODEL_INVALID_CITATION', '模型使用了本次不存在的引用编号，答案已拦截，请重试。')
+            raise ModelFailure('MODEL_INVALID_CITATION', '模型的引用编号或页码与本次资料不一致，答案已拦截，请重试。')
         notices = []
         if not sources:
             notices.append('未检索到机构依据：这是一般解释，不代表机构政策或实时业务状态。')

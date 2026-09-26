@@ -143,6 +143,13 @@ class ReferenceIndex:
         self.avg=sum(self.lengths)/max(1,len(self.rows)) or 1
 
     def search(self,query,limit=4):
+        definition=bool(re.search(r'是什么|什么是|定义|含义|what is|definition',query,re.I))
+        # Formatting/source instructions are not topic constraints. Preserve actual
+        # domain terms so that an unsupported SOP is still a knowledge gap.
+        query=re.sub(r'(?:请)?(?:结合|根据|依据|参考)(?:本次|这些|我的|已有|当前)?(?:的)?(?:共享)?(?:资料库|资料|原文|文献|研报)(?:里面|里的|中的|中)?',' ',query)
+        query=re.sub(r'(?:请|帮我)?(?:简明|简单|简洁|详细|通俗)(?:地)?(?:解释|说明|回答|总结)(?:一下)?',' ',query)
+        query=re.sub(r'(?:并|请|同时)?(?:注明|标注|附上|列出|给出)(?:一下)?(?:原文|引用|来源|文件)?(?:的)?(?:页码|出处|编号|来源)',' ',query)
+        query=re.sub(r'\b(?:based on (?:the )?(?:shared )?(?:library|sources|documents)|with (?:original )?page numbers|briefly explain)\b',' ',query,flags=re.I)
         query=re.sub(r'请问|请帮我|帮我|解释一下|介绍一下|是什么|有什么|有哪些|怎么|如何|为什么|什么|一下',' ',query)
         wanted=set(terms(query));scores=Counter();covered=defaultdict(set);total=len(self.rows)
         for t in wanted:
@@ -155,6 +162,9 @@ class ReferenceIndex:
             if len(covered[i])/max(1,len(wanted))<.45:continue
             if row['text'].count('�')/max(1,len(row['text']))>.08:continue
             if len(re.findall(r'(?:\.{4,}|…{2,})\s*\d+',row['text']))>=3:score*=.18
+            if definition:
+                if len(re.findall(r'\d',row['text']))/max(1,len(row['text']))>.12:score*=.3
+                if re.search(r'什么是|本质上|核心思想|是指|定义|指的是',row['text']):score*=1.8
             ranked.append((score,i))
         seen=Counter();out=[]
         for score,i in sorted(ranked,reverse=True):
