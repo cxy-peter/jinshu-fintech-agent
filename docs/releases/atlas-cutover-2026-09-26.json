@@ -1,0 +1,235 @@
+{
+  "date": "2026-09-26",
+  "tier": "Atlas Free",
+  "backup_retained": true,
+  "credentials_published": false,
+  "migration": {
+    "jinshu": {
+      "sha256": "49e6efb7eb1dbfbdc243ae23c562b4cea753aa943d6703f73981b36667d9ea96",
+      "counts": {
+        "documents": 2,
+        "conversations": 0,
+        "feedback": 0,
+        "skills": 0,
+        "audit": 5,
+        "sessions": 5
+      },
+      "revision": 15
+    },
+    "visit_china": {
+      "sha256": "0bc4dde95027a2cf06317c849df3b0a9eb71f4b287f95e8bb9c1a027f25ad8a0",
+      "counts": {
+        "sources": 16,
+        "proposals": 5,
+        "checks": 14,
+        "events": 858,
+        "runs": 5,
+        "audit": 86,
+        "governance": 6,
+        "refresh": 8,
+        "applied": 0,
+        "resolutions": 6,
+        "answerAssessments": 155,
+        "executions": 134,
+        "harness": 2,
+        "trialCodes": 6,
+        "failures": 12,
+        "feedbackCases": 0,
+        "samplingState": 3,
+        "bodyAssessments": 39,
+        "loopEvolution": 4,
+        "eventRefresh": 8,
+        "newsCandidates": 11,
+        "eventDiscovery": 2
+      },
+      "revision": 484
+    }
+  },
+  "production_checks": [
+    {
+      "check": "jinshu production uses mongo",
+      "passed": true,
+      "store": "mongo"
+    },
+    {
+      "check": "11 workflows and CPU embeddings retained",
+      "passed": true
+    },
+    {
+      "check": "anonymous operations denied",
+      "passed": true
+    },
+    {
+      "check": "jinshu wrong password rejected",
+      "passed": true
+    },
+    {
+      "check": "jinshu reviewer login",
+      "passed": true
+    },
+    {
+      "check": "old material restored",
+      "passed": true,
+      "count": 2
+    },
+    {
+      "check": "jinshu real DeepSeek inference",
+      "passed": true,
+      "model": {
+        "provider": "deepseek",
+        "requested_model": "deepseek-flash",
+        "model": "deepseek-flash",
+        "usage": {
+          "prompt_tokens": 411,
+          "completion_tokens": 146,
+          "total_tokens": 557,
+          "prompt_cache_hit_tokens": 128,
+          "prompt_cache_miss_tokens": 283
+        },
+        "latency_ms": 1475,
+        "status": "ok",
+        "inference_verified": true,
+        "verification_scope": "real_provider_response"
+      }
+    },
+    {
+      "check": "grounded approved sources retained",
+      "passed": true
+    },
+    {
+      "check": "conversation durable across requests",
+      "passed": true
+    },
+    {
+      "check": "conversation ownership preserved",
+      "passed": true
+    },
+    {
+      "check": "feedback saved to Mongo",
+      "passed": true
+    },
+    {
+      "check": "Mongo contains matching conversation and feedback",
+      "passed": true
+    },
+    {
+      "check": "operations login retained",
+      "passed": true
+    },
+    {
+      "check": "operations sees linked conversation context",
+      "passed": true
+    },
+    {
+      "check": "synthetic conversation and feedback cleaned",
+      "passed": true
+    },
+    {
+      "check": "Mongo revision advanced after live writes",
+      "passed": true,
+      "before": 15,
+      "after": 20
+    },
+    {
+      "check": "Visit library reads Mongo sources",
+      "passed": true
+    },
+    {
+      "check": "Visit Mongo empty-batch write succeeds without fake metrics",
+      "passed": true
+    },
+    {
+      "check": "Visit administrator login",
+      "passed": true
+    },
+    {
+      "check": "Visit dashboard uses Mongo",
+      "passed": true,
+      "store": "mongo"
+    },
+    {
+      "check": "Visit live request advanced Mongo revision",
+      "passed": true,
+      "before": 484,
+      "after": 485
+    },
+    {
+      "check": "Visit empty-batch did not add synthetic events",
+      "passed": true
+    },
+    {
+      "check": "Jinshu original Blob retained unchanged",
+      "passed": true
+    },
+    {
+      "check": "Visit China original Blob retained unchanged",
+      "passed": true
+    }
+  ],
+  "visit_model_checks": [
+    {
+      "check": "production root",
+      "passed": true
+    },
+    {
+      "check": "wrong password rejected",
+      "passed": true
+    },
+    {
+      "check": "documented demo administrator login",
+      "passed": true
+    },
+    {
+      "check": "durable operations and compressed evaluation corpus",
+      "passed": true,
+      "storage": "mongo",
+      "evaluation_count": 20000,
+      "sources": 519,
+      "error": null
+    },
+    {
+      "check": "GitHub public download /evaluation-cases.json",
+      "passed": true
+    },
+    {
+      "check": "GitHub public download /community-evaluation-5000.jsonl.gz",
+      "passed": true
+    },
+    {
+      "check": "GitHub public download /community-evaluation-manifest.json",
+      "passed": true
+    },
+    {
+      "check": "admin session connects to chat",
+      "passed": true
+    },
+    {
+      "check": "server model configured and authorized",
+      "passed": true,
+      "version": "6.5.0",
+      "model": "deepseek-flash"
+    },
+    {
+      "check": "genuine DeepSeek request",
+      "passed": true,
+      "mode": "deepseek-clarification",
+      "usage": {
+        "prompt_tokens": 3456,
+        "completion_tokens": 311,
+        "total_tokens": 3767,
+        "prompt_tokens_details": {
+          "cached_tokens": 3200
+        },
+        "prompt_cache_hit_tokens": 3200,
+        "prompt_cache_miss_tokens": 256
+      },
+      "dataset": "evaluation",
+      "error": null
+    }
+  ],
+  "deployments": {
+    "jinshu": "dpl_76KxpuaTVHQmi9qSzQQ6yTKtd6t8",
+    "visit_china": "dpl_D31HpTDgPKDRwe3PwEXQM7RKMgfm"
+  },
+  "scope": "Data migration and synthetic production checks; not a new model benchmark, training run, or proof of business improvement."
+}

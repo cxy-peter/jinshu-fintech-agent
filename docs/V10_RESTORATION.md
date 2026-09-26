@@ -39,8 +39,8 @@ V9 为解决 DeepSeek 登录与部署问题，默认只启动对话和八类工�
 ## 存储与免费接入
 
 - 本地 SQLite：事务持久化；CPU BGE 无外部 Embedding 费用。
-- Atlas：显式 `JINSHU_STORE=mongo`；独立库 `jinshu`。用户尚未创建账号，本轮只是准备好适配器与迁移工具。
-- 当前私有 Blob：兼容已有云部署，条件写入防止多实例覆盖。Atlas 验收前保留。不是将私有资料放到公开 GitHub。
+- Atlas：2026-09-26 已完成真实集群迁移与线上验收；显式 `JINSHU_STORE=mongo`，独立库 `jinshu`，仅有该库读写权限的应用账号。过程与证据见 [迁移记录](releases/atlas-cutover-2026-09-26.md)。
+- 原私有 Blob：保留迁移前完整快照，已验证切换后的新写入进入 MongoDB，旧 Blob 内容不变。不是将私有资料放到公开 GitHub。
 - Redis：配置 `REDIS_ADDR`；只缓存已授权当前会话，TTL30分钟，必须与持久化历史一致，失败退回持久化历史。
 - Milvus/Zilliz：配置 `MILVUS_URI`、`MILVUS_TOKEN`；运行 `python scripts/setup_milvus.py` 创建512维COSINE集合并索引已有资料。失败仍可本地语义检索。尚未云端连通验收。
 - 原 pi：`engine/services/pi-agent` 保留；单独启动并设 `PI_AGENT_ENABLED=true`、`PI_AGENT_URL`、`INTERNAL_API_TOKEN`。默认只使用受限查询改写，无业务工具权限；不会假装它已运行。
