@@ -33,13 +33,13 @@
 
 先安装 **Node.js 22 或更高版本**，并在终端用 `npx vercel login` 登录你自己的 Vercel 账号。源码中不包含令牌。
 
-Windows 双击根目录 **`deploy_vercel.bat`**；macOS/Linux 执行 **`bash deploy_vercel.sh`**。菜单有预览、正式版和退出。选择后按 Vercel 提示选择你有权限的团队与**已有项目**（Link to existing project）；显示目标项目和环境后需再次输入确认文字才上传。
+Windows 直接双击根目录 **`deploy_vercel.bat`**；macOS/Linux 执行 **`bash deploy_vercel.sh`**。**默认直接发布 Preview，不再要求输入 `DEPLOY PREVIEW`。** 第一次运行才会让你选择已有 Vercel 项目，之后复用本地 `.vercel/project.json`，不再重复 link。正式版从终端运行 `deploy_vercel.bat production`（macOS/Linux 为 `bash deploy_vercel.sh production`），并且只有正式版要求输入 `DEPLOY PRODUCTION`。
 
 手工等价入口：
 
 ```bash
-node scripts/manual_deploy.mjs preview
-# 正式版：仍要求交互输入 DEPLOY PRODUCTION
+node scripts/manual_deploy.mjs preview   # Preview 无二次确认
+# 正式版：要求交互输入 DEPLOY PRODUCTION
 node scripts/manual_deploy.mjs production
 ```
 
@@ -47,7 +47,7 @@ node scripts/manual_deploy.mjs production
 
 部署脚本只打包 `index.py`、Python 配置、`unified`、`jinshu`、`engine/backend/app` 和合成示例，不上传根目录 `.env`、私有文档库、工作目录或本地模型。它从所选 Vercel 项目取服务器配置，不把你的本地 `.env` 自动同步到云端。运行源代码中不得硬编码密钥；过滤不是秘密扫描的替代。
 
-本机 Node 菜单、打包与命令生成已通过自动测试；Windows `.bat` 做了入口静态检查，未在 Windows 上执行真实 Vercel 发布。
+部署前脚本会先执行 Vercel 的项目检查和 `vercel deploy --dry`；配置错误会在真正上传前停止。`vercel.json` 不再使用超长 `excludeFiles`，因为部署目录本身已经是 allowlist 打包。Windows 调用也不再使用 Node 的 `shell:true`，避免之前的 DEP0190 警告。Windows `.bat` 仍只做自动化入口检查，未在本会话执行真实云端发布。
 
 ## 项目设置：避免沿用旧网页项目的配置
 
