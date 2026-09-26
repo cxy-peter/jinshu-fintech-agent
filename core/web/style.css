@@ -5,3 +5,20 @@
 @media(max-width:800px){.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.history-nav{display:none}.workspace-options{flex-direction:column}.field-row{flex-wrap:wrap}.account-card{padding:12px}.nav-button{white-space:nowrap}}
 
 @media(max-width:700px){nav{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}.nav-button{flex:0 0 auto;width:auto}.card{overflow-wrap:anywhere}.workspace-options label{flex-wrap:wrap}}
+
+/* V10.1: a question can be entered immediately; optional controls follow it. */
+.chat-grid{grid-template-columns:minmax(0,1fr)}
+.section-heading{margin-bottom:16px}.section-heading h1{font-size:26px}
+.composer{border-top:0;border-bottom:1px solid #e3eaf2;padding:20px 22px}
+.composer textarea{min-height:66px}.composer-options p{margin:4px 0 4px 23px}
+.messages{min-height:80px;max-height:65vh}.welcome{padding:0}.welcome h2{font-size:18px}
+.welcome .suggestions{margin:12px 0}.personal-inline{padding:0 22px}
+.retrieval-settings{border-top:1px solid #e3eaf2;padding:12px 18px}
+.retrieval-settings summary{cursor:pointer;font-size:12px;color:#416c59}
+.workspace-options{border:0}.account-card{margin-top:24px}
+.context-card textarea{min-height:70px}.context-card{box-shadow:none}
+.personal-library{margin-bottom:20px}#personal-list{max-height:320px;overflow:auto}
+@media(min-width:1600px){.messages{min-height:80px}main{padding-top:24px}}
+@media(max-width:700px){.messages{min-height:80px}.composer{padding:15px}.personal-inline{padding:0 15px}.section-heading h1{font-size:22px}}
+
+.personal-original{width:min(850px,90vw);border:1px solid #d3dfd6;border-radius:12px;padding:24px}.personal-original::backdrop{background:#1237}.personal-original pre{white-space:pre-wrap;max-height:60vh;overflow:auto}.personal-original h2{font-size:18px}#personal-results pre{white-space:pre-wrap;max-height:240px;overflow:auto}

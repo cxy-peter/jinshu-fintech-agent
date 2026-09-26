@@ -9,7 +9,7 @@ export const ROOT_FILES = ['index.py', 'requirements.txt', 'pyproject.toml',
   'jinshu/__init__.py', 'jinshu/tools.py', 'jinshu/fixtures.py', 'jinshu/model_config.py',
   'unified/__init__.py', 'unified/tools.py', 'unified/requirements.txt'];
 export const ROOT_DIRS = ['core', 'data/synthetic'];
-const TYPES = new Set(['.py', '.js', '.css', '.html', '.md', '.csv', '.json', '.txt', '.example']);
+const TYPES = new Set(['.py', '.js', '.mjs', '.css', '.html', '.md', '.csv', '.json', '.txt', '.example']);
 const SKIP_DIRS = new Set(['__pycache__', 'node_modules', 'private_corpus', 'private_reference',
   'workspace', 'models', 'uploads']);
 export function included(relative) {

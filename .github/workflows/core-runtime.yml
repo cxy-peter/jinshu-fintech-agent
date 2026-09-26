@@ -39,7 +39,7 @@ jobs:
           "$PY" -m pip install pytest pytest-asyncio
           "$PY" scripts/fetch_embedding.py
           "$PY" -m pytest -q tests/core | tee evidence/core-v9/python-tests.txt
-          node --test tests/manual_deploy.test.mjs | tee evidence/core-v9/node-tests.txt
+          node --test tests/manual_deploy.test.mjs tests/personal_materials.test.mjs | tee evidence/core-v9/node-tests.txt
           node --check core/web/app.js
           node --check core/web/workspace.js
       - name: Validate Vercel public configuration schema (no account credentials)
@@ -94,7 +94,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m pytest -q tests/core
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          node --test tests/manual_deploy.test.mjs
+          node --test tests/manual_deploy.test.mjs tests/personal_materials.test.mjs
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python scripts/build_unified.py
           exit $LASTEXITCODE
