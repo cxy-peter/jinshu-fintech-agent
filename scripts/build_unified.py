@@ -37,37 +37,37 @@ asyncio.run(smoke())
 source = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
           for folder in ("unified", "jinshu", "engine/backend/app")
           for p in sorted((ROOT/folder).rglob("*")) if p.suffix in {".py", ".js", ".css", ".html"}}
-# Diagnostic footprint of installed runtime dependencies, excluding test/browser extras.
-# Vercel's actual function artifact size remains the authoritative acceptance check.
+# Diagnostic footprint of direct project dependencies only.
+# This must use the Python standard library exclusively: a clean Vercel build
+# should never fail because an optional build-diagnostic parser is absent.
 from importlib.metadata import distribution, PackageNotFoundError
-from packaging.requirements import Requirement
+import re
 import tomllib
-queue = list(tomllib.loads((ROOT/"pyproject.toml").read_text())["project"]["dependencies"])
-seen, files, packages, unavailable = set(), set(), {}, []
-while queue:
-    requirement = Requirement(queue.pop())
-    if requirement.marker and not requirement.marker.evaluate({"extra": ""}):
+declared = tomllib.loads((ROOT/"pyproject.toml").read_text())["project"]["dependencies"]
+files, packages, unavailable = set(), {}, []
+for raw in declared:
+    # Project dependencies are pinned simple requirements in this repository.
+    # Strip extras/version/marker syntax without importing third-party packaging.
+    name = re.split(r"[<>=!~;\[\s]", raw, maxsplit=1)[0].strip()
+    normalized = name.lower().replace("_", "-")
+    if not normalized or normalized in packages:
         continue
-    name = requirement.name.lower().replace("_", "-")
-    if name in seen:
-        continue
-    seen.add(name)
     try:
-        dist = distribution(name)
+        dist = distribution(normalized)
     except PackageNotFoundError:
-        unavailable.append(name)
+        unavailable.append(normalized)
         continue
     size = 0
     for entry in dist.files or []:
         path = Path(dist.locate_file(entry))
         if path in files or not path.is_file() or path.suffix == ".pyc":
             continue
-        files.add(path); size += path.stat().st_size
-    packages[name] = {"version": dist.version, "bytes": size}
-    queue.extend(dist.requires or [])
-footprint = {"installed_runtime_bytes": sum(d["bytes"] for d in packages.values()),
-             "missing_optional_local_packages": unavailable, "packages": packages,
-             "scope": "diagnostic only; not the Vercel-generated function artifact"}
+        files.add(path)
+        size += path.stat().st_size
+    packages[normalized] = {"version": dist.version, "bytes": size}
+footprint = {"installed_direct_dependency_bytes": sum(d["bytes"] for d in packages.values()),
+             "missing_direct_dependencies": unavailable, "packages": packages,
+             "scope": "diagnostic only; direct project dependencies, not the Vercel function artifact"}
 print("Runtime dependency footprint:", json.dumps(footprint, sort_keys=True))
 info = {"version": "8.1.0", "entrypoint": "index.py", "runtime": "jinshu.runtime.Runtime",
         "git_commit": os.getenv("VERCEL_GIT_COMMIT_SHA"), "source_hashes": source,

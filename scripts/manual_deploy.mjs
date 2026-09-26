@@ -114,7 +114,15 @@ async function main() {
     cli(deployArguments(target, confirmation), staged);
     console.log('发布命令成功结束。请打开上方 URL，再检查 /api/status 和真实服务状态。');
   } finally {
-    if (temporary) fs.rmSync(temporary, { recursive: true, force: true });
+    if (temporary) {
+      try {
+        fs.rmSync(temporary, { recursive: true, force: true, maxRetries: 8, retryDelay: 250 });
+      } catch (error) {
+        // Windows may briefly retain a Vercel/Node file handle after a failed build.
+        // Cleanup failure must never hide the actual deployment result.
+        console.warn(`临时目录暂未删除，可稍后手工清理：${temporary}`);
+      }
+    }
   }
 }
 
