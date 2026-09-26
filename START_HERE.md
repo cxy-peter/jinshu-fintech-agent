@@ -16,11 +16,11 @@
 
 首次账号通过服务配置页说明的 `/api/setup/user` 一次性授权创建。建立编辑与独立复核账号后移除 `JINSHU_BOOTSTRAP_TOKEN`。完整服务没有默认演示账号。模型连接测试需管理员明确同意；状态区的“已配置”不等于“实际调用成功”。
 
-## Vercel 发布状态
+## Vercel 手动发布
 
-部署入口为 `index.py → unified.app → jinshu.runtime.Runtime`，Python 3.12，FastAPI 框架。必须使用包含 pyproject.toml、.vercelignore、完整 engine/backend、jinshu 和 unified 的版本。
+唯一发布源为 `cxy-peter/jinshu-fintech-agent` 的 `main`，不再维护私有发布镜像。打开仓库 Actions 的 **Manual Vercel Deploy**，点击 Run workflow，选择预览或正式版；也可使用根目录的 `deploy_vercel.bat` / `deploy_vercel.sh`。首次授权、服务器配置和现有项目改绑步骤见 [DEPLOY.md](DEPLOY.md)。
 
-V8.1 已进入发布预览分支；截至本次交接，新预览部署失败，构建错误日志因目标团队授权不足未能读取。**尚未替换原生产站，也未验证真实 DeepSeek 调用**。最终状态以 GitHub PR 与 Vercel 部署记录为准，不把本文当作实时运行状态。
+线上与本地仍使用同一入口。普通 Git push/merge 不自动替换生产。旧私有仓库及旧线上版保留；新增手动入口不等于已经成功发布，也不等于真实 DeepSeek 已验收。
 
 ## 历史离线回归保留，但不是默认启动
 

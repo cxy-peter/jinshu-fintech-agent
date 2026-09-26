@@ -1,0 +1,87 @@
+name: Manual Vercel Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'preview = 预览；production = 替换正式版'
+        type: choice
+        required: true
+        default: preview
+        options: [preview, production]
+      confirmation:
+        description: '仅正式发布时输入 DEPLOY PRODUCTION；预览留空'
+        type: string
+        required: false
+        default: ''
+permissions:
+  contents: read
+concurrency:
+  group: jinshu-manual-vercel-${{ inputs.target }}
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Require canonical main and explicit production confirmation
+        env:
+          TARGET: ${{ inputs.target }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = 'cxy-peter/jinshu-fintech-agent'
+          test "$GITHUB_REF" = 'refs/heads/main' || { echo 'Select main in Run workflow.'; exit 1; }
+          case "$TARGET" in
+            preview) ;;
+            production) test "$CONFIRMATION" = 'DEPLOY PRODUCTION' || { echo 'Production confirmation missing.'; exit 1; } ;;
+            *) exit 1 ;;
+          esac
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Test exact source before accessing deployment credentials
+        run: |
+          set -euo pipefail
+          node --test tests/manual_deploy.test.mjs
+          pip install -r requirements.txt pytest pytest-asyncio
+          PYTHONPATH=engine/backend:. pytest -q
+          python scripts/build_unified.py
+      - name: Prepare complete runtime only
+        run: node scripts/prepare_deployment.mjs "$RUNNER_TEMP/jinshu-release"
+      - name: Install pinned Vercel CLI
+        run: npm install --global vercel@59.11.7
+      - name: Build and deploy the selected environment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          TARGET: ${{ inputs.target }}
+        run: |
+          set -euo pipefail
+          # Print missing KEY NAMES only. Never upload .vercel or environment files as artifacts.
+          for key in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            test -n "${!key}" || { echo "Missing GitHub Actions secret: $key"; exit 1; }
+          done
+          cd "$RUNNER_TEMP/jinshu-release"
+          vercel pull --yes --environment="$TARGET" --token="$VERCEL_TOKEN"
+          flags=()
+          if [ "$TARGET" = production ]; then flags=(--prod); fi
+          vercel build "${flags[@]}" --token="$VERCEL_TOKEN"
+          vercel deploy --prebuilt "${flags[@]}" --yes --token="$VERCEL_TOKEN" > "$RUNNER_TEMP/jinshu-deployment-url.txt"
+          URL="$(tail -n 1 "$RUNNER_TEMP/jinshu-deployment-url.txt")"
+          [[ "$URL" =~ ^https://[a-zA-Z0-9.-]+/?$ ]] || { echo 'No valid deployment URL returned.'; exit 1; }
+          {
+            echo '## Jinshu manual deployment completed'
+            echo "Environment: $TARGET"
+            echo "Source: $GITHUB_SHA"
+            echo "Open deployment: $URL"
+            echo 'Vercel build/upload succeeded. Database readiness and real DeepSeek inference still need separate acceptance.'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove fetched credentials from the temporary workspace
+        if: always()
+        run: rm -rf -- "$RUNNER_TEMP/jinshu-release/.vercel"

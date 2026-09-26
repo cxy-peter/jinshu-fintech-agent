@@ -24,3 +24,11 @@ services
 **/*.otf
 **/*.woff
 **/*.woff2
+
+# Explicitly exclude private/local-only data for direct CLI uploads too.
+private_corpus
+private_reference
+models
+uploads
+**/*.pem
+**/*.key

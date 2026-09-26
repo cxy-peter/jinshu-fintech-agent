@@ -4,6 +4,16 @@
 
 个人 AI 辅助工程项目，面向金融资料查询、理财对标、发行排期、周报核查和合规支持，不是机构正式上线系统。
 
+## 手动 Deploy：以后只用这一个仓库
+
+**维护与发布源：本仓库 `main`；不再同步到另一个私有仓库发版。** 原 `jinshu-workbench` 私有仓库保留作旧版本备份，不删除、不公开。Vercel 项目名仍可保留 `jinshu-workbench`，不影响使用本仓库代码。
+
+[▶ 打开手动发布（GitHub Actions）](https://github.com/cxy-peter/jinshu-fintech-agent/actions/workflows/manual-vercel-deploy.yml) · [首次配置与步骤](DEPLOY.md)
+
+点击 **Run workflow**，选 `main`，再选 `preview` 或 `production`。默认预览；正式版需输入 **DEPLOY PRODUCTION**。首次配置三个 GitHub Actions secrets：`VERCEL_TOKEN`、`VERCEL_ORG_ID`、`VERCEL_PROJECT_ID`。业务/模型密钥仍在 Vercel 服务端环境变量中设置。
+
+也可在自己的电脑双击 **deploy_vercel.bat**（Windows）或运行 **bash deploy_vercel.sh**（macOS/Linux），用自己的 Vercel 登录手动选择项目发版。普通 Git push 的自动部署默认关闭，代码合并不等于已替换线上版本。没有创建会再次克隆仓库的 Deploy Button。
+
 ## 一个完整入口
 
 本地启动与 Vercel 都运行 `index.py → unified.app → jinshu.runtime.Runtime(profile=services)`。前端展示和调用服务端 API，不再另跑一套浏览器 RAG 或业务计算。保留原 Harness、BM25/Milvus/RRF/重排、生成/验证、Memory、Trace、反馈与受限迭代、八类工具、资料独立审核以及版本化任务和导出。
@@ -20,7 +30,7 @@ DeepSeek 通过服务端 `DEEPSEEK_API_KEY` 等配置接入；完整的旧 `CHAT
 
 V8.1 应用已通过代码、浏览器及隔离服务验证；DeepSeek 协议用受控 HTTP 测试，不是实际模型质量验收。最新 Vercel 预览失败，目标团队的构建日志读取被403权限拒绝，根因尚未确定。原生产站尚未切换。
 
-当前进展见 [V8.1 修复 PR](https://github.com/cxy-peter/jinshu-fintech-agent/pull/3)、[发布 PR](https://github.com/cxy-peter/jinshu-workbench/pull/1) 和 [部署审计](docs/VERCEL_AUDIT_V81.md)。文档不是实时状态接口。
+当前进展见 [V8.1 修复 PR](https://github.com/cxy-peter/jinshu-fintech-agent/pull/3)、[单仓库发布说明](DEPLOY.md) 和 [部署审计](docs/VERCEL_AUDIT_V81.md)。文档不是实时状态接口。
 
 ## 历史资料保留
 
