@@ -19,16 +19,19 @@ jobs:
         if: github.ref == 'refs/heads/upgrade/unified-v8-runtime'
         run: |
           set -euo pipefail
-          if [ -f unified/legacy_delta.patch ]; then
-            python - <<'PY'
-            import subprocess
-            names=[r.split('\t')[-1] for r in subprocess.check_output(['git','apply','--numstat','unified/legacy_delta.patch'],text=True).splitlines()]
-            assert names and all(p in {'unified/app.py','tests/test_unified_v8.py','jinshu/tools.py','jinshu/skills.py','jinshu/runtime.py','jinshu/retrieval.py'} for p in names)
-            subprocess.run(['git','apply','--check','unified/legacy_delta.patch'],check=True)
-            subprocess.run(['git','apply','unified/legacy_delta.patch'],check=True)
-            subprocess.run(['git','add',*names],check=True)
-            PY
-            git rm unified/legacy_delta.patch
+          python - <<'PY'
+          import subprocess
+          from pathlib import Path
+          p=Path('unified/legacy_delta.patch')
+          if p.exists():
+              names=[r.split('\t')[-1] for r in subprocess.check_output(['git','apply','--numstat',str(p)],text=True).splitlines()]
+              assert names and all(f in {'unified/app.py','tests/test_unified_v8.py','jinshu/tools.py','jinshu/skills.py','jinshu/runtime.py','jinshu/retrieval.py'} for f in names)
+              subprocess.run(['git','apply','--check',str(p)],check=True)
+              subprocess.run(['git','apply',str(p)],check=True)
+              subprocess.run(['git','add',*names],check=True)
+              subprocess.run(['git','rm',str(p)],check=True)
+          PY
+          if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
             git commit -m 'Keep archive source identity and refresh department revision after deactivation'
