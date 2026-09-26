@@ -15,18 +15,23 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Apply readable one-time adapter delta on upgrade branch
+      - name: Apply exact readable adapter delta on upgrade branch
         if: github.ref == 'refs/heads/upgrade/unified-v8-runtime'
         run: |
           set -euo pipefail
           if [ -f unified/legacy_delta.patch ]; then
-            git apply --check unified/legacy_delta.patch
-            git apply unified/legacy_delta.patch
-            rm unified/legacy_delta.patch
+            python - <<'PY'
+            import subprocess
+            names=[r.split('\t')[-1] for r in subprocess.check_output(['git','apply','--numstat','unified/legacy_delta.patch'],text=True).splitlines()]
+            assert names and all(p in {'unified/app.py','tests/test_unified_v8.py','jinshu/tools.py','jinshu/skills.py','jinshu/runtime.py','jinshu/retrieval.py'} for p in names)
+            subprocess.run(['git','apply','--check','unified/legacy_delta.patch'],check=True)
+            subprocess.run(['git','apply','unified/legacy_delta.patch'],check=True)
+            subprocess.run(['git','add',*names],check=True)
+            PY
+            git rm unified/legacy_delta.patch
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add jinshu/tools.py jinshu/skills.py jinshu/runtime.py jinshu/retrieval.py unified/legacy_delta.patch
-            git commit -m 'Connect explicit tool inputs and cloud-safe initialization to original runtime'
+            git commit -m 'Keep archive source identity and refresh department revision after deactivation'
             git push origin HEAD:upgrade/unified-v8-runtime
           fi
       - uses: actions/setup-python@v5
@@ -55,6 +60,17 @@ jobs:
           PYTHONPATH=engine/backend:. uvicorn index:app --port 8092 > /tmp/unified.log 2>&1 &
           sleep 4
           python tests/browser_unified_v8.py
+      - name: Start isolated Mongo Redis Milvus for complete runtime contracts
+        run: |
+          python scripts/init_deployment.py
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml -f tests/services_v8.yml up -d --wait --wait-timeout 240 mongodb redis milvus
+      - name: Complete service runtime and durable restart verification
+        run: |
+          set -euo pipefail
+          PYTHONPATH=engine/backend:.:tests python tests/services_v8.py | tee evidence/unified-v8/services-tests.txt
+      - name: Remove isolated test services
+        if: always()
+        run: docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml -f tests/services_v8.yml down -v || true
       - name: Export exact source without fonts or credentials
         if: always()
         run: |

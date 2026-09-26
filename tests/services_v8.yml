@@ -1,0 +1,8 @@
+# Isolated CI only. Persistent production volumes are never targeted.
+services:
+  mongodb:
+    ports: ['127.0.0.1:27017:27017']
+  redis:
+    ports: ['127.0.0.1:6379:6379']
+  milvus:
+    ports: ['127.0.0.1:19530:19530']
