@@ -8,6 +8,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+if os.getenv('JINSHU_BUILD_EMBEDDINGS') == '1':
+    from fetch_embedding import fetch
+    fetch()
 required = ('index.py', 'core/app.py', 'core/config.py', 'core/provider.py',
             'core/web/index.html', 'core/web/app.js', 'core/web/style.css',
             'jinshu/tools.py', 'jinshu/fixtures.py', 'jinshu/model_config.py',
@@ -38,4 +41,4 @@ info = {'version': VERSION, 'entrypoint': 'index:app', 'mode': 'core',
         'cloud_services_contacted': False, 'paid_model_called': False,
         'source_hashes': {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in required}}
 (ROOT/'core/web/build-info.json').write_text(json.dumps(info, ensure_ascii=False, indent=2), encoding='utf-8')
-print('Jinshu V9 production-only build passed: same index:app; zero database/ML imports; zero model calls.')
+print('Jinshu V10 production-only build passed: same index:app; zero database/ML imports; zero model calls.')

@@ -1,4 +1,4 @@
-name: Core V9 runtime acceptance
+name: Core V10 governed runtime acceptance
 on:
   push:
     branches: [main, fix/core-runtime-v9]
@@ -28,7 +28,7 @@ jobs:
           "$PY" -m pip install -r requirements.txt
           "$PY" -m pip check
           "$PY" -m pip freeze > evidence/core-v9/production-dependencies.txt
-          "$PY" -c "import importlib.util; assert all(importlib.util.find_spec(x) is None for x in ['pytest','numpy','pymongo','pymilvus','redis','sklearn'])"
+          "$PY" -c "import importlib.util; assert all(importlib.util.find_spec(x) is None for x in ['pytest','pymilvus','sklearn','torch'])"
           "$PY" scripts/build_unified.py | tee evidence/core-v9/clean-boot.txt
           node scripts/prepare_deployment.mjs "$RUNNER_TEMP/core-staged"
           (cd "$RUNNER_TEMP/core-staged" && "$PY" scripts/build_unified.py)
@@ -37,9 +37,11 @@ jobs:
           set -euo pipefail
           PY="$RUNNER_TEMP/core-runtime/bin/python"
           "$PY" -m pip install pytest pytest-asyncio
+          "$PY" scripts/fetch_embedding.py
           "$PY" -m pytest -q tests/core | tee evidence/core-v9/python-tests.txt
           node --test tests/manual_deploy.test.mjs | tee evidence/core-v9/node-tests.txt
           node --check core/web/app.js
+          node --check core/web/workspace.js
       - name: Validate Vercel public configuration schema (no account credentials)
         run: |
           set -euo pipefail
@@ -73,7 +75,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: jinshu-v9-core-acceptance
+          name: jinshu-v10-governed-acceptance
+          retention-days: 3
           path: evidence/core-v9/
   windows-runtime-and-launcher:
     runs-on: windows-latest

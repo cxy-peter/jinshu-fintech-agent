@@ -13,7 +13,7 @@ async function api(url, options={}) {
 }
 function text(tag, value, className) {const element=document.createElement(tag);element.textContent=value;if(className)element.className=className;return element;}
 function download(value,name,type='application/json') {const blob=new Blob([typeof value==='string'?value:JSON.stringify(value,null,2)],{type}); const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
-function tab(name) { for(const b of document.querySelectorAll('.nav-button'))b.classList.toggle('selected',b.dataset.tab===name); for(const id of ['chat','tools','status'])$(id+'-tab').hidden=id!==name; notice(''); }
+function tab(name) { for(const b of document.querySelectorAll('.nav-button'))b.classList.toggle('selected',b.dataset.tab===name); for(const section of document.querySelectorAll('main > section.tab'))section.hidden=section.id!==name+'-tab'; window.workspaceBridge?.onTab(name); notice(''); }
 for(const b of document.querySelectorAll('[data-tab]'))b.onclick=()=>tab(b.dataset.tab);
 function statusRows(s) {
   $('status-details').replaceChildren();
@@ -43,16 +43,16 @@ $('chat-form').onsubmit=async event=>{
   const query=$('query').value.trim();if(!query)return;
   if(!$('consent').checked){notice('发送前，请先确认本次内容可以交给 DeepSeek。');$('consent').focus();return;}
   const current=++generation, controller=new AbortController();active=controller;
-  const snapshot={query,history:history.slice(-8),documents:documents.map(d=>({...d})),include_examples:$('include-examples').checked,consent:true};
+  const snapshot={...(window.workspaceBridge?.chatFields()||{}),query,history:history.slice(-8),documents:documents.map(d=>({...d})),include_examples:$('include-examples').checked,consent:true};
   message('user',query);const pending=message('assistant','正在检索本次资料并请求模型…','pending');
   $('send').disabled=true;$('cancel').hidden=false;$('request-state').textContent='请求处理中，可以停止等待。';$('query').value='';notice('');
   const timeout=setTimeout(()=>controller.abort('timeout'),95000);
-  try {const answer=await api('/api/chat',{method:'POST',body:JSON.stringify(snapshot),signal:controller.signal});if(current!==generation)return;renderAnswer(answer,pending);history.push({role:'user',content:query.slice(0,1500)},{role:'assistant',content:answer.answer.slice(0,1500)});history=history.slice(-8);}
+  try {const answer=await api('/api/chat',{method:'POST',body:JSON.stringify(snapshot),signal:controller.signal});if(current!==generation)return;renderAnswer(answer,pending);window.workspaceBridge?.answered(answer,pending);history.push({role:'user',content:query.slice(0,1500)},{role:'assistant',content:answer.answer.slice(0,1500)});history=history.slice(-8);}
   catch(error){if(current!==generation)return;pending.classList.remove('pending');pending.classList.add('error');$('model-status').textContent='本次未获得模型回答，请查看错误提示';pending.querySelector('.message-body').textContent=controller.signal.aborted?'已停止等待；服务端调用可能已发送并产生费用。':error.message;}
-  finally {clearTimeout(timeout);if(current===generation){active=null;$('send').disabled=false;$('cancel').hidden=true;$('request-state').textContent='对话只保留在当前页面，刷新后清空。';}}
+  finally {clearTimeout(timeout);if(current===generation){active=null;$('send').disabled=false;$('cancel').hidden=true;$('request-state').textContent='可保存与恢复对话；新对话不会继承旧问题。';}}
 };
 $('cancel').onclick=()=>active?.abort();
-$('clear-chat').onclick=()=>{generation++;active?.abort();active=null;history=[];$('messages').replaceChildren(text('div','本次对话已清空；资料栏内容仍保留。','muted'));$('send').disabled=false;$('cancel').hidden=true;$('request-state').textContent='对话只保留在当前页面，刷新后清空。';};
+$('clear-chat').onclick=()=>{window.workspaceBridge?.newChat();generation++;active?.abort();active=null;history=[];$('messages').replaceChildren(text('div','本次对话已清空；资料栏内容仍保留。','muted'));$('send').disabled=false;$('cancel').hidden=true;$('request-state').textContent='可保存与恢复对话；新对话不会继承旧问题。';};
 for(const b of document.querySelectorAll('[data-question]'))b.onclick=()=>{$('query').value=b.dataset.question;$('query').focus();};
 function renderDocuments() { $('documents').replaceChildren();documents.forEach((d,i)=>{const row=text('div','','doc-item');row.append(text('span',d.title+' · '+d.text.length+'字'));const remove=text('button','移除');remove.onclick=()=>{documents.splice(i,1);renderDocuments();};row.append(remove);$('documents').append(row);});$('doc-count').textContent=documents.length+' / 3'; }
 $('add-doc').onclick=()=>{const title=$('doc-title').value.trim(),body=$('doc-text').value.trim();if(!title||!body){notice('请填写资料标题和内容。');return;}if(documents.length>=3||body.length>12000||documents.reduce((n,d)=>n+d.text.length,0)+body.length>20000){notice('资料最多3份，每份12000字，合计20000字。');return;}documents.push({title,text:body});$('doc-title').value='';$('doc-text').value='';notice('');renderDocuments();};

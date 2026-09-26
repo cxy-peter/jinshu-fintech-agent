@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 export const ROOT_FILES = ['index.py', 'requirements.txt', 'pyproject.toml',
-  'vercel.json', '.python-version', '.vercelignore', 'scripts/build_unified.py',
+  'vercel.json', '.python-version', '.vercelignore', 'scripts/build_unified.py', 'scripts/fetch_embedding.py',
   'jinshu/__init__.py', 'jinshu/tools.py', 'jinshu/fixtures.py', 'jinshu/model_config.py',
   'unified/__init__.py', 'unified/tools.py', 'unified/requirements.txt'];
 export const ROOT_DIRS = ['core', 'data/synthetic'];
