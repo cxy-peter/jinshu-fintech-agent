@@ -32,7 +32,7 @@ function message(role,content,kind='') {
 function renderAnswer(data,node) {
   node.classList.remove('pending');node.querySelector('.message-body').textContent=data.answer;
   for(const warning of data.warnings||[])node.append(text('div',warning,'warning'));
-  if(data.sources?.length){const details=document.createElement('details');details.append(text('summary',`本次检索片段 · ${data.sources.length} 条（不等于事实已全部核验）`));for(const source of data.sources)details.append(text('p',`[${source.source_id}] ${source.title}`),text('p',source.text));node.append(details);}
+  if(data.sources?.length){const details=document.createElement('details');details.append(text('summary',`本次检索片段 · ${data.sources.length} 条（不等于事实已全部核验）`));for(const source of data.sources){details.append(text('p',`[${source.source_id}] ${source.title}${source.page?' · 原文第'+source.page+'页':''}${source.origin==='personal_local'?' · 个人资料':''}`),text('p',source.text));if(source.origin==='personal_local'&&source.chunk_id){const open=text('button','查看本机原文');open.onclick=()=>window.personalBridge?.open(source.chunk_id,source.page);details.append(open);}}node.append(details);}
   const trace=document.createElement('details');trace.append(text('summary',`执行记录 · ${data.model_call.model} · ${data.model_call.latency_ms}ms`),text('pre',JSON.stringify({trace_id:data.trace_id,model:data.model_call,verification:data.verification,trace:data.trace},null,2)));node.append(trace);
   const actions=text('div','','message-actions');const save=text('button','导出回答与执行记录');save.onclick=()=>download(data,'jinshu-answer-'+data.trace_id+'.json');actions.append(save);node.append(actions);
   $('model-status').textContent=data.model_call.inference_verified?'本次已收到 DeepSeek 实际响应':'本次为 HTTP 协议模拟测试（不计为真实调用）';
@@ -47,10 +47,17 @@ $('chat-form').onsubmit=async event=>{
   message('user',query);const pending=message('assistant','正在检索本次资料并请求模型…','pending');
   $('send').disabled=true;$('cancel').hidden=false;$('request-state').textContent='请求处理中，可以停止等待。';$('query').value='';notice('');
   const timeout=setTimeout(()=>controller.abort('timeout'),95000);
-  try {const answer=await api('/api/chat',{method:'POST',body:JSON.stringify(snapshot),signal:controller.signal});if(current!==generation)return;renderAnswer(answer,pending);window.workspaceBridge?.answered(answer,pending);history.push({role:'user',content:query.slice(0,1500)},{role:'assistant',content:answer.answer.slice(0,1500)});history=history.slice(-8);}
+  try {snapshot.personal_passages=await window.personalBridge?.search(query)||[];if(current!==generation||controller.signal.aborted)return;const answer=await api('/api/chat',{method:'POST',body:JSON.stringify(snapshot),signal:controller.signal});if(current!==generation)return;renderAnswer(answer,pending);window.workspaceBridge?.answered(answer,pending);history.push({role:'user',content:query.slice(0,1500)},{role:'assistant',content:answer.answer.slice(0,1500)});history=history.slice(-8);}
   catch(error){if(current!==generation)return;pending.classList.remove('pending');pending.classList.add('error');$('model-status').textContent='本次未获得模型回答，请查看错误提示';pending.querySelector('.message-body').textContent=controller.signal.aborted?'已停止等待；服务端调用可能已发送并产生费用。':error.message;}
   finally {clearTimeout(timeout);if(current===generation){active=null;$('send').disabled=false;$('cancel').hidden=true;$('request-state').textContent='可保存与恢复对话；新对话不会继承旧问题。';}}
 };
+let composing=false;
+$('query').addEventListener('compositionstart',()=>{composing=true;});
+$('query').addEventListener('compositionend',()=>{composing=false;});
+$('query').addEventListener('keydown',event=>{
+  if(event.key!=='Enter'||event.shiftKey||event.isComposing||composing||event.keyCode===229)return;
+  event.preventDefault();if(!active&&!event.repeat)$('chat-form').requestSubmit();
+});
 $('cancel').onclick=()=>active?.abort();
 $('clear-chat').onclick=()=>{window.workspaceBridge?.newChat();generation++;active?.abort();active=null;history=[];$('messages').replaceChildren(text('div','本次对话已清空；资料栏内容仍保留。','muted'));$('send').disabled=false;$('cancel').hidden=true;$('request-state').textContent='可保存与恢复对话；新对话不会继承旧问题。';};
 for(const b of document.querySelectorAll('[data-question]'))b.onclick=()=>{$('query').value=b.dataset.question;$('query').focus();};

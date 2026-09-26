@@ -5,9 +5,10 @@ import io
 import os
 import secrets
 import time
+from pathlib import Path
 from datetime import date
 from fastapi import Request, HTTPException, Depends
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Literal
 from . import governance as g
@@ -61,6 +62,17 @@ def install(app,authorize,env=None,clock=time.monotonic):
     store=Store(e);app.state.workspace_store=store
     from .security import Budget
     auth_limit=Budget(clock)
+
+    @app.get('/api/local-materials')
+    async def local_materials(request:Request,c=Depends(authorize)):
+        # Local-only recovery bridge. Never expose the private corpus on Vercel or
+        # to a LAN client; no path or host is accepted from a request parameter.
+        if e.get('VERCEL') or request.client.host not in ('127.0.0.1','::1') or request.url.hostname not in ('localhost','127.0.0.1','::1'):
+            raise HTTPException(404,'本机资料仅在本机工作台可用')
+        path=Path(e.get('JINSHU_PERSONAL_PACK',''))
+        if not path.is_file() or path.stat().st_size>100_000_000:
+            raise HTTPException(404,'未配置本机个人资料包')
+        return FileResponse(path,media_type='application/json')
     @app.exception_handler(StoreUnavailable)
     async def unavailable(request,exc):
         return JSONResponse({'error':{'code':'STORE_UNAVAILABLE','message':str(exc)}},503)
@@ -79,6 +91,7 @@ def install(app,authorize,env=None,clock=time.monotonic):
             'accounts':g.ACCOUNTS if e.get('JINSHU_DEMO_ACCOUNTS')=='1' else [],
             'conversations':[{'id':x['id'],'title':x['title'],'revision':x['revision'],'updated_at':x['updated_at']} for x in state['conversations'].values() if x['owner']==oid],
             'semantic':{'configured':encoder_available(),'model':MODEL_ID,'verified_this_request':False},
+            'local_materials_available':bool(not e.get('VERCEL') and e.get('JINSHU_PERSONAL_PACK') and request.client.host in ('127.0.0.1','::1') and request.url.hostname in ('localhost','127.0.0.1','::1')),
             'optional':{k:bool(e.get(v)) for k,v in [('MongoDB','MONGODB_URI'),('Redis','REDIS_ADDR'),('Milvus','MILVUS_URI'),('pi','PI_AGENT_URL')]},
             'department_options':g.DEPARTMENTS,'workflows':{key:row['name'] for key,row in WORKFLOWS.items()}}
         response=JSONResponse(result)
@@ -243,7 +256,9 @@ async def prepare(store,d,request):
     if skill and group=='treatment':query+=' '+' '.join(skill['terms']);top_k=skill['top_k'];instructions.append(g.TEMPLATES[skill['template']])
     if prefs.get('remember'):
         instructions.append(g.TEMPLATES[prefs['format']]);instructions.append('请用英文回答。' if prefs['language']=='en' else '请用中文回答。')
-    docs=[x for x in active_documents(state,d.department) if x['external_allowed']] if d.use_library else []
+    docs=[x for x in active_documents(state,d.department) if x['external_allowed'] and
+          (d.include_examples or not (x.get('synthetic') or '合成' in x['title'] or
+           x.get('topic','').startswith(('synthetic-', 'v10-acceptance-'))))] if d.use_library else []
     query,rewrite_mode=await pi_rewrite(store.env,query)
     sources,mode=await search(query,docs,top_k,env=store.env)
     return {'state':state,'owner':oid,'conversation':conversation,'history':history,'query':query,'sources':sources,
