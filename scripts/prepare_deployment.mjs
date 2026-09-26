@@ -1,12 +1,14 @@
-/** Copy only the complete runtime, not the user's local documents or credentials. */
+/** Copy the identical default runtime for local and Vercel; not private data or optional legacy engines. */
 import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 export const ROOT_FILES = ['index.py', 'requirements.txt', 'pyproject.toml',
-  'vercel.json', '.python-version', '.vercelignore', 'scripts/build_unified.py'];
-export const ROOT_DIRS = ['unified', 'jinshu', 'engine/backend/app', 'data/synthetic'];
+  'vercel.json', '.python-version', '.vercelignore', 'scripts/build_unified.py',
+  'jinshu/__init__.py', 'jinshu/tools.py', 'jinshu/fixtures.py', 'jinshu/model_config.py',
+  'unified/__init__.py', 'unified/tools.py', 'unified/requirements.txt'];
+export const ROOT_DIRS = ['core', 'data/synthetic'];
 const TYPES = new Set(['.py', '.js', '.css', '.html', '.md', '.csv', '.json', '.txt', '.example']);
 const SKIP_DIRS = new Set(['__pycache__', 'node_modules', 'private_corpus', 'private_reference',
   'workspace', 'models', 'uploads']);
@@ -51,13 +53,13 @@ export function prepareDeployment(source, destination) {
   try {
     for (const name of ROOT_FILES) copy(name, true);
     for (const name of ROOT_DIRS) copy(name);
-    for (const name of ['jinshu/runtime.py', 'unified/app.py', 'unified/web/index.html',
-      'unified/web/provider.js', 'engine/backend/app/main.py', 'data/synthetic/documents.json']) {
+    for (const name of ['core/app.py', 'core/provider.py', 'core/web/index.html',
+      'core/web/app.js', 'jinshu/tools.py', 'data/synthetic/documents.json']) {
       if (!hashes[name]) throw new Error('Required full-runtime file missing: ' + name);
     }
     fs.writeFileSync(path.join(destination, 'release-manifest.json'), JSON.stringify({
       canonical_repository: 'cxy-peter/jinshu-fintech-agent',
-      entrypoint: 'index:app', files: hashes,
+      entrypoint: 'index:app', mode: 'core', files: hashes,
       scope: 'source packaging only; no cloud deployment or inference verified'
     }, null, 2));
     return hashes;

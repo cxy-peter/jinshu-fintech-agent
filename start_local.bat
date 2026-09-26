@@ -10,11 +10,11 @@ if not exist .venv\Scripts\python.exe (
   )
 )
 if errorlevel 1 goto failed
-.venv\Scripts\python.exe -c "import sys; sys.exit(0 if sys.version_info[:2] == (3,12) else 'Python 3.12 is required. Create a Python 3.12 .venv before starting.')"
+.venv\Scripts\python.exe -c "import sys; sys.exit(0 if sys.version_info[:2] in ((3,12),(3,13)) else 'Python 3.12 or 3.13 is required. Create a Python 3.12 .venv before starting.')"
 if errorlevel 1 goto failed
 .venv\Scripts\python.exe -m pip install -r requirements.txt
 if errorlevel 1 goto failed
-echo Jinshu V8.1: complete shared backend at http://127.0.0.1:8766
+echo Jinshu V9: shared core backend at http://127.0.0.1:8766
 echo Missing settings are shown on the setup page; no offline fallback.
 if exist .env (
   .venv\Scripts\python.exe -m uvicorn index:app --host 127.0.0.1 --port 8766 --env-file .env

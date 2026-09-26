@@ -1,2 +1,1 @@
-# Complete runtime on local Python and Vercel. Tests are a separate install.
 -r unified/requirements.txt
