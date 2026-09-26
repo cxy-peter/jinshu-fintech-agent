@@ -41,4 +41,4 @@ info = {'version': VERSION, 'entrypoint': 'index:app', 'mode': 'core',
         'cloud_services_contacted': False, 'paid_model_called': False,
         'source_hashes': {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in required}}
 (ROOT/'core/web/build-info.json').write_text(json.dumps(info, ensure_ascii=False, indent=2), encoding='utf-8')
-print('Jinshu V9 production-only build passed: same index:app; zero database/ML imports; zero model calls.')
+print('Jinshu V10 production-only build passed: same index:app; zero database/ML imports; zero model calls.')
