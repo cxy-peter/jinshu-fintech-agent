@@ -1,0 +1,111 @@
+{
+  "checkedAt": "2026-09-26T19:42:12.809056+00:00",
+  "deployment": "dpl_DATDSRnu8JoDycZaHVcovzjLc79N",
+  "sourceCommit": "d9bddd4a45e0633971433a491096ed14ca7d5cbd",
+  "status": {
+    "version": "9.0.0",
+    "mode": "core",
+    "entrypoint": "index:app",
+    "same_local_and_vercel_runtime": true,
+    "page_ready": true,
+    "model": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "configured": true,
+      "inference_verified": false,
+      "verification_scope": "configuration_only; inspect actual per-request model_calls",
+      "missing": [],
+      "invalid": [],
+      "access_required": false,
+      "warnings": [],
+      "max_tokens": 1600,
+      "timeout_seconds": 55,
+      "hourly_limit_per_instance": 30
+    },
+    "test_transport": false,
+    "capabilities": {
+      "chat": true,
+      "keyword_retrieval": true,
+      "deterministic_tools": [
+        "issuance",
+        "material_fill",
+        "wealth_benchmark",
+        "statements",
+        "onboarding",
+        "strategy",
+        "weekly_report",
+        "kep"
+      ],
+      "mongodb_required": false,
+      "redis_required": false,
+      "milvus_required": false,
+      "embedding_required": false,
+      "reranker_required": false,
+      "durable_server_history": false,
+      "enterprise_review": false
+    },
+    "history": "当前浏览器内存；刷新清除。服务端不存储对话和上传资料。",
+    "limits": "限流为单进程保护，不是跨实例费用上限；公开分享前建议设置访问码及Vercel费用限制。"
+  },
+  "tools": [
+    {
+      "tool": "issuance",
+      "hasTrace": true,
+      "needsReview": true,
+      "synthetic": true
+    },
+    {
+      "tool": "material_fill",
+      "hasTrace": true,
+      "needsReview": true,
+      "synthetic": true
+    },
+    {
+      "tool": "wealth_benchmark",
+      "hasTrace": true,
+      "needsReview": true,
+      "synthetic": true
+    },
+    {
+      "tool": "statements",
+      "hasTrace": true,
+      "needsReview": true,
+      "synthetic": true
+    },
+    {
+      "tool": "onboarding",
+      "hasTrace": true,
+      "needsReview": true,
+      "synthetic": true
+    },
+    {
+      "tool": "strategy",
+      "hasTrace": true,
+      "needsReview": true,
+      "synthetic": true
+    },
+    {
+      "tool": "weekly_report",
+      "hasTrace": true,
+      "needsReview": true,
+      "synthetic": true
+    },
+    {
+      "tool": "kep",
+      "hasTrace": true,
+      "needsReview": true,
+      "synthetic": true
+    }
+  ],
+  "modelSmoke": {
+    "scope": "Verified in preceding real HTTP calls; metrics copied from actual tool output, not a repeated paid call",
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "checkAnswer": "连接成功。",
+    "checkTraceId": "a2febf54-c8df-4f39-8c58-2edb2bf63976",
+    "checkTotalTokens": 21,
+    "chatTotalTokens": 809,
+    "inferenceVerified": true
+  },
+  "browserScope": "GitHub Core V9 browser suite passed on source commit; local production browser navigation denied"
+}
