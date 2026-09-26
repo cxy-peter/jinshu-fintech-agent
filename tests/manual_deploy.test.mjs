@@ -108,3 +108,14 @@ test('POSIX launcher help makes no network request', () => {
   const result = spawnSync('bash', [path.join(root, 'deploy_vercel.sh'), '--help'], { encoding: 'utf8' });
   assert.equal(result.status, 0); assert.ok(result.stdout.includes('DEPLOY PRODUCTION'));
 });
+
+test('Vercel build script has no undeclared packaging dependency', () => {
+  const source=fs.readFileSync(path.join(root, 'scripts/build_unified.py'), 'utf8');
+  assert.ok(!source.includes('from packaging'));
+  assert.ok(source.includes('standard library exclusively'));
+});
+test('manual deploy cleanup retries and does not mask deployment errors', () => {
+  const source=fs.readFileSync(path.join(root, 'scripts/manual_deploy.mjs'), 'utf8');
+  assert.ok(source.includes('maxRetries: 8'));
+  assert.ok(source.includes('Cleanup failure must never hide the actual deployment result'));
+});
