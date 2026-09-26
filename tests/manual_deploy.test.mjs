@@ -22,13 +22,13 @@ for (const value of ['', '1', 'preview']) test(`preview default ${JSON.stringify
 for (const value of ['2', 'production']) test(`production is explicit ${value}`, () => assert.equal(targetFromChoice(value), 'production'));
 test('cancel is no deployment', () => assert.equal(targetFromChoice('0'), null));
 test('invalid choice does not become production', () => assert.throws(() => targetFromChoice('yes')));
-test('preview command has no production flag', () => assert.deepEqual(deployArguments('preview', 'DEPLOY PREVIEW'), ['deploy', '--yes', '--logs']));
+test('preview is one-click and has no production flag', () => assert.deepEqual(deployArguments('preview'), ['deploy', '--yes', '--logs']));
 test('production command requires exact phrase', () => {
   assert.throws(() => deployArguments('production', ''));
   assert.throws(() => deployArguments('production', 'DEPLOY PREVIEW'));
   assert.ok(deployArguments('production', 'DEPLOY PRODUCTION').includes('--prod'));
 });
-test('preview also needs upload confirmation', () => assert.throws(() => deployArguments('preview', '')));
+test('preview does not require confirmation', () => assert.deepEqual(deployArguments('preview', ''), ['deploy', '--yes', '--logs']));
 test('unknown environment is rejected', () => assert.throws(() => deployArguments('prod', 'DEPLOY PRODUCTION')));
 for (const value of ['unified/.env', 'unified/.env.production', 'unified/private_corpus/a.json',
   'jinshu/__pycache__/x.pyc', 'unified/key.pem', 'unified/private.key', 'unified/credentials.json',
@@ -93,8 +93,17 @@ test('manual workflow is dispatch-only and uses canonical main', () => {
   assert.ok(s.includes('vercel deploy --prebuilt')); assert.ok(s.includes(`vercel@${CLI_VERSION}`));
   assert.ok(!s.includes('upload-artifact')); assert.ok(s.includes('secrets.VERCEL_TOKEN'));
 });
-test('automatic Git deployments disabled on canonical repo', () => assert.equal(JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'))).git.deploymentEnabled, false));
-test('Windows launcher delegates to the same menu', () => assert.ok(fs.readFileSync(path.join(root, 'deploy_vercel.bat'), 'utf8').includes('node scripts\\manual_deploy.mjs')));
+test('automatic Git deployments disabled and no overlong excludeFiles remains', () => {
+  const config=JSON.parse(fs.readFileSync(path.join(root, 'vercel.json')));
+  assert.equal(config.git.deploymentEnabled, false);
+  assert.equal(config.functions['index.py'].excludeFiles, undefined);
+});
+test('Windows launcher delegates to the simple deploy script', () => {
+  assert.ok(fs.readFileSync(path.join(root, 'deploy_vercel.bat'), 'utf8').includes('node scripts\\manual_deploy.mjs'));
+  const source=fs.readFileSync(path.join(root, 'scripts/manual_deploy.mjs'), 'utf8');
+  assert.ok(source.includes("shell: false"));
+  assert.ok(!source.includes("shell: process.platform"));
+});
 test('POSIX launcher help makes no network request', () => {
   const result = spawnSync('bash', [path.join(root, 'deploy_vercel.sh'), '--help'], { encoding: 'utf8' });
   assert.equal(result.status, 0); assert.ok(result.stdout.includes('DEPLOY PRODUCTION'));
