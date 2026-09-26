@@ -4,9 +4,18 @@ import csv,hashlib,json,statistics,re
 from datetime import date,timedelta
 from decimal import Decimal as D,InvalidOperation
 from .fixtures import DATA
+from contextvars import ContextVar
+INPUT_SOURCES=ContextVar("jinshu_input_sources",default=None)
 
-def rows(name):
- with (DATA/name).open(encoding='utf-8-sig',newline='') as f:return list(csv.DictReader(f))
+def source(name):
+ values=INPUT_SOURCES.get()
+ if values is not None:
+  if name not in values:raise ValueError("缺少本次输入资料："+name)
+  return values[name]
+ if name.endswith(".json"):return json.loads((DATA/name).read_text())
+ with (DATA/name).open(encoding="utf-8-sig",newline="") as f:return list(csv.DictReader(f))
+
+def rows(name):return source(name)
 def number(x,percent=False):
  if x is None or str(x).strip() in {'','--','-','N/A'}:return None
  raw=str(x).strip()
@@ -44,7 +53,7 @@ def wealth_benchmark(p):
  return {'rows':out,'summary':{'同口径样本数':len(out),'样本收益中位数':str(statistics.median(vals)),'严格低于目标的样本比例':sum(v<tr for v in vals)/len(vals)},'note':'合成净值无分红；不是全市场排名或投资建议'}
 
 def issuance(p):
- cfg=json.loads((DATA/'calendar.json').read_text());holidays=set(cfg['holidays']);start=date.fromisoformat(p.get('start','2026-09-25'));term=int(p.get('term_days',90));freq=int(p.get('frequency_days',7));count=int(p.get('count',3))
+ cfg=source('calendar.json');holidays=set(cfg['holidays']);start=date.fromisoformat(p.get('start','2026-09-25'));term=int(p.get('term_days',90));freq=int(p.get('frequency_days',7));count=int(p.get('count',3))
  if term<1 or term>3650 or freq not in [7,14] or not 1<=count<=20:raise ValueError('排期参数超出允许范围')
  def valid(d):return d.weekday()<5 and str(d) not in holidays
  def advance(d):
@@ -106,7 +115,7 @@ FILES={'wealth_benchmark':['products.csv','nav.csv'],'issuance':['calendar.json'
 def run(tool,p=None):
  if tool not in TOOLS:raise ValueError('工具不在白名单')
  result=TOOLS[tool](p or {})
- return {'tool':tool,'synthetic':True,'result':result,'source_files':[{'file':n,'sha256':hashlib.sha256((DATA/n).read_bytes()).hexdigest()} for n in FILES[tool]]}
+ return {'tool':tool,'synthetic':INPUT_SOURCES.get() is None,'result':result,'source_files':[{'file':n,'sha256':hashlib.sha256((DATA/n).read_bytes() if INPUT_SOURCES.get() is None else json.dumps(source(n),ensure_ascii=False,sort_keys=True).encode()).hexdigest()} for n in FILES[tool]]}
 
 def material_fill(p):
  from .python_skills import material_fill as impl

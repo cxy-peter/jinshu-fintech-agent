@@ -1,0 +1,98 @@
+name: Unified V8 verification
+on:
+  push:
+    branches: ['upgrade/unified-v8-runtime']
+  pull_request:
+    paths: ['unified/**','jinshu/**','tests/**','requirements.txt','vercel.json','.github/workflows/unified-v8.yml']
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency:
+  group: unified-v8-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply exact readable adapter delta on upgrade branch
+        if: github.ref == 'refs/heads/upgrade/unified-v8-runtime'
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import subprocess
+          from pathlib import Path
+          p=Path('unified/legacy_delta.patch')
+          if p.exists():
+              names=[r.split('\t')[-1] for r in subprocess.check_output(['git','apply','--numstat',str(p)],text=True).splitlines()]
+              assert names and all(f in {'unified/app.py','tests/test_unified_v8.py','jinshu/tools.py','jinshu/skills.py','jinshu/runtime.py','jinshu/retrieval.py'} for f in names)
+              subprocess.run(['git','apply','--check',str(p)],check=True)
+              subprocess.run(['git','apply',str(p)],check=True)
+              subprocess.run(['git','add',*names],check=True)
+              subprocess.run(['git','rm',str(p)],check=True)
+          PY
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'Keep archive source identity and refresh department revision after deactivation'
+            git push origin HEAD:upgrade/unified-v8-runtime
+          fi
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Complete Python dependencies and regressions
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/unified-v8
+          pip install -r requirements.txt pytest pytest-asyncio playwright
+          pip freeze > evidence/unified-v8/dependencies.txt
+          PYTHONPATH=engine/backend:. pytest -q | tee evidence/unified-v8/python-tests.txt
+          node --check unified/web/app.js
+          python scripts/build_unified.py
+      - name: Preserve historical web regression separately
+        run: |
+          set -euo pipefail
+          cd lite
+          npm ci --ignore-scripts
+          npm test | tee ../evidence/unified-v8/historical-node-tests.txt
+      - name: Browser over actual local HTTP
+        run: |
+          python -m playwright install --with-deps chromium
+          PYTHONPATH=engine/backend:.:tests uvicorn v8_browser_fixture:app --port 8091 > /tmp/fixture.log 2>&1 &
+          PYTHONPATH=engine/backend:. uvicorn index:app --port 8092 > /tmp/unified.log 2>&1 &
+          sleep 4
+          python tests/browser_unified_v8.py
+      - name: Start isolated Mongo Redis Milvus for complete runtime contracts
+        run: |
+          python scripts/init_deployment.py
+          docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml -f tests/services_v8.yml up -d --wait --wait-timeout 240 mongodb redis milvus
+      - name: Complete service runtime and durable restart verification
+        run: |
+          set -euo pipefail
+          PYTHONPATH=engine/backend:.:tests python tests/services_v8.py | tee evidence/unified-v8/services-tests.txt
+      - name: Remove isolated test services
+        if: always()
+        run: docker compose --env-file deploy/compose/.env -f deploy/compose/stack.yml -f tests/services_v8.yml down -v || true
+      - name: Export exact source without fonts or credentials
+        if: always()
+        run: |
+          python - <<'PY'
+          import subprocess,zipfile
+          from pathlib import Path
+          files=subprocess.check_output(['git','ls-files'],text=True).splitlines()
+          with zipfile.ZipFile('/tmp/jinshu-source.zip','w',zipfile.ZIP_DEFLATED) as z:
+            for f in files:
+              p=Path(f)
+              if p.is_file() and p.suffix.lower() not in {'.ttf','.otf','.woff','.woff2'}:
+                z.write(p,f)
+          Path('evidence/unified-v8').mkdir(parents=True,exist_ok=True)
+          Path('evidence/unified-v8/source-commit.txt').write_text(subprocess.check_output(['git','rev-parse','HEAD'],text=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jinshu-unified-v8
+          path: |
+            /tmp/jinshu-source.zip
+            evidence/unified-v8/

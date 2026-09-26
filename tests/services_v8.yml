@@ -1,0 +1,22 @@
+# Isolated CI only. Persistent production volumes are never targeted.
+# Embedded-etcd/local-storage topology follows upstream standalone_embed.sh.
+# It is a real Milvus server, not Milvus Lite or an in-memory vector substitute.
+services:
+  mongodb:
+    ports: ['127.0.0.1:27017:27017']
+  redis:
+    ports: ['127.0.0.1:6379:6379']
+  milvus:
+    ports: ['127.0.0.1:19530:19530']
+    depends_on: !reset {}
+    environment: !override
+      ETCD_USE_EMBED: 'true'
+      ETCD_DATA_DIR: /var/lib/milvus/etcd
+      ETCD_CONFIG_PATH: /tmp/embedEtcd.yaml
+      COMMON_STORAGETYPE: local
+      DEPLOY_MODE: STANDALONE
+    entrypoint: ['/bin/sh','-c']
+    command:
+      - |
+        printf '%s\n' 'listen-client-urls: http://0.0.0.0:2379' 'advertise-client-urls: http://127.0.0.1:2379' 'quota-backend-bytes: 4294967296' 'auto-compaction-mode: revision' "auto-compaction-retention: '1000'" > /tmp/embedEtcd.yaml
+        exec milvus run standalone

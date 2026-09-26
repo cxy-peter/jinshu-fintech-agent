@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "fastapi",
+  "buildCommand": "python scripts/build_unified.py",
+  "installCommand": "pip install -r requirements.txt",
+  "outputDirectory": null,
+  "functions": {
+    "index.py": {
+      "maxDuration": 300,
+      "excludeFiles": "{lite/**,engine/frontend/**,engine/pi-agent/**,services/**,tests/**,evaluation/**,evidence/**,workspace/**,**/node_modules/**,**/*.ttf,**/*.otf,**/*.woff,**/*.woff2}"
+    }
+  }
+}

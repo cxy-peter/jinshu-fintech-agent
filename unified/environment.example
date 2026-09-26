@@ -1,0 +1,28 @@
+# Configure these in Vercel Project Settings, not public source. No working credentials below.
+AUTH_SECRET=
+MONGODB_URI=
+MONGODB_DB=jinshu
+REDIS_ADDR=
+MILVUS_URI=
+MILVUS_TOKEN=
+MILVUS_COLLECTION=jinshu_chunks
+CHAT_BASE_URL=
+CHAT_API_KEY=
+CHAT_MODEL=
+CHAT_MAX_TOKENS=2048
+EMBEDDING_BASE_URL=
+EMBEDDING_API_KEY=
+EMBEDDING_MODEL=
+EMBEDDING_DIM=
+RERANKER_BASE_URL=
+RERANKER_API_KEY=
+RERANKER_MODEL=
+# Set only after reviewing external provider/data authorization. Each answer still asks consent.
+JINSHU_MODEL_SCOPE=external
+JINSHU_ALLOW_EXTERNAL=1
+# Optional existing pi service; requires a separately running authenticated service.
+PI_AGENT_ENABLED=false
+PI_AGENT_URL=
+INTERNAL_API_TOKEN=
+# Random 32+ character one-time token. Remove after creating editor and reviewer accounts.
+JINSHU_BOOTSTRAP_TOKEN=

@@ -70,7 +70,7 @@ class MilvusVectorStore(VectorStore):
   self.dim=dimension;self.collection=collection
   if client is None:
    from pymilvus import MilvusClient
-   client=MilvusClient(uri=uri,token=token)
+   client=MilvusClient(uri=uri,token=token,timeout=float(os.getenv('MILVUS_TIMEOUT','10')))
   self.client=client
   if not client.has_collection(collection_name=collection):
    client.create_collection(collection_name=collection,dimension=dimension,id_type='string',max_length=256,metric_type='COSINE',consistency_level='Strong')

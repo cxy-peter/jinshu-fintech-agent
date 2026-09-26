@@ -63,5 +63,6 @@ class ExecutableSkillExecutor(SkillExecutor):
       tool=step['params']['tool']
       if tool not in [r['tool'] for r in state.setdefault('tools',[])]:
        from .python_skills import REGISTRY,execute
-       result=execute(tool,state.get('params',{})) if tool in REGISTRY else tools.run(tool,state.get('params',{}));state['tools'].append(result)
+       runner=getattr(self,'tool_runner',None)
+       result=runner(tool,state.get('params',{})) if runner else execute(tool,state.get('params',{})) if tool in REGISTRY else tools.run(tool,state.get('params',{}));state['tools'].append(result)
   return plan
