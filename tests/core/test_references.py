@@ -9,6 +9,7 @@ from fastapi.testclient import TestClient
 from core.app import create_app
 from core.reference_library import ReferenceStore, ReferenceIndex, unpack, MAX_TEXT
 from core.store import Store
+from core.knowledge import citation_check
 
 @pytest.fixture
 def env(tmp_path):
@@ -109,3 +110,12 @@ def test_format_instructions_do_not_dilute_the_retrieval_topic(query):
     idx=ReferenceIndex(unpack(pack())[0])
     assert idx.search(query)[0]['page']==10
     assert idx.search('发行排期是什么？请结合共享资料简明解释，注明原文页码。')==[]
+
+@pytest.mark.parametrize('text',['依据[S1]','依据[S1，原文页码 10]','依据[S1, page 10]','依据[S1；原文第10页]'])
+def test_page_annotated_citations_are_recognized(text):
+    check,valid=citation_check(text,[{'source_id':'S1','page':10}])
+    assert valid and check['status']=='references_present' and check['cited_ids']==['S1']
+
+@pytest.mark.parametrize('text',['依据[S99，原文页码 10]','依据[S1,S99]','依据[S1, page 999]'])
+def test_false_annotated_source_or_page_is_not_accepted(text):
+    assert not citation_check(text,[{'source_id':'S1','page':10}])[1]
