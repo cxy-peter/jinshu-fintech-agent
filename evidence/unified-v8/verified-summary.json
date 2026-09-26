@@ -1,0 +1,15 @@
+{
+  "tested_commit": "92e68aa47eda024c03c260c596e3086db0110a5a",
+  "workflow_run": 36203717804,
+  "artifact_id": 10893207155,
+  "artifact_sha256": "11b6043d945a7e5b545357337c1bdffae56d655734ad38c93bed1d5b17efef90",
+  "python": {"passed": 196, "warnings": 1},
+  "historical_v7_node": {"passed": 116, "scope": "legacy code regression, not V8 online quality"},
+  "browser": {"passed": 29, "page_errors": 0, "scope": "real local HTTP; explicitly injected test Runtime and memory task repository"},
+  "services": {"passed": 10, "database_mode": "isolated real MongoDB Redis Milvus servers", "model_mode": "controlled HTTP protocol fixture, not a live model"},
+  "live_model_quality_verified": false,
+  "vercel_preview_build": "failure",
+  "vercel_build_error_reason": "unknown; authorized build log retrieval unavailable",
+  "v8_production_promoted": false,
+  "production_repo_main": "3dbef47dacdbb428696a5c4dc3c8050764e847a4"
+}
