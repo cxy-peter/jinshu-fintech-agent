@@ -7,7 +7,7 @@ import httpx
 import pytest
 from fastapi.testclient import TestClient
 from core.app import create_app
-from core.reference_library import ReferenceStore, unpack, MAX_TEXT
+from core.reference_library import ReferenceStore, ReferenceIndex, unpack, MAX_TEXT
 from core.store import Store
 
 @pytest.fixture
@@ -99,3 +99,13 @@ def test_read_only_and_invalid_archive(env):
     with pytest.raises(Exception,match='只读'):asyncio.run(ReferenceStore(Store(env)).put('x',b'1'))
     with pytest.raises(ValueError):unpack(pack()+b'junk')
     with pytest.raises(ValueError):unpack(gzip.compress(b'x'*(MAX_TEXT+1)))
+
+@pytest.mark.parametrize('query',[
+    '风险平价是什么？请结合共享资料简明解释，注明原文页码。',
+    '请根据资料解释一下风险平价是什么，并标注页码。',
+    '根据原文，简单说明风险平价的定义，给出出处。',
+])
+def test_format_instructions_do_not_dilute_the_retrieval_topic(query):
+    idx=ReferenceIndex(unpack(pack())[0])
+    assert idx.search(query)[0]['page']==10
+    assert idx.search('发行排期是什么？请结合共享资料简明解释，注明原文页码。')==[]
