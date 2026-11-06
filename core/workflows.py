@@ -242,6 +242,18 @@ class WorkflowService:
                     if node['status'] == 'running':
                         node['status'] = 'pending'
                 event(row, 'lease_recovered')
+            # A crash can happen after a checkpoint but before batch settlement.
+            # Finalize from persisted results before selecting any new work.
+            verified = row['nodes']['verify']
+            if verified['status'] == 'succeeded':
+                row['quality'] = verified['result']
+                if not verified['result']['can_review']:
+                    row.update(status='blocked', lease=None, updated_at=self.clock())
+                    return row, []
+            if all(n['status'] == 'succeeded' for n in row['nodes'].values()):
+                row.update(status='needs_review', lease=None, updated_at=self.clock())
+                event(row, 'checkpoint_settled')
+                return row, []
             candidates = [n for n in row['nodes'].values() if n['status'] in ('pending', 'failed')
                           and n['attempts'] < MAX_ATTEMPTS
                           and all(row['nodes'][d]['status'] == 'succeeded' for d in n['depends'])]
