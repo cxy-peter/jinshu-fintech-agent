@@ -15,7 +15,7 @@ from core.reference_library import (ReferenceIndex, ReferenceStore, INDEX_SCHEMA
 from core.retrieval_query import plan_query, resolve_followup
 from core.store import Store
 
-DATA = json.loads((Path(__file__).parents[1] / 'fixtures/retrieval_diagnostics.json').read_text())
+DATA = json.loads((Path(__file__).parents[1] / 'fixtures/retrieval_diagnostics.json').read_text(encoding='utf-8'))
 
 
 @pytest.fixture(scope='module')

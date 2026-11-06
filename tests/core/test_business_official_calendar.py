@@ -9,7 +9,7 @@ from unified.tools import execute
 
 
 SOURCE = 'https://www.gov.cn/zhengce/zhengceku/202511/content_7047091.htm'
-CALENDAR = json.loads((Path(__file__).parents[2] / 'core' / 'calendars' / 'cn_2026.json').read_text())
+CALENDAR = json.loads((Path(__file__).parents[2] / 'core' / 'calendars' / 'cn_2026.json').read_text(encoding='utf-8'))
 
 
 def _dates(start, end):

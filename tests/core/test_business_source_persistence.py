@@ -7,7 +7,7 @@ from core.store import Store
 from core.workflows import Principal, WorkflowService, snapshot
 
 
-CASE = json.loads((Path(__file__).parents[2] / 'data/synthetic/issuance_review_demo.json').read_text())
+CASE = json.loads((Path(__file__).parents[2] / 'data/synthetic/issuance_review_demo.json').read_text(encoding='utf-8'))
 EDITOR = Principal('custom-case-editor', 'case-editor', 'editor')
 REVIEWER = Principal('custom-case-reviewer', 'case-reviewer', 'reviewer')
 

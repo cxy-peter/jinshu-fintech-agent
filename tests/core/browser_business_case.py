@@ -55,7 +55,7 @@ with tempfile.TemporaryDirectory() as tmp:
                 except Exception:
                     time.sleep(.1)
             with sync_playwright() as p:
-                browser = p.chromium.launch(headless=True, executable_path=os.environ['CHROMIUM_PATH'])
+                browser = p.chromium.launch(headless=True, executable_path=os.environ.get('CHROMIUM_PATH') or None)
                 page = browser.new_page(viewport={'width': 1400, 'height': 1000})
                 page.on('pageerror', lambda error: errors.append(str(error)))
                 page.goto(base)
