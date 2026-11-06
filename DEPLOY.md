@@ -25,3 +25,13 @@
 原型事实文档上限8MB。任务输入最多180KB、每浏览器最多20个、全局最多100个（实际还受总容量限制）。超过上限明确拒绝，不覆盖旧数据。扩容需拆任务/节点集合并补压测。
 
 本机原发布器和GitHub手动发布入口保留。账号凭据由用户直接在服务端配置；不要求在聊天中提供。当前已配置的Mongo和模型凭据不需要重新复制给AI。
+
+## V11.1 增补
+
+- 个人资料的原文件、提取正文与派生索引需要 `JINSHU_STORE=mongo`，本地为 SQLite；无需新建第二个站点。继续使用已连接数据库，原有状态记录不删除。
+- 新接口：`/api/retrieve`（无模型）、`/api/chat/stream`（检索事件→已检查答案）、`/api/private-library`、`/api/business-capabilities`。`/api/status`提供版本、仓库与部署提交。
+- 本地目录：`python scripts/run_local_folder.py --root "F:\JinshuData"`；Windows `START_LOCAL_FOLDER.bat` 默认该目录。可加 `--scan`，本地页面亦可设置与扫描。固定127.0.0.1，Vercel禁用此接口。
+- 线上可使用“选择文件夹并上传”，其授权只覆盖用户选中的文件；不能直接遍历F盘，也不会因扫描本地资料自动上传。
+- 共享学习库的派生索引位于独立版本记录，首次生成与冷加载耗时须单独记录。检查 `index_persistence` / `index_mode`；不能只凭本地测试认为所有冷实例都能3秒返回。
+- 新增浏览器验收：`python tests/core/browser_knowledge.py`。模型HTTP模拟、纯检索、真实DeepSeek调用的证据分开保存。
+- 2026中国放假调休日历由公开国务院通知整理，须用户主动载入。它不是交易所或机构专用日历，范围外停止计算，不自动猜测下一年。

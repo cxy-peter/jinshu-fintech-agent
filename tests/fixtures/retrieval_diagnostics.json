@@ -1,0 +1,33 @@
+{
+  "dataset_id": "jinshu-retrieval-diagnostics-20261106",
+  "scope": "人工构造的离线检索回归样本；全部正文为本项目合成材料，不是黄达教材原文、机构制度或独立质量基准。只验证来源能否召回及无关来源是否被拒绝，不调用生成模型。",
+  "documents": [
+    {"id":"fof","title":"组合研究手册（合成）","status":"active","synthetic":true,"pages":[{"page":7,"text":"基金中基金是一种主要投资其他基金份额的基金。研究时核对底层基金的策略、费用、流动性和风险暴露。筛选基金经理时，需要结合投资过程、风险控制与风格一致性，不能只比较最近一期收益。具体准入门槛必须查本机构有效规则。"}]},
+    {"id":"etf","title":"指数产品研究（合成）","status":"active","synthetic":true,"pages":[{"page":3,"text":"交易型开放式指数基金在交易所交易。研究这类产品应检查跟踪标的、跟踪误差和费用。这个例子没有给出任何机构的交易限额。"}]},
+    {"id":"nav","title":"估值术语笔记（合成）","status":"active","synthetic":true,"pages":[{"page":11,"text":"净资产值表示资产价值减去负债后的余额。基金份额净值需要用基金净资产除以基金份额总数；必须先核对估值日和份额口径。"}]},
+    {"id":"kyc","title":"客户资料检查（合成）","status":"active","synthetic":true,"pages":[{"page":4,"text":"客户身份识别包括核验身份资料并记录核验结果。材料缺失时应进入人工复核，不能凭语言模型推断客户已完成核验。"}]},
+    {"id":"risk_parity","title":"配置方法（合成）","status":"active","synthetic":true,"pages":[{"page":8,"text":"风险平价的核心思想是比较不同资产对组合风险的贡献，而不是要求资金权重相等。风险贡献估计依赖波动率和相关性等输入。"}]},
+    {"id":"issuance","title":"日期操作说明（合成）","status":"active","synthetic":true,"pages":[{"page":2,"text":"发行排期应核对募集开始、募集结束、成立和到期日期。周末禁发和法定节假日禁发是两项独立约束。日期调整后必须重新检查顺序和批次冲突，日历覆盖不足应提示补充。"}]},
+    {"id":"weekly","title":"运营表格检查（合成）","status":"active","synthetic":true,"pages":[{"page":6,"text":"周报处理需要检查必需字段、产品代码前导零、千分位和重复记录。缺失净值应保留缺失并提示核对，不能自动补零。"}]},
+    {"id":"misleading_title","title":"FOF基金研究资料","status":"active","synthetic":true,"pages":[{"page":1,"text":"茶叶仓储需要防潮，盒装用品应清点数量。这页正文没有说明投资组合或基金概念。"}]},
+    {"id":"macro","title":"宏观读书摘要（合成）","status":"active","synthetic":true,"pages":[{"page":9,"text":"本期债券发行规模增加。宏观分析需要核对统计范围、观察期和数据来源。"}]}
+  ],
+  "cases": [
+    {"id":"acronym_fof","query":"FOF是什么？","expected_docs":["fof"]},
+    {"id":"fullwidth_fof","query":"ＦＯＦ是什么意思？","expected_docs":["fof"]},
+    {"id":"english_fof","query":"What is a fund of funds?","expected_docs":["fof"]},
+    {"id":"chinese_fof","query":"基金中基金是什么？","expected_docs":["fof"]},
+    {"id":"fof_business","query":"FOF该怎样筛选基金经理？请用通俗语言结合资料解释，并给出原文页码。","expected_docs":["fof"]},
+    {"id":"acronym_etf","query":"ETF指的是什么？","expected_docs":["etf"]},
+    {"id":"acronym_nav","query":"NAV怎么理解？","expected_docs":["nav"]},
+    {"id":"acronym_kyc","query":"KYC是做什么的？","expected_docs":["kyc"]},
+    {"id":"english_parity","query":"Please explain risk parity with original page numbers.","expected_docs":["risk_parity"]},
+    {"id":"reference_format","query":"请根据资料解释一下风险平价是什么，并标注页码。","expected_docs":["risk_parity"]},
+    {"id":"issuance_topic","query":"发行时间安排需要核对哪些项目？","expected_docs":["issuance"]},
+    {"id":"weekly_english","query":"weekly report missing values","expected_docs":["weekly"]},
+    {"id":"negative_unrelated","query":"柑橘嫁接是什么？","expected_docs":[]},
+    {"id":"negative_unknown_code","query":"ABCFOF999的收益率是多少？","expected_docs":[]},
+    {"id":"followup_fof","query":"那它有什么风险？","history":[{"role":"user","content":"FOF是什么？"},{"role":"assistant","content":"无来源的历史回答不得成为知识事实。"}],"expected_docs":["fof"]},
+    {"id":"topic_switch","query":"ETF是什么？","history":[{"role":"user","content":"FOF是什么？"}],"expected_docs":["etf"]}
+  ]
+}

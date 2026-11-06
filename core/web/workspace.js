@@ -28,6 +28,7 @@
     for(const [name,status] of services){const row=el('div','','status-row');row.append(el('strong',name),el('span',status));by('architecture-services').append(row);}
     const selected=by('chat-workflow').value;by('chat-workflow').replaceChildren();for(const [value,label] of Object.entries({general:'一般咨询',...workspace.workflows})){const o=el('option',label);o.value=value;by('chat-workflow').append(o);}by('chat-workflow').value=selected;
     renderMemory();
+    window.dispatchEvent(new CustomEvent('jinshu:workspace-ready',{detail:workspace}));
   }
   async function loadConversation(id){
     const token=++epoch;
@@ -124,6 +125,7 @@
     const p=current?.preferences||{};by('memory-language').value=p.language||'zh';by('memory-format').value=p.format||'direct';by('memory-consent').checked=!!p.remember;
   }
   window.workspaceBridge={
+    refresh:bootstrap,
     openReference,
     chatFields:()=>({use_library:by('use-library').checked,persist:by('persist-chat').checked,conversation_id:current?.id||'',conversation_revision:current?.revision||0,department:by('chat-department').value,workflow:by('chat-workflow').value,reranker:by('chat-reranker').value}),
     async answered(answer,node){
@@ -141,5 +143,5 @@
   by('lib-example').onclick=()=>{by('lib-title').value='发行排期复核示例（合成）';by('lib-topic').value='synthetic-issuance';by('lib-department').value='dept_release';by('lib-text').value='# 发行排期复核示例\n以下为项目合成演示，不是真实机构制度。\n第一条 发行排期需要提供募集开始日、产品期限、周或双周发行频率与节假日日历。\n第二条 募集结束日或成立日遇到非交易日时，应依据已确认的产品条款与日历顺延；不能仅凭模型知识确认实际成立日。\n第三条 生成募集、成立和到期日期后，标记冲突与差异，由业务人员复核。输入有修改时原结果与导出确认立即失效。\n第四条 本工具只生成材料预览，不向真实系统报送。';};
   by('skill-form').onsubmit=async e=>{e.preventDefault();try{const ids=[...document.querySelectorAll('[data-feedback]:checked')].map(x=>x.dataset.feedback);await request('/api/skills',{feedback_ids:ids,terms:by('skill-terms').value.split(/[,，]/).map(s=>s.trim()).filter(Boolean),top_k:Number(by('skill-topk').value),template:by('skill-template').value});await opsLoad();tab('replay');}catch(e){report(e);}};
   by('memory-form').onsubmit=async e=>{e.preventDefault();if(!current){notice('请先保存一个对话。');return;}try{current.preferences=await request('/api/conversations/'+current.id+'/preferences',{language:by('memory-language').value,format:by('memory-format').value,remember:by('memory-consent').checked});notice('偏好已更新。');}catch(e){report(e);}};
-  bootstrap().then(()=>{for(const [id,name] of Object.entries(workspace.department_options)){const o=el('option',name);o.value=id;by('lib-department').append(o);}}).catch(e=>{by('use-library').checked=false;by('persist-chat').checked=false;by('workspace-account').textContent='持久化暂不可用 · 临时问答仍可用';report(e);});
+  window.workspaceReady=bootstrap().then(()=>{for(const [id,name] of Object.entries(workspace.department_options)){const o=el('option',name);o.value=id;by('lib-department').append(o);}}).catch(e=>{by('use-library').checked=false;by('persist-chat').checked=false;by('workspace-account').textContent='持久化暂不可用 · 临时问答仍可用';report(e);});
 })();

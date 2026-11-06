@@ -81,7 +81,9 @@ def snapshot(workflow, values, sources, examples):
         sources = {name: tools.source(name) for name in required_sources(workflow)}
     if not isinstance(sources, dict) or set(sources) != set(required_sources(workflow)):
         raise ValueError('请提供完整数据文件：' + '、'.join(required_sources(workflow)))
-    payload = {'workflow': workflow, 'values': values, 'sources': sources, 'synthetic': examples}
+    declared_synthetic = examples or any(isinstance(v, dict) and v.get('synthetic') is True for v in sources.values())
+    payload = {'workflow': workflow, 'values': values, 'sources': sources, 'synthetic': declared_synthetic,
+               'source_mode': 'bundled_example' if examples else 'user_supplied'}
     if len(json.dumps(payload, ensure_ascii=False, allow_nan=False).encode()) > MAX_INPUT_BYTES:
         raise ValueError('可恢复任务输入最多180KB；请先筛选同口径数据')
     return copy.deepcopy(payload)

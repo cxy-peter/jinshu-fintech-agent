@@ -1,0 +1,37 @@
+{
+  "synthetic": true,
+  "notice": "完全合成的发送规则与材料复核演示；所列休息日、调休日不是官方日历，不用于真实发行。",
+  "description": "完全合成的发送规则与材料复核演示；所列休息日、调休日不是官方日历，不用于真实发行。",
+  "workflow": "material_fill",
+  "values": {
+    "start": "2026-11-09",
+    "term_days": 90,
+    "frequency_days": 7,
+    "count": 3,
+    "product_name": "模拟稳健一号（合成演示）"
+  },
+  "sources": {
+    "calendar.json": {
+      "synthetic": true,
+      "version": "SYNTHETIC-SEND-DEMO-v1",
+      "note": "合成测试日历；2026-11-08的调休设定仅用于测试，非官方规则。",
+      "coverage_start": "2026-11-01",
+      "coverage_end": "2027-05-01",
+      "holidays": [],
+      "workdays": ["2026-11-08"]
+    }
+  },
+  "expected_first_batch": {
+    "成立日": "2026-11-09",
+    "募集结束日": "2026-11-08",
+    "候选发送日": "2026-11-06",
+    "sent": false
+  },
+  "revision": {
+    "description": "在原任务编辑输入：把2026-11-06增加为合成休息日；不是现实节假日声明。",
+    "calendar_version": "SYNTHETIC-SEND-DEMO-v2",
+    "holidays": ["2026-11-06"],
+    "expected_first_send_date": "2026-11-05",
+    "expected_review": "旧审批失效；重新执行受影响节点，由独立复核者复核当前版本。"
+  }
+}

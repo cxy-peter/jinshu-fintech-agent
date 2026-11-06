@@ -41,7 +41,7 @@
     $('wf-result').replaceChildren(node('p','正在读取服务器任务，请稍后填写复核意见。'));
     try{const r=await api('/api/workflows/'+id);if(expected!==editEpoch)return;run=r;
       $('wf-type').value=r.workflow;$('wf-values').value=JSON.stringify(r.payload.values,null,2);
-      $('wf-sources').value=JSON.stringify(r.payload.sources,null,2);$('wf-examples').checked=r.payload.synthetic;schema();
+      $('wf-sources').value=JSON.stringify(r.payload.sources,null,2);$('wf-examples').checked=r.payload.source_mode?r.payload.source_mode==='bundled_example':r.payload.synthetic;schema();
     }finally{busy=false;render();}
   }
   async function refresh(){
@@ -70,5 +70,7 @@
     catch(e){message(e.message+'；已保存步骤保留，重新加载任务可查看。');}finally{busy=false;render();}
   };
   async function init(){try{catalog=await api('/api/workflows/catalog');for(const c of catalog){const o=node('option',c.name);o.value=c.id;$('wf-type').append(o);}schema();render();}catch(e){message(e.message);}}
-  init();
+  const ready=init();
+  window.workflowBridge={prefill:async(id,values,sources=null)=>{await ready;if(busy)throw Error('当前流程操作尚未完成，请稍后再创建任务。');if(!catalog.some(c=>c.id===id))throw Error('当前工具尚无对应流程。');reset();$('wf-type').value=id;schema();$('wf-values').value=JSON.stringify(values,null,2);$('wf-sources').value=sources?JSON.stringify(sources,null,2):'';changed();message('输入已填入，请核对来源、登录并保存输入；尚未执行。');},
+    calendar:async(calendar)=>{await ready;if(busy)throw Error('当前流程操作尚未完成。');if(!['issuance','material_fill'].includes($('wf-type').value))throw Error('请先选择发行排期或发行材料流程。');const sources=JSON.parse($('wf-sources').value||'{}');sources['calendar.json']=calendar;$('wf-sources').value=JSON.stringify(sources,null,2);$('wf-examples').checked=false;changed();message(calendar.notice);}};
 })();

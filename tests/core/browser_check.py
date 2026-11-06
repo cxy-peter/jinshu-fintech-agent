@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import sys
 import time
+import tempfile
 from pathlib import Path
 import urllib.request
 from playwright.sync_api import sync_playwright, expect
@@ -13,11 +14,14 @@ ROOT=Path(__file__).resolve().parents[2]
 OUT=Path(os.getenv('JINSHU_EVIDENCE_DIR', str(ROOT/'evidence/core-v9')))
 OUT.mkdir(parents=True,exist_ok=True)
 checks=[];errors=[];processes=[];logs=[]
+temporary=tempfile.TemporaryDirectory(prefix='jinshu-browser-check-')
 base='http://127.0.0.1:8876';mock='http://127.0.0.1:8877'
 def passed(name):checks.append(name)
 def start(module, port, test=False):
     env={k:v for k,v in os.environ.items() if not k.startswith(('DEEPSEEK_', 'CHAT_', 'MODEL_', 'JINSHU_ACCESS_', 'MAX_MODEL_'))}
     env['PYTHONPATH']=str(ROOT)+os.pathsep+str(ROOT/'tests/core')
+    env['JINSHU_DATA_DIR']=str(Path(temporary.name)/'default')
+    env['JINSHU_TEST_DATA_DIR']=str(Path(temporary.name)/'mock')
     log=(OUT/f'server-{port}.log').open('w');logs.append(log)
     p=subprocess.Popen([sys.executable,'-m','uvicorn',module,'--host','127.0.0.1','--port',str(port)],cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT)
     processes.append(p)
@@ -53,7 +57,8 @@ try:
         expect(page.locator('#query')).to_have_value('第一行\n第二行')
         page.locator('#query').press('Enter');expect(page.locator('#notice')).to_contain_text('请先确认');passed('enter_sends_shift_enter_newline_consent_preserved')
         page.screenshot(path=str(OUT/'default-no-key.png'),full_page=True)
-        page.locator('#query').fill('没有密钥时能否明确提示');page.locator('#consent').check();page.locator('#send').click()
+        page.locator('.retrieval-settings > summary').click()
+        page.locator('#query').fill('没有密钥时能否明确提示');page.locator('#consent').check();page.locator('#answer-mode').select_option('general');page.locator('#send').click()
         expect(page.locator('.message.error')).to_contain_text('未配置');passed('missing_key_error_visible_not_fake_answer')
         page.locator('[data-tab="tools"]').click()
         for name in ['issuance','material_fill','wealth_benchmark','weekly_report','onboarding','kep','strategy','statements']:
@@ -80,7 +85,8 @@ try:
         expect(page.locator('.message.assistant details').first).to_contain_text('本次检索片段');passed('chat_retrieval_citation_and_trace_render')
         assert page.locator('.message.assistant img').count()==0;passed('answer_rendered_as_text')
         page.screenshot(path=str(OUT/'chat-protocol-test.png'),full_page=True)
-        page.locator('#query').fill('模拟401');page.locator('#send').click();expect(page.locator('.message.error').last).to_contain_text('密钥无效');passed('upstream_401_is_actionable')
+        page.locator('.retrieval-settings > summary').click()
+        page.locator('#answer-mode').select_option('general');page.locator('#query').fill('模拟401');page.locator('#send').click();expect(page.locator('.message.error').last).to_contain_text('密钥无效');passed('upstream_401_is_actionable')
         page.locator('#query').fill('慢请求测试');page.locator('#send').click();expect(page.locator('#cancel')).to_be_visible()
         page.locator('#clear-chat').click();page.wait_for_timeout(1800)
         assert page.locator('.message.assistant').count()==0;passed('late_response_does_not_restore_cleared_conversation')
@@ -129,3 +135,4 @@ finally:
         try:process.wait(timeout=5)
         except subprocess.TimeoutExpired:process.kill()
     for log in logs:log.close()
+    temporary.cleanup()

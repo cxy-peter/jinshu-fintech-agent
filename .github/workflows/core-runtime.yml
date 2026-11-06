@@ -42,6 +42,8 @@ jobs:
           node --test tests/manual_deploy.test.mjs tests/personal_materials.test.mjs | tee evidence/core-v9/node-tests.txt
           node --check core/web/app.js
           node --check core/web/workspace.js
+          node --check core/web/data-sources.js
+          node --check core/web/business.js
       - name: Validate Vercel public configuration schema (no account credentials)
         run: |
           set -euo pipefail

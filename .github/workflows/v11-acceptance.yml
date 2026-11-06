@@ -37,6 +37,9 @@ jobs:
           python -m playwright install --with-deps chromium
           JINSHU_EVIDENCE_DIR=evidence/v11/existing python tests/core/browser_check.py | tee evidence/v11/existing-browser.txt
           python tests/core/browser_workflows.py | tee evidence/v11/workflow-browser.txt
+          JINSHU_EVIDENCE_DIR=evidence/v11/knowledge python tests/core/browser_knowledge.py | tee evidence/v11/knowledge-browser.txt
+          JINSHU_EVIDENCE_DIR=evidence/v11/local-folder python tests/core/browser_local_library.py | tee evidence/v11/local-folder-browser.txt
+          JINSHU_EVIDENCE_DIR=evidence/v11/business-case python tests/core/browser_business_case.py | tee evidence/v11/business-case-browser.txt
       - name: Exact source and evidence snapshot
         if: always()
         run: |
