@@ -28,7 +28,8 @@ jobs:
           with zipfile.ZipFile('/tmp/jinshu-v11-baseline.zip','w',zipfile.ZIP_DEFLATED) as z:
               for label,root in roots.items():
                   manifest[label]=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip()
-                  for name in subprocess.check_output(['git','-C',str(root),'ls-files'],text=True).splitlines():
+                  for name in subprocess.check_output(['git','-C',str(root),'ls-files','-z'],text=True).split('\0'):
+                      if not name:continue
                       p=root/name
                       if not p.is_file() or p.is_symlink():continue
                       if p.suffix.lower() in {'.ttf','.otf','.woff','.woff2','.db','.sqlite','.sqlite3','.pem','.key'}:continue
