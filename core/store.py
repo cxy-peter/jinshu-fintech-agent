@@ -61,10 +61,9 @@ class Store:
                     raise StoreUnavailable('存储版本校验失败，未继续写入。')
                 return row.json(), etag
         if self.kind == 'mongo':
-            from pymongo import AsyncMongoClient
-            async with AsyncMongoClient(self.env['MONGODB_URI'], serverSelectionTimeoutMS=5000) as client:
-                row = await client[self.env.get('MONGODB_DB', 'jinshu')]['governed_state'].find_one({'_id': 'v1'})
-                return (row['value'], row['revision']) if row else (None, None)
+            from .mongo_pool import collection
+            row = await collection(self.env, 'governed_state').find_one({'_id': 'v1'})
+            return (row['value'], row['revision']) if row else (None, None)
         raise StoreUnavailable('请连接私有 Blob 或 MongoDB；云端不会用临时磁盘冒充持久化。')
 
     def _blob_auth(self):
@@ -125,17 +124,16 @@ class Store:
                         if code not in ('precondition_failed','blob_already_exists'):
                             raise StoreUnavailable('共享存储写入失败；本次操作未确认保存。')
                 elif self.kind == 'mongo':
-                    from pymongo import AsyncMongoClient
+                    from .mongo_pool import collection
                     from pymongo.errors import DuplicateKeyError
-                    async with AsyncMongoClient(self.env['MONGODB_URI'], serverSelectionTimeoutMS=5000) as client:
-                        col = client[self.env.get('MONGODB_DB', 'jinshu')]['governed_state']
-                        try:
-                            if version is None:
-                                await col.insert_one({'_id': 'v1', 'revision': value['revision'], 'value': value})
-                                return copy.deepcopy(result)
-                            changed = await col.replace_one({'_id': 'v1', 'revision': version}, {'_id': 'v1', 'revision': value['revision'], 'value': value})
-                            if changed.modified_count:
-                                return copy.deepcopy(result)
-                        except DuplicateKeyError:
-                            pass
+                    col = collection(self.env, 'governed_state')
+                    try:
+                        if version is None:
+                            await col.insert_one({'_id': 'v1', 'revision': value['revision'], 'value': value})
+                            return copy.deepcopy(result)
+                        changed = await col.replace_one({'_id': 'v1', 'revision': version}, {'_id': 'v1', 'revision': value['revision'], 'value': value})
+                        if changed.modified_count:
+                            return copy.deepcopy(result)
+                    except DuplicateKeyError:
+                        pass
             raise StoreUnavailable('并发更新冲突，请刷新后重试。')

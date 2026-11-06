@@ -254,11 +254,9 @@ async def prepare(store,d,request):
     from .optional_services import working_history,pi_rewrite
     history,working_mode=await working_history(store.env,conversation,history)
     prefs=conversation.get('preferences',{}) if conversation else {}
-    query=d.query
-    # Conservative pronoun expansion; material is not substituted for the question.
-    if history and len(query)<35 and any(x in query for x in ('这个','那个','它','继续','上面','为什么','那')):
-        prior=next((m['content'] for m in reversed(history) if m['role']=='user'),'')
-        query=prior[-400:]+'\n补充问题：'+query
+    from .retrieval_query import resolve_followup
+    rewrite=resolve_followup(d.query,history)
+    query=rewrite['query']
     skill,group=g.policy(state,oid or 'anonymous',d.department)
     top_k=4;instructions=[]
     if skill and group=='treatment':query+=' '+' '.join(skill['terms']);top_k=skill['top_k'];instructions.append(g.TEMPLATES[skill['template']])
@@ -267,13 +265,22 @@ async def prepare(store,d,request):
     docs=[x for x in active_documents(state,d.department) if x['external_allowed'] and
           (d.include_examples or not (x.get('synthetic') or '合成' in x['title'] or
            x.get('topic','').startswith(('synthetic-', 'v10-acceptance-'))))] if d.use_library else []
-    query,rewrite_mode=await pi_rewrite(store.env,query)
-    sources,mode=await search(query,docs,top_k,env=store.env)
+    query,pi_mode=await pi_rewrite(store.env,query)
+    rewrite_mode=rewrite['mode']+';'+pi_mode
+    import asyncio
+    retrieval_diagnostics={'status':'disabled','hits':0}
     if d.use_library:
-        shared,shared_mode=await references.search(store,query,g.actor(state,request),4)
-        sources=(sources[:4]+shared)[:8]
-        mode+=' + '+shared_mode
+        (sources,mode),shared_result=await asyncio.gather(
+            search(query,docs,top_k,env=store.env),
+            references.search_with_diagnostics(store,query,g.actor(state,request),4))
+        sources=(sources[:4]+shared_result['sources'])[:8]
+        mode+=' + '+shared_result['mode']
+        retrieval_diagnostics=shared_result['diagnostics']
+    else:
+        sources,mode=await search(query,docs,top_k,env=store.env)
     return {'state':state,'owner':oid,'conversation':conversation,'history':history,'query':query,'sources':sources,
+            'retrieval_diagnostics':retrieval_diagnostics|{'library_selected':d.use_library,
+                                     'logged_in':bool(g.actor(state,request)),'hits':len(sources)},
             'retrieval_mode':mode,'working_mode':working_mode,'rewrite_mode':rewrite_mode,'instructions':instructions,'skill':skill,'group':group,'graph':source_graph(docs,sources)}
 
 

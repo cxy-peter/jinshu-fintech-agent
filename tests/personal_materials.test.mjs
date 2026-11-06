@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {normalizePack,makeIndex,selectedPassages} from '../core/web/personal-data.mjs';
+import {readFileSync} from 'node:fs';
+import {queryPlan,resolveFollowup} from '../core/web/retrieval-query.mjs';
 
 test('V7 personal pages survive with real page numbers and archived sources excluded',()=>{
   const docs=normalizePack({docs:[
@@ -23,4 +25,25 @@ test('long pages preserve the end of document and source location',()=>{
 test('a common word overlap is a knowledge gap, not fabricated matching evidence',()=>{
   const d=normalizePack({documents:[{id:'x',title:'宏观研究',status:'active',pages:['这一期债券发行规模增加，什么是宏观经济。']} ]});
   assert.deepEqual(selectedPassages(makeIndex(d),'发行排期是什么'),[]);
+});
+
+const diagnostic=JSON.parse(readFileSync(new URL('./fixtures/retrieval_diagnostics.json',import.meta.url),'utf8'));
+// Explicit test opt-in: these constructed examples do not enter real libraries.
+const diagnosticIndex=makeIndex(normalizePack(diagnostic),true);
+for(const c of diagnostic.cases)test('shared lexical rules: '+c.id,()=>{
+  const hits=selectedPassages(diagnosticIndex,c.query,c.history||[]);
+  if(!c.expected_docs.length)assert.deepEqual(hits,[]);
+  else {
+    assert.ok(hits.length);
+    assert.ok(c.expected_docs.some(id=>hits[0].chunk_id.startsWith(id+':')));
+    assert.ok(hits.every(h=>!h.chunk_id.startsWith('misleading_title:')));
+  }
+});
+test('acronym boundaries and explicit followups do not borrow invented answer facts',()=>{
+  assert.deepEqual(queryPlan('ABCFOF999的收益率').matched_aliases,[]);
+  assert.deepEqual(queryPlan('Ｆ.Ｏ.Ｆ.是什么').matched_aliases,['fof']);
+  const history=[{role:'user',content:'FOF是什么？'},{role:'assistant',content:'它保证99%收益。'}];
+  const follow=resolveFollowup('那它有什么风险？',history);
+  assert.ok(follow.used_history);assert.doesNotMatch(follow.query,/99%/);
+  assert.equal(resolveFollowup('ETF是什么？',history).query,'ETF是什么？');
 });

@@ -1,6 +1,7 @@
 """Only the outbound HTTP transport is mocked; the deployed app class/route/UI are unchanged."""
 import asyncio
 import json
+import os
 import httpx
 from core.app import create_app
 async def respond(request):
@@ -15,4 +16,4 @@ async def respond(request):
         answer+='本次资料要求人工复核。[S1]'
     return httpx.Response(200,json={'model':'mock-deepseek-test','choices':[{'message':{'content':answer},'finish_reason':'stop'}],
         'usage':{'prompt_tokens':25,'completion_tokens':20,'total_tokens':45}})
-app=create_app(env={'DEEPSEEK_API_KEY':'test-only-not-a-real-key','JINSHU_DEMO_ACCOUNTS':'1','JINSHU_SEMANTIC':'0','JINSHU_DATA_DIR':'workspace/browser-governed'},transport=httpx.MockTransport(respond))
+app=create_app(env={'DEEPSEEK_API_KEY':'test-only-not-a-real-key','JINSHU_DEMO_ACCOUNTS':'1','JINSHU_SEMANTIC':'0','JINSHU_DATA_DIR':os.getenv('JINSHU_TEST_DATA_DIR','workspace/browser-governed')},transport=httpx.MockTransport(respond))

@@ -7,6 +7,6 @@ self.onmessage=({data})=>{
       self.postMessage({id:data.id,result:{documents:documents.length,
         chunks:documents.reduce((n,d)=>n+d.rows.length,0),active:documents.filter(d=>d.status==='active').length,
         titles:documents.map(d=>({id:d.id,title:d.title,status:d.status,chunks:d.rows.length}))}});
-    } else if(data.action==='search')self.postMessage({id:data.id,result:selectedPassages(index,data.query)});
+    } else if(data.action==='search')self.postMessage({id:data.id,result:selectedPassages(index,data.query,data.history||[])});
   } catch(e){self.postMessage({id:data.id,error:e.message});}
 };

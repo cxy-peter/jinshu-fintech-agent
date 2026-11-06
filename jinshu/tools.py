@@ -81,6 +81,17 @@ def issuance(p):
    if valid(d):return d
    d+=timedelta(days=direction)
   raise ValueError('日历连续不可用天数过多，停止计算，请核对输入')
+ def send_candidate(close):
+  # Sending has a stricter rule than establishment: a make-up working
+  # Saturday/Sunday remains forbidden. Missing coverage cannot certify a plan.
+  if not lower:return None
+  d=close
+  for _ in range(371):
+   if not lower<=d<=upper:
+    raise ValueError('发送计划超出已提供日历覆盖范围，请补日历后重算')
+   if d.weekday()<5 and d not in holidays:return d
+   d-=timedelta(days=1)
+  raise ValueError('发送日历连续不可用天数过多，停止计算，请核对输入')
  out=[];establishments=set()
  for i in range(count):
   planned=start+timedelta(days=i*freq);actual=adjust(planned)
@@ -89,15 +100,30 @@ def issuance(p):
    raise ValueError('顺延导致多个批次成立日重合，请调整起始日或发行频率')
   if not close<actual<maturity:raise ValueError('募集、成立和到期日期顺序不合法')
   establishments.add(actual)
+  candidate=send_candidate(close)
   out.append({'批次':i+1,'拟成立日':str(planned),'成立日':str(actual),'募集结束日':str(close),
-              '到期日':str(maturity),'实际自然日':(maturity-actual).days,'顺延':actual!=planned,'日历版本':cfg['version']})
+              '到期日':str(maturity),'实际自然日':(maturity-actual).days,'顺延':actual!=planned,'日历版本':cfg['version'],
+              '候选发送日':str(candidate) if candidate else None,
+              '发送计划状态':'待人工复核，未发送' if candidate else '日历覆盖范围缺失，未生成发送日'})
  assumptions=['按输入日历顺延；不是法定节假日日历或发行规则认证']
- if not lower:assumptions.append('未提供日历覆盖范围，跨期完整性须人工核验')
+ if not lower:assumptions.append('未提供日历覆盖范围，跨期完整性须人工核验；发送日不作推测')
  return {'rows':out,'issues':[{'字段':'日历','状态':x} for x in assumptions],
          'constraint_checks':{'chronology':True,'distinct_establishment_dates':True,
-                              'calendar_coverage_provided':bool(lower),'calendar_version':cfg['version']},
+                              'calendar_coverage_provided':bool(lower),'calendar_version':cfg['version'],
+                              'send_calendar_coverage_provided':bool(lower),
+                              'send_dates_on_weekdays':True if lower else None,
+                              'send_dates_exclude_listed_holidays':True if lower else None},
+         'send_plan':{'status':'draft_needs_review' if lower else 'calendar_incomplete',
+                      'policy':'weekdays_excluding_listed_holidays_even_on_makeup_weekends',
+                      'anchor':'募集结束日及之前最近的允许发送日；此基准需人工确认',
+                      'calendar_version':cfg['version'],
+                      'coverage_start':str(lower) if lower else None,
+                      'coverage_end':str(upper) if upper else None,
+                      'rows':[{'批次':r['批次'],'候选发送日':r['候选发送日']} for r in out],
+                      'requires_review':True,'sent':False,'business_action_executed':False,
+                      'note':'仅按用户提供的完整日历生成发送草案；日历真实性、适用市场、完整节假日与发送时点须复核。'},
          'material_preview':{'标题':'产品发行材料草稿','约定期限自然日':term,'发行频率天':freq,
-                             '日历版本':cfg['version'],'需人工确认':['产品要素','日历适用市场','顺延日期','募集与成立时点']},
+                             '日历版本':cfg['version'],'需人工确认':['产品要素','日历适用市场','顺延日期','募集与成立时点','候选发送日与发送时点']},
          'note':'仅对输入规则作确定性校验；所有结果是待复核排期草案，不是发行决定'}
 
 def weekly_report(p):

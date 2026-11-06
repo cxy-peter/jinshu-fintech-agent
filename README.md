@@ -1,8 +1,14 @@
-# 金枢 V11｜金融知识治理与可恢复业务工作台
+# 金枢 V11.1｜金融业务与个人知识工作台
 
 [打开工作台](https://jinshu-workbench.vercel.app/) · [本轮架构与边界](docs/V11_UPGRADE.md) · [简历表述](docs/RESUME_PROJECT.md) · [面试准备](docs/INTERVIEW_MANUAL.md) · [历史资料索引](docs/history/README.md)
 
 基于文枢参考工程的个人AI辅助改造。保留可信RAG、Memory、可执行Skill和受控反馈Loop；借鉴差旅V2的可靠执行思想，不更换项目业务定位、不训练模型。
+
+## V11.1 新增
+
+同一线上工作台支持个人 PDF/Word 上传、文件夹选择、页码原文、先检索后回答、显式知识缺口和单次跨设备认领。前后端统一金融术语与追问处理，检索索引预计算，数据库连接复用。3 秒是证据返回目标，实际时间见执行记录，不作为完整答案承诺。
+
+[本轮知识库、业务与部署说明](docs/V11_1_KNOWLEDGE.md) · [业务能力目录](docs/BUSINESS_CAPABILITIES.md)
 
 ## 现在可以演示
 

@@ -12,7 +12,7 @@ from collections import Counter
 from datetime import date
 from functools import lru_cache
 from pathlib import Path
-from .knowledge import terms
+from .retrieval_query import terms, plan_query, body_text, evidence_match, normalize
 
 MODEL_DIR = Path(__file__).parent / 'models' / 'bge-small-zh'
 MODEL_ID = 'Xenova/bge-small-zh-v1.5@75c43b069aac4d136ba6bc1122f995fedcfd2781'
@@ -42,12 +42,16 @@ def chunk_text(text, title=''):
     def flush():
         if buffer: emit(buffer); buffer.clear()
     for line in text.splitlines():
+        stripped=line.strip()
         if line.strip().startswith('|'):
             flush(); table.append(line); continue
         flush_table()
         if re.match(r'^#{1,6}\s',line):
             flush(); section=line.lstrip('# ').strip(); continue
-        if re.match(r'^(第[一二三四五六七八九十百0-9]+[章节条款]|\d+[.、])',line): flush()
+        if re.match(r'^(第[一二三四五六七八九十百0-9]+[章节条款]|\d+[.、]\s*[^\d\s]|[一二三四五六七八九十]+、)',stripped):
+            flush()
+            if len(stripped)<=90 and re.match(r'^(第[一二三四五六七八九十百0-9]+[章节]|\d+[.、]\s*[^\d\s]|[一二三四五六七八九十]+、)',stripped):
+                section=stripped
         if sum(map(len,buffer))+len(line)>600: flush()
         # Long paragraphs split on punctuation, then bounded chunks, not mid-table.
         while len(line)>900:
@@ -121,16 +125,21 @@ def candidates(documents):
 
 def rank(query, rows, query_vector=None, top_k=4):
     if not rows: return []
-    q=terms(query); docs=[terms(r['title']+' '+r['section']+' '+r['text']) for r in rows]
+    plan=plan_query(query);q=plan['terms'];docs=[terms(body_text(r)) for r in rows]
+    if not q:return []
     avg=sum(sum(c.values()) for c in docs)/len(docs) or 1
     df=Counter(t for d in docs for t in d)
-    bm=[]; dense=[]
+    bm=[]; dense=[];evidence={}
     for i,(r,c) in enumerate(zip(rows,docs)):
+        evidence[i]=evidence_match(plan,body_text(r),token_set=c)
         score=sum(math.log(1+(len(rows)-df[t]+.5)/(df[t]+.5))*c[t]*2.5/(c[t]+1.5*(.25+.75*sum(c.values())/avg)) for t in q if c[t])
-        if score>0: bm.append((i,score))
+        if score>0 and evidence[i]['accepted']: bm.append((i,score))
         if query_vector is not None and r.get('embedding_model')==MODEL_ID and len(r.get('vector',[]))==len(query_vector):
             sim=sum(a*b for a,b in zip(query_vector,r['vector']))
-            if sim>.35: dense.append((i,sim))
+            # Semantic retrieval remains available for unseen paraphrases, but
+            # cannot replace an explicitly named product/abbreviation with an
+            # unrelated concept or identifiers from another product.
+            if sim>.35 and (not plan['anchors'] and not plan['identifiers'] or evidence[i]['accepted']): dense.append((i,sim))
     fused={}; routes={}; raw={}
     for name,hits in [('bm25',bm),('semantic',dense)]:
         for pos,(i,score) in enumerate(sorted(hits,key=lambda x:-x[1])[:40]):
@@ -138,12 +147,17 @@ def rank(query, rows, query_vector=None, top_k=4):
     # Deterministic reranker retained from V8: lexical coverage and clause match.
     # This score is not a model confidence or human correctness percentage.
     for i in fused:
-        coverage=len(set(q)&set(docs[i]))/max(len(q),1)
+        coverage=evidence[i]['coverage']
         fused[i]+=.02*coverage
+        if plan['anchors']&set(docs[i]):fused[i]+=.015
+        phrase=normalize(plan['focus']).replace(' ','')
+        if 3<=len(phrase)<=30 and phrase in normalize(body_text(rows[i])).replace(' ',''):fused[i]+=.012
     selected=sorted(fused,key=lambda i:(-fused[i],rows[i]['chunk_id']))[:top_k]
     return [{k:v for k,v in rows[i].items() if k not in ('vector','embedding_model')}|
             {'source_id':f'S{j+1}', 'score':round(fused[i],6),'retrieval_routes':routes[i],
-             'route_scores':raw[i], 'reranker':'clause_coverage_rules'} for j,i in enumerate(selected)]
+             'route_scores':raw[i], 'reranker':'body_evidence_coverage_rules',
+             'query_focus':plan['focus'],'query_aliases':plan['matched_aliases'],
+             'evidence_match':evidence[i]} for j,i in enumerate(selected)]
 
 
 async def search(query, documents, top_k=4, semantic=True, env=None):

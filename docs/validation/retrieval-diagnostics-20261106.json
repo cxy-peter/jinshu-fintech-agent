@@ -1,0 +1,561 @@
+{
+  "baseline_commit": "c367459168a9791ae279a5991e19039608932b8d",
+  "comparison_scope": "同一人工合成回归集，代码+查询准备对照；不是独立测试集，不是模型回答准确率。",
+  "before": {
+    "dataset_id": "jinshu-retrieval-diagnostics-20261106",
+    "scope": "人工构造的离线检索回归样本；全部正文为本项目合成材料，不是黄达教材原文、机构制度或独立质量基准。只验证来源能否召回及无关来源是否被拒绝，不调用生成模型。",
+    "documents": 9,
+    "chunks": 9,
+    "model_called": false,
+    "semantic_model_called": false,
+    "build_ms": 2.616,
+    "cases": [
+      {
+        "id": "acronym_fof",
+        "query": "FOF是什么？",
+        "retrieval_query": "FOF是什么？",
+        "expected_docs": [
+          "fof"
+        ],
+        "returned_docs": [
+          "misleading_title"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "misleading_title",
+            "page": 1
+          }
+        ],
+        "matched_expected_source": false,
+        "first_source_correct": false,
+        "retrieval_ms": 1.729
+      },
+      {
+        "id": "fullwidth_fof",
+        "query": "ＦＯＦ是什么意思？",
+        "retrieval_query": "ＦＯＦ是什么意思？",
+        "expected_docs": [
+          "fof"
+        ],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": false,
+        "first_source_correct": false,
+        "retrieval_ms": 0.028
+      },
+      {
+        "id": "english_fof",
+        "query": "What is a fund of funds?",
+        "retrieval_query": "What is a fund of funds?",
+        "expected_docs": [
+          "fof"
+        ],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": false,
+        "first_source_correct": false,
+        "retrieval_ms": 0.161
+      },
+      {
+        "id": "chinese_fof",
+        "query": "基金中基金是什么？",
+        "retrieval_query": "基金中基金是什么？",
+        "expected_docs": [
+          "fof"
+        ],
+        "returned_docs": [
+          "fof"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "fof",
+            "page": 7
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.122
+      },
+      {
+        "id": "fof_business",
+        "query": "FOF该怎样筛选基金经理？请用通俗语言结合资料解释，并给出原文页码。",
+        "retrieval_query": "FOF该怎样筛选基金经理？请用通俗语言结合资料解释，并给出原文页码。",
+        "expected_docs": [
+          "fof"
+        ],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": false,
+        "first_source_correct": false,
+        "retrieval_ms": 0.044
+      },
+      {
+        "id": "acronym_etf",
+        "query": "ETF指的是什么？",
+        "retrieval_query": "ETF指的是什么？",
+        "expected_docs": [
+          "etf"
+        ],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": false,
+        "first_source_correct": false,
+        "retrieval_ms": 0.014
+      },
+      {
+        "id": "acronym_nav",
+        "query": "NAV怎么理解？",
+        "retrieval_query": "NAV怎么理解？",
+        "expected_docs": [
+          "nav"
+        ],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": false,
+        "first_source_correct": false,
+        "retrieval_ms": 0.012
+      },
+      {
+        "id": "acronym_kyc",
+        "query": "KYC是做什么的？",
+        "retrieval_query": "KYC是做什么的？",
+        "expected_docs": [
+          "kyc"
+        ],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": false,
+        "first_source_correct": false,
+        "retrieval_ms": 0.012
+      },
+      {
+        "id": "english_parity",
+        "query": "Please explain risk parity with original page numbers.",
+        "retrieval_query": "Please explain risk parity with original page numbers.",
+        "expected_docs": [
+          "risk_parity"
+        ],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": false,
+        "first_source_correct": false,
+        "retrieval_ms": 0.019
+      },
+      {
+        "id": "reference_format",
+        "query": "请根据资料解释一下风险平价是什么，并标注页码。",
+        "retrieval_query": "请根据资料解释一下风险平价是什么，并标注页码。",
+        "expected_docs": [
+          "risk_parity"
+        ],
+        "returned_docs": [
+          "risk_parity"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "risk_parity",
+            "page": 8
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.03
+      },
+      {
+        "id": "issuance_topic",
+        "query": "发行时间安排需要核对哪些项目？",
+        "retrieval_query": "发行时间安排需要核对哪些项目？",
+        "expected_docs": [
+          "issuance"
+        ],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": false,
+        "first_source_correct": false,
+        "retrieval_ms": 0.031
+      },
+      {
+        "id": "weekly_english",
+        "query": "weekly report missing values",
+        "retrieval_query": "weekly report missing values",
+        "expected_docs": [
+          "weekly"
+        ],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": false,
+        "first_source_correct": false,
+        "retrieval_ms": 0.015
+      },
+      {
+        "id": "negative_unrelated",
+        "query": "柑橘嫁接是什么？",
+        "retrieval_query": "柑橘嫁接是什么？",
+        "expected_docs": [],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.012
+      },
+      {
+        "id": "negative_unknown_code",
+        "query": "ABCFOF999的收益率是多少？",
+        "retrieval_query": "ABCFOF999的收益率是多少？",
+        "expected_docs": [],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.017
+      },
+      {
+        "id": "followup_fof",
+        "query": "那它有什么风险？",
+        "retrieval_query": "FOF是什么？\n补充问题：那它有什么风险？",
+        "expected_docs": [
+          "fof"
+        ],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": false,
+        "first_source_correct": false,
+        "retrieval_ms": 0.023
+      },
+      {
+        "id": "topic_switch",
+        "query": "ETF是什么？",
+        "retrieval_query": "ETF是什么？",
+        "expected_docs": [
+          "etf"
+        ],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": false,
+        "first_source_correct": false,
+        "retrieval_ms": 0.009
+      }
+    ],
+    "total": 16,
+    "matched_expected_source": 4,
+    "first_source_correct": 4,
+    "measurement": "本机单轮离线；延迟不包含网络、MongoDB、鉴权、冷启动或生成模型"
+  },
+  "after": {
+    "dataset_id": "jinshu-retrieval-diagnostics-20261106",
+    "scope": "人工构造的离线检索回归样本；全部正文为本项目合成材料，不是黄达教材原文、机构制度或独立质量基准。只验证来源能否召回及无关来源是否被拒绝，不调用生成模型。",
+    "documents": 9,
+    "chunks": 9,
+    "model_called": false,
+    "semantic_model_called": false,
+    "build_ms": 2.967,
+    "cases": [
+      {
+        "id": "acronym_fof",
+        "query": "FOF是什么？",
+        "retrieval_query": "FOF是什么？",
+        "expected_docs": [
+          "fof"
+        ],
+        "returned_docs": [
+          "fof"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "fof",
+            "page": 7
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 1.065
+      },
+      {
+        "id": "fullwidth_fof",
+        "query": "ＦＯＦ是什么意思？",
+        "retrieval_query": "ＦＯＦ是什么意思？",
+        "expected_docs": [
+          "fof"
+        ],
+        "returned_docs": [
+          "fof"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "fof",
+            "page": 7
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.118
+      },
+      {
+        "id": "english_fof",
+        "query": "What is a fund of funds?",
+        "retrieval_query": "What is a fund of funds?",
+        "expected_docs": [
+          "fof"
+        ],
+        "returned_docs": [
+          "fof"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "fof",
+            "page": 7
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.31
+      },
+      {
+        "id": "chinese_fof",
+        "query": "基金中基金是什么？",
+        "retrieval_query": "基金中基金是什么？",
+        "expected_docs": [
+          "fof"
+        ],
+        "returned_docs": [
+          "fof"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "fof",
+            "page": 7
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.134
+      },
+      {
+        "id": "fof_business",
+        "query": "FOF该怎样筛选基金经理？请用通俗语言结合资料解释，并给出原文页码。",
+        "retrieval_query": "FOF该怎样筛选基金经理？请用通俗语言结合资料解释，并给出原文页码。",
+        "expected_docs": [
+          "fof"
+        ],
+        "returned_docs": [
+          "fof"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "fof",
+            "page": 7
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.229
+      },
+      {
+        "id": "acronym_etf",
+        "query": "ETF指的是什么？",
+        "retrieval_query": "ETF指的是什么？",
+        "expected_docs": [
+          "etf"
+        ],
+        "returned_docs": [
+          "etf"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "etf",
+            "page": 3
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.074
+      },
+      {
+        "id": "acronym_nav",
+        "query": "NAV怎么理解？",
+        "retrieval_query": "NAV怎么理解？",
+        "expected_docs": [
+          "nav"
+        ],
+        "returned_docs": [
+          "nav"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "nav",
+            "page": 11
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.069
+      },
+      {
+        "id": "acronym_kyc",
+        "query": "KYC是做什么的？",
+        "retrieval_query": "KYC是做什么的？",
+        "expected_docs": [
+          "kyc"
+        ],
+        "returned_docs": [
+          "kyc"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "kyc",
+            "page": 4
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.071
+      },
+      {
+        "id": "english_parity",
+        "query": "Please explain risk parity with original page numbers.",
+        "retrieval_query": "Please explain risk parity with original page numbers.",
+        "expected_docs": [
+          "risk_parity"
+        ],
+        "returned_docs": [
+          "risk_parity"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "risk_parity",
+            "page": 8
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.15
+      },
+      {
+        "id": "reference_format",
+        "query": "请根据资料解释一下风险平价是什么，并标注页码。",
+        "retrieval_query": "请根据资料解释一下风险平价是什么，并标注页码。",
+        "expected_docs": [
+          "risk_parity"
+        ],
+        "returned_docs": [
+          "risk_parity"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "risk_parity",
+            "page": 8
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.089
+      },
+      {
+        "id": "issuance_topic",
+        "query": "发行时间安排需要核对哪些项目？",
+        "retrieval_query": "发行时间安排需要核对哪些项目？",
+        "expected_docs": [
+          "issuance"
+        ],
+        "returned_docs": [
+          "issuance"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "issuance",
+            "page": 2
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.134
+      },
+      {
+        "id": "weekly_english",
+        "query": "weekly report missing values",
+        "retrieval_query": "weekly report missing values",
+        "expected_docs": [
+          "weekly"
+        ],
+        "returned_docs": [
+          "weekly"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "weekly",
+            "page": 6
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.134
+      },
+      {
+        "id": "negative_unrelated",
+        "query": "柑橘嫁接是什么？",
+        "retrieval_query": "柑橘嫁接是什么？",
+        "expected_docs": [],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.048
+      },
+      {
+        "id": "negative_unknown_code",
+        "query": "ABCFOF999的收益率是多少？",
+        "retrieval_query": "ABCFOF999的收益率是多少？",
+        "expected_docs": [],
+        "returned_docs": [],
+        "returned_pages": [],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.083
+      },
+      {
+        "id": "followup_fof",
+        "query": "那它有什么风险？",
+        "retrieval_query": "fof\n追问：那它有什么风险？",
+        "expected_docs": [
+          "fof"
+        ],
+        "returned_docs": [
+          "fof"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "fof",
+            "page": 7
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.138
+      },
+      {
+        "id": "topic_switch",
+        "query": "ETF是什么？",
+        "retrieval_query": "ETF是什么？",
+        "expected_docs": [
+          "etf"
+        ],
+        "returned_docs": [
+          "etf"
+        ],
+        "returned_pages": [
+          {
+            "doc_id": "etf",
+            "page": 3
+          }
+        ],
+        "matched_expected_source": true,
+        "first_source_correct": true,
+        "retrieval_ms": 0.062
+      }
+    ],
+    "total": 16,
+    "matched_expected_source": 16,
+    "first_source_correct": 16,
+    "measurement": "本机单轮离线；延迟不包含网络、MongoDB、鉴权、冷启动或生成模型"
+  }
+}

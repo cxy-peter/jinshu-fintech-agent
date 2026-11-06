@@ -31,7 +31,9 @@ def execute(name,params,*,examples=False,sources=None):
   if name=='material_fill':
    result=tools.run('issuance',params);result['tool']=name;result['result']['product_name']=params.get('product_name','示例产品')
   else:result=tools.run(name,params)
-  result['input_mode']='synthetic_example' if examples else 'user_supplied';result['business_action_executed']=False
+  declared_synthetic=examples or any(isinstance(v,dict) and v.get('synthetic') is True for v in (sources or {}).values())
+  result['synthetic']=declared_synthetic
+  result['input_mode']='synthetic_example' if examples else 'user_supplied_synthetic' if declared_synthetic else 'user_supplied';result['business_action_executed']=False
   if not examples:
    result['result']['calculation_assumptions']=result['result'].get('note','')
    result['result']['note']='依据本次用户提供数据计算；需核对数据口径、复核结果，不执行正式业务操作。'

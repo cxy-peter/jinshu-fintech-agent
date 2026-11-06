@@ -10,6 +10,10 @@
 - [历史文件、版本及关联项目索引](HISTORY_INDEX.md)
 - [可直接复制的新对话 Prompt](NEW_CHAT_PROMPT.md)
 
+## V11.1 延续
+
+继续工作前还需阅读 [V11.1 知识库与业务说明](../V11_1_KNOWLEDGE.md)、[业务能力目录](../BUSINESS_CAPABILITIES.md) 、[参考资料采用范围](../REFERENCE_REVIEW.md) 及最新发布记录。V11 的历史验收数字仍是原时点快照；新资料原文、个人身份和资料认领凭据不进入公开交接。
+
 ## 当前重要入口
 
 - [主仓库](https://github.com/cxy-peter/jinshu-fintech-agent) · [工作台](https://jinshu-workbench.vercel.app/)

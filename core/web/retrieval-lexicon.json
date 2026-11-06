@@ -1,0 +1,38 @@
+{
+  "version": "2026-11-06.2",
+  "scope": "检索词写法映射，不是答案、制度或模型推理；不能代替原文证据。",
+  "aliases": [
+    {"id":"fof","label":"FOF / 基金中基金","forms":["fof","fofs","f.o.f.","fund of funds","funds of funds","fund of fund","基金中基金"],"source":"https://investor.amac.org.cn/investread/tzbdjczs/202006/t20200603_9642.html"},
+    {"id":"etf","label":"ETF / 交易所交易基金","forms":["etf","etfs","exchange traded fund","exchange traded funds","exchange-traded fund","exchange-traded funds","交易型开放式指数证券投资基金","交易型开放式指数基金","交易所交易基金"],"source":"https://www.sse.com.cn/assortment/fund/etf/home/info/"},
+    {"id":"nav","label":"NAV / 净资产值","forms":["nav","net asset value","净资产值","资产净值"],"source":"https://www.investor.gov/introduction-investing/investing-basics/glossary/net-asset-value"},
+    {"id":"kyc","label":"KYC / 客户身份识别","forms":["kyc","know your customer","know your client","客户身份识别","了解你的客户"],"source":"https://www.gov.uk/hmrc-internal-manuals/anti-money-laundering-guidance-for-supervised-businesses/amlg11300"},
+    {"id":"kyb","label":"KYB / 企业客户核验","forms":["kyb","know your business","企业客户核验"],"source":"https://www.gov.uk/hmrc-internal-manuals/economic-crime-supervision-handbook/ecsh33305"},
+    {"id":"aml","label":"AML / 反洗钱","forms":["aml","anti money laundering","anti-money laundering","反洗钱"],"source":"https://www.fatf-gafi.org/en/pages/frequently-asked-questions.html"},
+    {"id":"risk_parity","label":"风险平价 / risk parity","forms":["风险平价","risk parity"],"source":"project_retrieval_vocabulary"},
+    {"id":"asset_allocation","label":"资产配置 / asset allocation","forms":["资产配置","asset allocation"],"source":"project_retrieval_vocabulary"},
+    {"id":"fund_manager","label":"基金经理 / fund manager","forms":["基金经理","fund manager","fund managers"],"source":"project_retrieval_vocabulary"},
+    {"id":"drawdown","label":"最大回撤 / maximum drawdown","forms":["最大回撤","maximum drawdown","max drawdown"],"source":"project_retrieval_vocabulary"},
+    {"id":"issuance","label":"发行排期 / 发行日程","forms":["发行排期","产品发行排期","发行日程","发行时间安排"],"source":"project_business_vocabulary"},
+    {"id":"weekly_report","label":"周报 / weekly report","forms":["周报","weekly report","weekly reports"],"source":"project_business_vocabulary"},
+    {"id":"benchmark","label":"同业对标 / 同业比较","forms":["同业对标","同业比较","同业业绩比较","同业业绩对标"],"source":"project_business_vocabulary"},
+    {"id":"missing_value","label":"缺失值 / missing value","forms":["缺失值","missing value","missing values"],"source":"project_business_vocabulary"},
+    {"id":"function","label":"功能 / 职能","forms":["功能","职能","functions","function"],"source":"project_retrieval_vocabulary"},
+    {"id":"fundraising_amount","label":"募集金额 / 募集总额","forms":["募集金额","募集总额","募集总金额","募集规模"],"source":"project_business_field_vocabulary"},
+    {"id":"outstanding_amount","label":"存续金额 / 存续规模","forms":["存续金额","存续规模"],"source":"project_business_field_vocabulary"},
+    {"id":"issuance_count","label":"发行数量 / 发行支数","forms":["发行数量","发行支数","新发行数量","新发行多少支","发行了多少支","发行多少支"],"source":"project_business_field_vocabulary"}
+  ],
+  "strict_anchors": ["fof","etf","nav","kyc","kyb","aml","risk_parity","asset_allocation","drawdown","fundraising_amount","outstanding_amount","issuance_count"],
+  "stop_words": ["的","了","吗","呢","和","与","是","在","有","我","你","它","这","那","一个","什么","怎么","如何","为什么","哪些","请","一下","帮我","介绍","解释","说明","可以","以及","需要","是否","应该","怎样","什么意思","the","a","an","is","are","what","how","why","to","of","for","and","or","please","explain","briefly","definition","meaning","does","do","it","this","that","these","those"],
+  "format_patterns": [
+    "(?:请)?(?:结合|根据|依据|参考)(?:本次|这些|我的|已有|当前|以上)?(?:的)?(?:共享|个人|本地|上传)?(?:资料库|资料|原文|文献|研报|文档)(?:里面|里的|中的|中)?",
+    "(?:请|帮我)?(?:用)?(?:简明|简单|简洁|详细|通俗)(?:语言)?(?:地)?(?:解释|说明|回答|总结)?(?:一下)?",
+    "(?:并|请|同时)?(?:注明|标注|附上|列出|给出)(?:一下)?(?:原文|引用|来源|文件)?(?:的)?(?:页码|出处|编号|来源)",
+    "\\b(?:based on (?:the )?(?:shared )?(?:library|sources|documents)|with (?:original )?page numbers|please explain|briefly explain)\\b"
+  ],
+  "question_patterns": [
+    "(?:区别|差异|有什么不同|异同)[？?。]*$",
+    "请问|请帮我|帮我|解释一下|介绍一下|指的是什么|是什么意思|是什么含义|是做什么的|什么意思|怎么理解|是什么|什么是|有什么|有哪些|怎么|如何|为什么|什么|怎样|哪些|一下|指的是",
+    "请用|请|解释|介绍|说明|理解|应该|可以|是否|需要|(?:这个|那个|这些|那些)|(?:^|\\s)(?:那它|它|那)(?=\\s|$)",
+    "\\b(?:what is|what are|how does|how do|what does|can you|could you|please|explain|definition of|meaning of)\\b"
+  ]
+}
