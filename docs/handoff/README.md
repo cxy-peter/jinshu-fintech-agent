@@ -12,7 +12,7 @@
 
 ## V11.1 延续
 
-继续工作前还需阅读 [V11.1 知识库与业务说明](../V11_1_KNOWLEDGE.md)、[业务能力目录](../BUSINESS_CAPABILITIES.md) 、[参考资料采用范围](../REFERENCE_REVIEW.md) 及最新发布记录。V11 的历史验收数字仍是原时点快照；新资料原文、个人身份和资料认领凭据不进入公开交接。
+继续工作前还需阅读 [V11.1 知识库与业务说明](../V11_1_KNOWLEDGE.md)、[业务能力目录](../BUSINESS_CAPABILITIES.md)、[指定本机资料文件夹](../LOCAL_FOLDER.md)、[参考资料采用范围](../REFERENCE_REVIEW.md) 及 [V11.1 实际发布记录](../V11_1_RELEASE.md)。V11 的历史验收数字仍是原时点快照；新资料原文、个人身份和资料认领凭据不进入公开交接。
 
 ## 当前重要入口
 

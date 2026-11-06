@@ -1,0 +1,892 @@
+{
+  "date_utc": "2026-11-06",
+  "scope": "Observed small diagnostic samples, no overall RAG accuracy, general latency SLA, load-test or production business gain claim.",
+  "runtime_commit": "c9a2f92f2340d46888c7f58084bc3b59f7966052",
+  "application_version": "11.1.0",
+  "index_schema": "page-bm25-alias-v5-bc9e79efd808b134",
+  "private_import": {
+    "documents": 2,
+    "physical_pages": 118,
+    "characters": 199527,
+    "separate_owner_isolation_verified": true,
+    "original_sha_match_after_redeploy": true
+  },
+  "initial_release": {
+    "git_commit": "f987b63210303d100ec9980ea42a02b6fde48472",
+    "time_utc": "2026-11-06T08:08:53Z",
+    "samples": [
+      {
+        "case": "fof_definition",
+        "round": 1,
+        "http_ms": 16828,
+        "server_collect_ms": 16340,
+        "shared": {
+          "index_mode": "rebuilt_from_archive",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_persistence": "saved",
+          "index_load_ms": 16254.835,
+          "retrieval_ms": 25.157,
+          "total_ms": 16282.851,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 47,
+        "source_count": 4
+      },
+      {
+        "case": "fof_chinese_alias",
+        "round": 1,
+        "http_ms": 190,
+        "server_collect_ms": 43,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.008,
+          "retrieval_ms": 26.735,
+          "total_ms": 33.349,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 2,
+        "source_count": 4
+      },
+      {
+        "case": "fof_investment_target",
+        "round": 1,
+        "http_ms": 497,
+        "server_collect_ms": 314,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.007,
+          "retrieval_ms": 300.705,
+          "total_ms": 304.992,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 2,
+        "source_count": 4
+      },
+      {
+        "case": "notes_currency_roles",
+        "round": 1,
+        "http_ms": 178,
+        "server_collect_ms": 20,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 4.044,
+          "total_ms": 6.574,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 6,
+        "source_count": 5
+      },
+      {
+        "case": "notes_function_paraphrase",
+        "round": 1,
+        "http_ms": 184,
+        "server_collect_ms": 60,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 31.29,
+          "total_ms": 33.918,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 19,
+        "source_count": 6
+      },
+      {
+        "case": "notes_value_vs_payment",
+        "round": 1,
+        "http_ms": 200,
+        "server_collect_ms": 17,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.005,
+          "retrieval_ms": 4.893,
+          "total_ms": 7.469,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 2,
+        "source_count": 4
+      },
+      {
+        "case": "report_issuance",
+        "round": 1,
+        "http_ms": 159,
+        "server_collect_ms": 30,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 18.017,
+          "total_ms": 21.185,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 1,
+        "source_count": 5
+      },
+      {
+        "case": "report_fundraising",
+        "round": 1,
+        "http_ms": 156,
+        "server_collect_ms": 25,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.005,
+          "retrieval_ms": 13.646,
+          "total_ms": 16.625,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 1,
+        "source_count": 5
+      },
+      {
+        "case": "report_outstanding",
+        "round": 1,
+        "http_ms": 185,
+        "server_collect_ms": 21,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.005,
+          "retrieval_ms": 10.125,
+          "total_ms": 13.192,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 1,
+        "source_count": 5
+      },
+      {
+        "case": "fof_definition",
+        "round": 2,
+        "http_ms": 160,
+        "server_collect_ms": 35,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.005,
+          "retrieval_ms": 24.478,
+          "total_ms": 27.074,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 0,
+        "source_count": 4
+      },
+      {
+        "case": "fof_chinese_alias",
+        "round": 2,
+        "http_ms": 151,
+        "server_collect_ms": 36,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.005,
+          "retrieval_ms": 25.014,
+          "total_ms": 27.955,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 0,
+        "source_count": 4
+      },
+      {
+        "case": "fof_investment_target",
+        "round": 2,
+        "http_ms": 260,
+        "server_collect_ms": 64,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 50.735,
+          "total_ms": 54.888,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 2,
+        "source_count": 4
+      },
+      {
+        "case": "notes_currency_roles",
+        "round": 2,
+        "http_ms": 168,
+        "server_collect_ms": 19,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 3.834,
+          "total_ms": 6.292,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 5,
+        "source_count": 5
+      },
+      {
+        "case": "notes_function_paraphrase",
+        "round": 2,
+        "http_ms": 186,
+        "server_collect_ms": 60,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.006,
+          "retrieval_ms": 30.963,
+          "total_ms": 33.889,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 19,
+        "source_count": 6
+      },
+      {
+        "case": "notes_value_vs_payment",
+        "round": 2,
+        "http_ms": 140,
+        "server_collect_ms": 17,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.005,
+          "retrieval_ms": 4.623,
+          "total_ms": 7.213,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 2,
+        "source_count": 4
+      },
+      {
+        "case": "report_issuance",
+        "round": 2,
+        "http_ms": 189,
+        "server_collect_ms": 28,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.005,
+          "retrieval_ms": 16.558,
+          "total_ms": 19.406,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 1,
+        "source_count": 5
+      },
+      {
+        "case": "report_fundraising",
+        "round": 2,
+        "http_ms": 179,
+        "server_collect_ms": 25,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.005,
+          "retrieval_ms": 13.711,
+          "total_ms": 16.591,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 1,
+        "source_count": 5
+      },
+      {
+        "case": "report_outstanding",
+        "round": 2,
+        "http_ms": 151,
+        "server_collect_ms": 22,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919516,
+          "index_parts": 4,
+          "index_load_ms": 0.005,
+          "retrieval_ms": 11.024,
+          "total_ms": 13.862,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 1,
+        "source_count": 5
+      }
+    ],
+    "warm": {
+      "n": 17,
+      "http_min_ms": 140,
+      "http_median_ms": 179,
+      "http_max_ms": 497
+    }
+  },
+  "query_fix_release": {
+    "git_commit": "c9a2f92f2340d46888c7f58084bc3b59f7966052",
+    "time_utc": "2026-11-06T08:25:42Z",
+    "samples": [
+      {
+        "case": "fof_definition",
+        "round": 1,
+        "http_ms": 17443,
+        "server_collect_ms": 17271,
+        "shared": {
+          "index_mode": "rebuilt_from_archive",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_persistence": "saved",
+          "index_load_ms": 16582.889,
+          "retrieval_ms": 25.93,
+          "total_ms": 16612.08,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 650,
+        "source_count": 4
+      },
+      {
+        "case": "fof_chinese_alias",
+        "round": 1,
+        "http_ms": 415,
+        "server_collect_ms": 256,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.006,
+          "retrieval_ms": 242.114,
+          "total_ms": 245.25,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 0,
+        "source_count": 4
+      },
+      {
+        "case": "fof_investment_target",
+        "round": 1,
+        "http_ms": 198,
+        "server_collect_ms": 69,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.006,
+          "retrieval_ms": 54.561,
+          "total_ms": 59.194,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 2,
+        "source_count": 4
+      },
+      {
+        "case": "notes_currency_roles",
+        "round": 1,
+        "http_ms": 140,
+        "server_collect_ms": 21,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 4.326,
+          "total_ms": 7.106,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 6,
+        "source_count": 5
+      },
+      {
+        "case": "notes_function_paraphrase",
+        "round": 1,
+        "http_ms": 217,
+        "server_collect_ms": 62,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 31.53,
+          "total_ms": 34.549,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 19,
+        "source_count": 6
+      },
+      {
+        "case": "notes_value_vs_payment",
+        "round": 1,
+        "http_ms": 135,
+        "server_collect_ms": 18,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 4.904,
+          "total_ms": 7.815,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 2,
+        "source_count": 4
+      },
+      {
+        "case": "report_issuance",
+        "round": 1,
+        "http_ms": 196,
+        "server_collect_ms": 29,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 17.126,
+          "total_ms": 20.268,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 1,
+        "source_count": 5
+      },
+      {
+        "case": "report_fundraising",
+        "round": 1,
+        "http_ms": 147,
+        "server_collect_ms": 26,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 14.445,
+          "total_ms": 17.635,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 1,
+        "source_count": 5
+      },
+      {
+        "case": "report_outstanding",
+        "round": 1,
+        "http_ms": 141,
+        "server_collect_ms": 23,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 11.156,
+          "total_ms": 14.3,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 1,
+        "source_count": 5
+      },
+      {
+        "case": "fof_definition",
+        "round": 2,
+        "http_ms": 157,
+        "server_collect_ms": 36,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.005,
+          "retrieval_ms": 25.347,
+          "total_ms": 28.358,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 0,
+        "source_count": 4
+      },
+      {
+        "case": "fof_chinese_alias",
+        "round": 2,
+        "http_ms": 160,
+        "server_collect_ms": 36,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 24.738,
+          "total_ms": 27.684,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 0,
+        "source_count": 4
+      },
+      {
+        "case": "fof_investment_target",
+        "round": 2,
+        "http_ms": 202,
+        "server_collect_ms": 68,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 53.194,
+          "total_ms": 57.6,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 2,
+        "source_count": 4
+      },
+      {
+        "case": "notes_currency_roles",
+        "round": 2,
+        "http_ms": 181,
+        "server_collect_ms": 21,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 4.388,
+          "total_ms": 7.341,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 6,
+        "source_count": 5
+      },
+      {
+        "case": "notes_function_paraphrase",
+        "round": 2,
+        "http_ms": 298,
+        "server_collect_ms": 61,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 31.635,
+          "total_ms": 34.449,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 19,
+        "source_count": 6
+      },
+      {
+        "case": "notes_value_vs_payment",
+        "round": 2,
+        "http_ms": 142,
+        "server_collect_ms": 18,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 4.704,
+          "total_ms": 7.556,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 3,
+        "source_count": 4
+      },
+      {
+        "case": "report_issuance",
+        "round": 2,
+        "http_ms": 151,
+        "server_collect_ms": 31,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 18.375,
+          "total_ms": 21.629,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 1,
+        "source_count": 5
+      },
+      {
+        "case": "report_fundraising",
+        "round": 2,
+        "http_ms": 141,
+        "server_collect_ms": 26,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 14.288,
+          "total_ms": 17.509,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 1,
+        "source_count": 5
+      },
+      {
+        "case": "report_outstanding",
+        "round": 2,
+        "http_ms": 142,
+        "server_collect_ms": 23,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.004,
+          "retrieval_ms": 10.842,
+          "total_ms": 14.166,
+          "indexed_documents": 93,
+          "indexed_chunks": 18587
+        },
+        "private_elapsed_ms": 1,
+        "source_count": 5
+      }
+    ],
+    "warm": {
+      "n": 17,
+      "http_min_ms": 135,
+      "http_median_ms": 157,
+      "http_max_ms": 415
+    }
+  },
+  "initial_model_failure": {
+    "case": "notes_long_question",
+    "status": "no_evidence",
+    "model_called": false,
+    "observed_ms": 3032
+  },
+  "real_model_samples_after_fix": [
+    {
+      "case": "notes_long_question",
+      "first_evidence_ms": 275,
+      "final_answer_ms": 2838,
+      "provider_latency_ms": 2627,
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "inference_verified": true,
+      "citation_number_check": "references_present",
+      "source_locations": [
+        {
+          "origin": "private_cloud",
+          "page": 11
+        },
+        {
+          "origin": "private_cloud",
+          "page": 12
+        },
+        {
+          "origin": "shared_reference",
+          "page": 59
+        },
+        {
+          "origin": "shared_reference",
+          "page": 21
+        },
+        {
+          "origin": "shared_reference",
+          "page": 213
+        },
+        {
+          "origin": "shared_reference",
+          "page": 31
+        }
+      ]
+    },
+    {
+      "case": "report_entity_period_counts",
+      "first_evidence_ms": 165,
+      "final_answer_ms": 2628,
+      "provider_latency_ms": 2454,
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "inference_verified": true,
+      "citation_number_check": "references_present",
+      "source_locations": [
+        {
+          "origin": "private_cloud",
+          "page": 1
+        },
+        {
+          "origin": "shared_reference",
+          "page": 72
+        },
+        {
+          "origin": "shared_reference",
+          "page": 68
+        },
+        {
+          "origin": "shared_reference",
+          "page": 169
+        },
+        {
+          "origin": "shared_reference",
+          "page": 170
+        }
+      ]
+    },
+    {
+      "case": "fof_definition",
+      "first_evidence_ms": 178,
+      "final_answer_ms": 2798,
+      "provider_latency_ms": 2604,
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "inference_verified": true,
+      "citation_number_check": "references_present",
+      "source_locations": [
+        {
+          "origin": "shared_reference",
+          "page": 3
+        },
+        {
+          "origin": "shared_reference",
+          "page": 106
+        },
+        {
+          "origin": "shared_reference",
+          "page": 99
+        },
+        {
+          "origin": "shared_reference",
+          "page": 99
+        }
+      ]
+    }
+  ],
+  "fresh_deployment": {
+    "id": "dpl_GtfzkAQAWmWvRHGfFc1zC4oun4pH",
+    "git_commit": "c9a2f92f2340d46888c7f58084bc3b59f7966052",
+    "time_utc": "2026-11-06T08:29:17Z",
+    "measurements": [
+      {
+        "case": "fof_first_request_after_redeploy",
+        "http_ms": 3178,
+        "server_collect_ms": 2991,
+        "shared": {
+          "index_mode": "persisted_index_parts",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 2213.172,
+          "retrieval_ms": 290.266,
+          "total_ms": 2506.639
+        },
+        "source_locations": [
+          {
+            "origin": "shared_reference",
+            "page": 4
+          },
+          {
+            "origin": "shared_reference",
+            "page": 9
+          },
+          {
+            "origin": "shared_reference",
+            "page": 7
+          },
+          {
+            "origin": "shared_reference",
+            "page": 7
+          }
+        ]
+      },
+      {
+        "case": "notes_long_question_after_reload",
+        "http_ms": 248,
+        "server_collect_ms": 62,
+        "shared": {
+          "index_mode": "memory_cache",
+          "index_bytes": 12919517,
+          "index_parts": 4,
+          "index_load_ms": 0.006,
+          "retrieval_ms": 31.069,
+          "total_ms": 33.684
+        },
+        "source_locations": [
+          {
+            "origin": "private_cloud",
+            "page": 11
+          },
+          {
+            "origin": "private_cloud",
+            "page": 12
+          },
+          {
+            "origin": "shared_reference",
+            "page": 59
+          },
+          {
+            "origin": "shared_reference",
+            "page": 21
+          },
+          {
+            "origin": "shared_reference",
+            "page": 213
+          },
+          {
+            "origin": "shared_reference",
+            "page": 31
+          }
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "local_python": 208,
+    "local_node": 59,
+    "local_chromium": 68,
+    "production_business_assertions": 13,
+    "production_browser_assertions": 5,
+    "feature_pr": 14,
+    "query_fix_pr": 15,
+    "query_fix_ci_runs": [
+      42186356001,
+      42186355987
+    ],
+    "runtime_main_ci_runs": [
+      42187406975,
+      42187406780
+    ]
+  },
+  "limitations": [
+    "Sequential measurements from one cloud test location, not mainland-China user measurements.",
+    "Citation identifier checks do not establish every claim or per-sentence page attribution.",
+    "Known secondary candidate noise remains; private and shared results are not a universally correct ranked answer.",
+    "User files, source passages, original filenames, document IDs, credentials and claim URLs are excluded."
+  ]
+}
