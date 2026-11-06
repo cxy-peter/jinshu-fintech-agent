@@ -71,6 +71,29 @@ def test_grounded_missing_evidence_and_stream_failures_are_explicit(tmp_path):
         assert r.status_code==409
 
 
+def test_same_page_heading_reaches_model_after_a_later_table_is_retrieved(tmp_path):
+    requests = []
+    def model(request):
+        requests.append(json.loads(request.content))
+        return httpx.Response(200, json={'model': 'mock', 'choices': [
+            {'message': {'content': '合成报告的发行数量为17支。[S1]'}, 'finish_reason': 'stop'}]})
+    env = {'JINSHU_DATA_DIR': str(tmp_path), 'JINSHU_SEMANTIC': '0', 'DEEPSEEK_API_KEY': 'test-only'}
+    body = ('模拟机构甲 2099年度报告（合成测试）\n'
+            + '背景说明与责任声明。' * 100 + '\n发行数量为17支，全部为模拟记录。')
+    with TestClient(create_app(env=env, transport=httpx.MockTransport(model))) as client:
+        client.get('/api/workspace/bootstrap')
+        upload(client, body.encode(), name='synthetic-report.txt')
+        result = client.post('/api/chat', json={'query': '发行数量是多少？',
+                             'use_private_library': True, 'answer_mode': 'grounded', 'consent': True})
+        assert result.status_code == 200, result.text
+        hit = result.json()['sources'][0]
+        assert '发行数量为17支' in hit['text']
+        assert '模拟机构甲' not in hit['text']
+        assert '模拟机构甲 2099年度报告' in hit['page_context']
+        prompt = requests[0]['messages'][-1]['content']
+        assert '同一原文页起始上下文' in prompt and '模拟机构甲 2099年度报告' in prompt
+
+
 def test_private_corpus_uses_one_score_scale_for_short_definition_and_large_log():
     from core.private_library import combine_indexes
     from core.reference_library import ReferenceIndex

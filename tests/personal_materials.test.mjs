@@ -47,3 +47,14 @@ test('acronym boundaries and explicit followups do not borrow invented answer fa
   assert.ok(follow.used_history);assert.doesNotMatch(follow.query,/99%/);
   assert.equal(resolveFollowup('ETF是什么？',history).query,'ETF是什么？');
 });
+for(const query of [
+  '根据黄达笔记，用三句话说明货币的职能，并引用原文。',
+  '请依据我上传的金融学教材，以两段话概述货币有哪些功能，同时标注来源和页码。',
+  '参考《课程讲义》，分3点解释货币的职能，请给出原文页码。',
+  '结合个人学习手册，用100字总结货币有哪些功能，并附上引用。',
+])test('presentation instructions preserve the actual retrieval topic: '+query,()=>{
+  assert.deepEqual([...queryPlan(query).terms].sort(),[...queryPlan('货币的职能').terms].sort());
+  const docs=normalizePack({documents:[{id:'notes',title:'课程笔记',status:'active',pages:[
+    {page:11,text:'1.货币的职能\n货币的职能包括价值尺度、流通手段等。'}]}]});
+  assert.equal(selectedPassages(makeIndex(docs),query)[0]?.page,11);
+});

@@ -167,6 +167,20 @@ class ReferenceIndex:
     def search(self,query,limit=4):
         return self.search_with_diagnostics(query,limit)['sources']
 
+    def page_context(self,row):
+        """Actual same-page prefix for checking issuer/period, never for recall.
+
+        Derived at output time from retained original pages, so existing snapshots
+        need no migration and chunk hashes/lexical evidence stay unchanged.
+        """
+        if row.get('is_contents'):return ''
+        pages=self.docs.get(row['doc_id'],{}).get('pages',[])
+        page=next((p for p in pages if p.get('page')==row['page']),None)
+        if not page:return ''
+        text=page.get('text','')
+        if not isinstance(text,str) or len(re.findall(r'(?:\.{4,}|…{2,})\s*\d+',text))>=3:return ''
+        return text.lstrip()[:600]
+
     def search_with_diagnostics(self,query,limit=4):
         started=time.perf_counter();plan=plan_query(query);wanted=plan['terms']
         scores=Counter();covered=defaultdict(set);total=len(self.rows)
@@ -202,9 +216,12 @@ class ReferenceIndex:
             r=self.rows[i]
             if seen[r['doc_id']]>=2 or r['hash'] in hashes:continue
             seen[r['doc_id']]+=1;hashes.add(r['hash'])
+            context=self.page_context(r)
             out.append({k:v for k,v in r.items() if not k.startswith('_')}|{'score':round(score,4),'retrieval_routes':['bm25']+(['alias'] if plan['matched_aliases'] else []),
                           'query_focus':plan['focus'],'query_aliases':plan['matched_aliases'],
-                          'evidence_match':evidence})
+                          'evidence_match':evidence,'page_context':context,
+                          'page_context_hash':digest(context) if context else None,
+                          'page_context_scope':'same_page_prefix_not_retrieval_evidence'})
             if len(out)>=limit:break
         return {'sources':out,'diagnostics':{
             'status':'matched' if out else ('empty_index' if not self.rows else 'no_match'),
