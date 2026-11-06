@@ -1,5 +1,8 @@
 # 从这里开始：金枢 V11
 
+> **跨对话接续：** [新对话交接导航（无需 ZIP）](docs/handoff/README.md) · [完整交接](docs/handoff/V11_FULL_CONTEXT.md) · [一段可复制的续聊 Prompt](docs/handoff/NEW_CHAT_PROMPT.md) · [历史索引](docs/handoff/HISTORY_INDEX.md)
+
+
 当前入口只有 `index.py → core.app`。线上与本地使用同一代码；不要用企业参考Runtime或旧静态页面替代当前验收。
 
 先读 [README](README.md)，再看 [部署说明](DEPLOY.md) 和 [V11改造与边界](docs/V11_UPGRADE.md)。
