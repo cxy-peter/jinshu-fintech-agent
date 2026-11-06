@@ -53,24 +53,58 @@ def wealth_benchmark(p):
  return {'rows':out,'summary':{'同口径样本数':len(out),'样本收益中位数':str(statistics.median(vals)),'严格低于目标的样本比例':sum(v<tr for v in vals)/len(vals)},'note':'合成净值无分红；不是全市场排名或投资建议'}
 
 def issuance(p):
- cfg=source('calendar.json');holidays=set(cfg['holidays']);start=date.fromisoformat(p.get('start','2026-09-25'));term=int(p.get('term_days',90));freq=int(p.get('frequency_days',7));count=int(p.get('count',3))
- if term<1 or term>3650 or freq not in [7,14] or not 1<=count<=20:raise ValueError('排期参数超出允许范围')
- def valid(d):return d.weekday()<5 and str(d) not in holidays
- def advance(d):
-  while not valid(d):d+=timedelta(days=1)
-  return d
- out=[]
+ """Apply an explicit calendar policy, not a model-invented trading calendar."""
+ cfg=source('calendar.json')
+ if not isinstance(cfg,dict) or not cfg.get('version'):
+  raise ValueError('日历必须有版本')
+ def dates(name):
+  raw=cfg.get(name,[])
+  if not isinstance(raw,list) or len(raw)>5000:
+   raise ValueError('日历日期列表无效')
+  return {date.fromisoformat(x) for x in raw}
+ holidays=dates('holidays');workdays=dates('workdays')
+ if holidays & workdays:raise ValueError('同一天不能同时为休息日和指定工作日')
+ lower=date.fromisoformat(cfg['coverage_start']) if cfg.get('coverage_start') else None
+ upper=date.fromisoformat(cfg['coverage_end']) if cfg.get('coverage_end') else None
+ if bool(lower)!=bool(upper) or lower and lower>upper:
+  raise ValueError('日历覆盖起止范围须同时填写且顺序正确')
+ start=date.fromisoformat(p.get('start','2026-09-25'))
+ term=int(p.get('term_days',90));freq=int(p.get('frequency_days',7));count=int(p.get('count',3))
+ if term<1 or term>3650 or freq not in [7,14] or not 1<=count<=20:
+  raise ValueError('排期参数超出允许范围')
+ def valid(d):
+  if lower and not lower<=d<=upper:
+   raise ValueError('排期超出已提供日历覆盖范围，请补日历后重算')
+  return d in workdays or (d.weekday()<5 and d not in holidays)
+ def adjust(d,direction=1):
+  for _ in range(371):
+   if valid(d):return d
+   d+=timedelta(days=direction)
+  raise ValueError('日历连续不可用天数过多，停止计算，请核对输入')
+ out=[];establishments=set()
  for i in range(count):
-  planned=start+timedelta(days=i*freq);actual=advance(planned);close=actual-timedelta(days=1)
-  while not valid(close):close-=timedelta(days=1)
-  maturity=advance(actual+timedelta(days=term))
-  out.append({'批次':i+1,'拟成立日':str(planned),'成立日':str(actual),'募集结束日':str(close),'到期日':str(maturity),'实际自然日':(maturity-actual).days,'顺延':actual!=planned,'日历版本':cfg['version']})
- return {'rows':out,'material_preview':{'标题':'模拟产品发行材料草稿','约定期限自然日':term,'发行频率天':freq,'日历版本':cfg['version'],'需人工确认':['产品要素','日历适用市场','顺延日期','募集与成立时点']},'note':'根据模拟日历计算。所有结果为待核对排期草案，不是发行决定'}
+  planned=start+timedelta(days=i*freq);actual=adjust(planned)
+  close=adjust(actual-timedelta(days=1),-1);maturity=adjust(actual+timedelta(days=term))
+  if actual in establishments:
+   raise ValueError('顺延导致多个批次成立日重合，请调整起始日或发行频率')
+  if not close<actual<maturity:raise ValueError('募集、成立和到期日期顺序不合法')
+  establishments.add(actual)
+  out.append({'批次':i+1,'拟成立日':str(planned),'成立日':str(actual),'募集结束日':str(close),
+              '到期日':str(maturity),'实际自然日':(maturity-actual).days,'顺延':actual!=planned,'日历版本':cfg['version']})
+ assumptions=['按输入日历顺延；不是法定节假日日历或发行规则认证']
+ if not lower:assumptions.append('未提供日历覆盖范围，跨期完整性须人工核验')
+ return {'rows':out,'issues':[{'字段':'日历','状态':x} for x in assumptions],
+         'constraint_checks':{'chronology':True,'distinct_establishment_dates':True,
+                              'calendar_coverage_provided':bool(lower),'calendar_version':cfg['version']},
+         'material_preview':{'标题':'产品发行材料草稿','约定期限自然日':term,'发行频率天':freq,
+                             '日历版本':cfg['version'],'需人工确认':['产品要素','日历适用市场','顺延日期','募集与成立时点']},
+         'note':'仅对输入规则作确定性校验；所有结果是待复核排期草案，不是发行决定'}
 
 def weekly_report(p):
  out=[];issues=[];seen=set()
  for i,r in enumerate(p.get('rows',rows('weekly_raw.csv')),2):
   if not isinstance(r.get('登记编码'),str):raise ValueError('登记编码必须为字符串，不能猜测前导零')
+  date.fromisoformat(r['数据日期'])
   key=(r['登记编码'],r['数据日期'])
   if key in seen:raise ValueError('登记编码/日期重复')
   seen.add(key);rate=number(r['区间收益率'],True)

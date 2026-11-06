@@ -150,6 +150,8 @@ def create_app(*, env=None, transport=None, clock=time.monotonic):
     app.add_middleware(BodyLimit)
     from .workspace import install, prepare, save_answer, verify_current_sources
     workspace = install(app, authorize, env, clock)
+    from .workflow_api import install as install_workflows
+    install_workflows(app, workspace, authorize, DEFAULTS)
 
     @app.exception_handler(RequestValidationError)
     async def validation(request, exc):
@@ -176,7 +178,9 @@ def create_app(*, env=None, transport=None, clock=time.monotonic):
                 'capabilities': {'chat': True, 'keyword_retrieval': True, 'deterministic_tools': list(REQUIRED_PARAMS),
                     'mongodb_required': False, 'redis_required': False, 'milvus_required': False,
                     'embedding_required': False, 'reranker_required': False,
-                    'durable_server_history': workspace.kind != 'unconfigured', 'enterprise_review': workspace.kind != 'unconfigured'},
+                    'durable_server_history': workspace.kind != 'unconfigured', 'enterprise_review': workspace.kind != 'unconfigured',
+                    'checkpointed_business_workflows': workspace.kind != 'unconfigured',
+                    'workflow_model_calls': False, 'workflow_resume': 'explicit_request_after_lease_expiry'},
                 'workspace_store': workspace.kind,
                 'history': '可选择保存到独立工作空间；共享资料先审核再检索。未选择保存时仍为临时对话。',
                 'limits': '限流为单进程保护，不是跨实例费用上限；公开分享前建议设置访问码及Vercel费用限制。'}
