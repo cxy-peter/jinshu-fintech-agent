@@ -1,0 +1,65 @@
+name: V11 reliable financial workflows
+on:
+  push:
+    branches: ['main','upgrade/v11-reliable-wealth-workflows']
+  pull_request:
+    paths: ['core/**','jinshu/tools.py','tests/core/**','scripts/**','.github/workflows/v11-acceptance.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: v11-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install runtime and isolated acceptance tools
+        run: pip install -r requirements.txt pytest pytest-asyncio playwright
+      - name: Python and JavaScript regressions
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/v11
+          python -m pytest tests/core -q | tee evidence/v11/python-tests.txt
+          node --test tests/manual_deploy.test.mjs tests/personal_materials.test.mjs | tee evidence/v11/node-tests.txt
+          node --check core/web/workflows.js
+          python scripts/build_unified.py
+      - name: Chromium over actual local HTTP
+        run: |
+          set -euo pipefail
+          python -m playwright install --with-deps chromium
+          JINSHU_EVIDENCE_DIR=evidence/v11/existing python tests/core/browser_check.py | tee evidence/v11/existing-browser.txt
+          python tests/core/browser_workflows.py | tee evidence/v11/workflow-browser.txt
+      - name: Exact source and evidence snapshot
+        if: always()
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess,zipfile
+          paths=subprocess.check_output(['git','ls-files','-z'],text=True).split('\0')
+          with zipfile.ZipFile('/tmp/jinshu-v11-source-and-evidence.zip','w',zipfile.ZIP_DEFLATED) as z:
+              z.writestr('SOURCE_COMMIT.txt',subprocess.check_output(['git','rev-parse','HEAD'],text=True))
+              for name in paths:
+                  p=Path(name)
+                  if not name or not p.is_file() or p.is_symlink():continue
+                  if p.suffix.lower() in {'.ttf','.otf','.woff','.woff2','.sqlite','.sqlite3','.db','.pem','.key'}:continue
+                  if p.name=='.env' or p.name.startswith('.env.') and 'example' not in p.name:continue
+                  z.write(p,'source/'+name)
+              for p in Path('evidence/v11').rglob('*'):
+                  if p.is_file():z.write(p,'verification/'+str(p.relative_to('evidence/v11')))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: jinshu-v11-acceptance
+          path: |
+            /tmp/jinshu-v11-source-and-evidence.zip
+            evidence/v11/
+          retention-days: 14

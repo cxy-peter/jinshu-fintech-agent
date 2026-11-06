@@ -13,13 +13,14 @@ class BodyLimit:
         if scope['type'] != 'http' or scope['method'] not in {'POST', 'PUT', 'PATCH'}:
             return await self.app(scope, receive, send)
         size, messages = 0, []
+        limit = 220_000 if scope.get('path', '').startswith('/api/workflows') else self.limit
         while True:
             event = await receive()
             if event['type'] == 'http.disconnect':
                 return
             size += len(event.get('body', b''))
-            if size > self.limit:
-                return await JSONResponse({'error': {'code': 'REQUEST_TOO_LARGE', 'message': '请求最多 128 KB；请减少资料或历史内容。'}}, 413)(scope, receive, send)
+            if size > limit:
+                return await JSONResponse({'error': {'code': 'REQUEST_TOO_LARGE', 'message': f'请求最多 {limit//1000} KB；请减少资料或历史内容。'}}, 413)(scope, receive, send)
             messages.append(event)
             if not event.get('more_body', False):
                 break

@@ -1,11 +1,13 @@
-# 从这里开始：金枢 V9
+# 从这里开始：金枢 V11
 
-本地和线上都使用 `index:app`，默认是 `core.app`，不要再使用旧 `python -m jinshu serve` 或旧 Workbench 静态网页来验收当前版本。
+当前入口只有 `index.py → core.app`。线上与本地使用同一代码；不要用企业参考Runtime或旧静态页面替代当前验收。
 
-Windows 本地：根目录 `.env` 设置 `DEEPSEEK_API_KEY`，双击 `start_local.bat`。需要 Python 3.12 / 3.13。浏览器打开 http://127.0.0.1:8766 。无密钥仍能打开页面和计算工具。
+先读 [README](README.md)，再看 [部署说明](DEPLOY.md) 和 [V11改造与边界](docs/V11_UPGRADE.md)。
 
-Windows 部署：Vercel 项目环境变量设置同一个服务端变量，再双击 `deploy_vercel.bat`。需要 Node.js 22+ 和自己的 Vercel 登录；不需要本机 Python/数据库。已有 `.vercel/project.json` 会复用，不要删除。默认 Preview，正式发布仍需显式确认。
+演示新增能力：页面底部登录编辑账号 → “可恢复业务流程” → “周报质检＋同业对标” → 填入合成示例 → 保存输入 → 逐批执行 → 刷新恢复 → 切换独立审核账号 → 打开待审任务 → 核对并导出。仅使用脱敏示例，不执行真实金融操作。
 
-只看“页面可打开”“密钥已配置”不能证明模型可用。发布后在“服务状态与配置”勾选测试授权，再点“实际测试 DeepSeek”，核对返回模型与真实调用标记。
+现有资料审核、引用问答、Memory与反馈Loop保留。无模型密钥时仍可计算；共享资料和可恢复任务需要持久化服务。不要把“配置存在”当服务可达或模型效果合格。
 
-详细说明：[DEPLOY.md](DEPLOY.md)。当前不提供独立审批、共享历史和数据库持久化；这些能力未伪装成已上线。
+本地：Python3.12/3.13，安全加载服务端配置后运行 `uvicorn index:app --host 127.0.0.1 --port 8000`，或沿用原启动脚本。Windows/macOS启动脚本保留，不删除本机`.env`或`.vercel/project.json`。
+
+[简历项目片段](docs/RESUME_PROJECT.md) · [面试准备](docs/INTERVIEW_MANUAL.md) · [历史快照](docs/history/README.md)

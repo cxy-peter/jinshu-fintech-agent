@@ -12,7 +12,8 @@ if os.getenv('JINSHU_BUILD_EMBEDDINGS') == '1':
     from fetch_embedding import fetch
     fetch()
 required = ('index.py', 'core/app.py', 'core/config.py', 'core/provider.py',
-            'core/web/index.html', 'core/web/app.js', 'core/web/style.css',
+            'core/web/index.html', 'core/web/app.js', 'core/web/style.css', 'core/web/workflows.js',
+            'core/workflows.py', 'core/workflow_api.py',
             'jinshu/tools.py', 'jinshu/fixtures.py', 'jinshu/model_config.py',
             'unified/tools.py', 'data/synthetic/calendar.json')
 for name in required:
@@ -41,4 +42,4 @@ info = {'version': VERSION, 'entrypoint': 'index:app', 'mode': 'core',
         'cloud_services_contacted': False, 'paid_model_called': False,
         'source_hashes': {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in required}}
 (ROOT/'core/web/build-info.json').write_text(json.dumps(info, ensure_ascii=False, indent=2), encoding='utf-8')
-print('Jinshu V10 production-only build passed: same index:app; zero database/ML imports; zero model calls.')
+print('Jinshu V11 production-only build passed: same index:app; zero database/ML imports; zero model calls.')
