@@ -32,10 +32,18 @@
     if(run.quality){out.append(node('h3',`${run.quality.label} · ${run.quality.description}`));for(const w of [...run.quality.warnings,...run.quality.failures])out.append(node('p',`${w.tool}：${typeof w.detail==='string'?w.detail:JSON.stringify(w.detail)}`));}
     for(const [key,n] of Object.entries(run.nodes)){if(n.result){const d=node('details');d.append(node('summary',`${names[key]||key} · 查看结果`),node('pre',JSON.stringify(n.result,null,2)));out.append(d);}}
     const history=node('details');history.append(node('summary','执行事件、检查点与复核凭据'),node('pre',JSON.stringify({input_hash:run.input_hash,recipe_version:run.recipe_version,approval:run.approval,events:run.events},null,2)));out.append(history);
-    if(run.status==='needs_review'&&!dirty){const reason=node('input');reason.placeholder='独立复核意见（由另一账号填写）';reason.maxLength=500;out.append(reason);for(const [label,decision] of [['确认当前版本','approve'],['退回修改','reject']])out.append(action(label,async()=>{const expected=editEpoch;const r=await api(`/api/workflows/${run.id}/review`,'POST',{revision:run.revision,decision,reason:reason.value});if(expected===editEpoch){run=r;render();}await refresh();}));out.append(node('p','提交者不能自审。演示时可在页面底部切换审核账号；复核不等于真实业务授权。','muted'));}
+    if(run.status==='needs_review'&&!dirty){const reason=node('input');reason.placeholder='独立复核意见（由另一账号填写）';reason.maxLength=500;out.append(reason);for(const [label,decision] of [['确认当前版本','approve'],['退回修改','reject']])out.append(action(label,async()=>{const expected=editEpoch,id=run.id,revision=run.revision,opinion=reason.value.trim();if(!opinion)throw Error('请先填写当前任务的复核意见。');const r=await api(`/api/workflows/${id}/review`,'POST',{revision,decision,reason:opinion});if(expected===editEpoch){run=r;render();}await refresh();}));out.append(node('p','提交者不能自审。演示时可在页面底部切换审核账号；复核不等于真实业务授权。','muted'));}
     if(run.status==='approved'&&!dirty){for(const format of ['json','csv'])out.append(action(`下载复核包 ${format.toUpperCase()}`,async()=>{const expected=editEpoch;const r=await fetch(`/api/workflows/${run.id}/export?revision=${run.revision}&format=${format}`,{headers:headers()});if(!r.ok){const d=await r.json();throw Error(d.error?.message||'导出失败');}const blob=await r.blob();if(expected!==editEpoch||dirty)throw Error('输入已变化，旧下载未采用');const a=node('a');a.href=URL.createObjectURL(blob);a.download=`jinshu-${run.id}-v${run.revision}.${format}`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}));}
   }
-  async function load(id){const expected=++editEpoch;const r=await api('/api/workflows/'+id);if(expected!==editEpoch)return;run=r;dirty=false;capturedCreate=null;$('wf-type').value=r.workflow;$('wf-values').value=JSON.stringify(r.payload.values,null,2);$('wf-sources').value=JSON.stringify(r.payload.sources,null,2);$('wf-examples').checked=r.payload.synthetic;schema();render();}
+  async function load(id){
+    if(busy){message('正在处理当前操作，请完成后再切换任务。');return;}
+    const expected=++editEpoch;busy=true;run=null;dirty=false;capturedCreate=null;render();
+    $('wf-result').replaceChildren(node('p','正在读取服务器任务，请稍后填写复核意见。'));
+    try{const r=await api('/api/workflows/'+id);if(expected!==editEpoch)return;run=r;
+      $('wf-type').value=r.workflow;$('wf-values').value=JSON.stringify(r.payload.values,null,2);
+      $('wf-sources').value=JSON.stringify(r.payload.sources,null,2);$('wf-examples').checked=r.payload.synthetic;schema();
+    }finally{busy=false;render();}
+  }
   async function refresh(){
     const m=await api('/api/workflow-metrics');$('wf-metrics').textContent=`本人保留任务 ${m.submitted} · 待审 ${m.awaiting_review} · 获审 ${m.approved} · 阻断 ${m.blocked} · 执行尝试 ${m.step_attempts} · 当前版本复用步骤 ${m.reused_steps_current_revision}。不代表任务正确率。`;
     const rows=await api('/api/workflows');const target=$('wf-history');target.replaceChildren();for(const r of rows)target.append(action(`${r.workflow} · v${r.revision} · ${states[r.status]||r.status}`,()=>load(r.id)));
