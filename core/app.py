@@ -293,8 +293,18 @@ def create_app(*, env=None, transport=None, clock=time.monotonic):
                 by_id={s['source_id']:s for s in sources};sources=[by_id[i]|{'reranker':'deepseek_candidate_only'} for i in order]
             except (ValueError,TypeError):
                 rerank_call['degraded_to']='clause_coverage_rules'
-        context = '\n\n'.join(f"[{s['source_id']}] 标题：{s['title']}；来源类型：{s['origin']}；"
-                              f"{'文本段编号' if s.get('location_kind')=='logical_text_section' else '原文页码'}：{s.get('page') or '未提供'}\n{s['text']}" for s in sources)
+        context_blocks = []
+        for source in sources:
+            location = '文本段编号' if source.get('location_kind') == 'logical_text_section' else '原文页码'
+            block = (f"[{source['source_id']}] 标题：{source['title']}；来源类型：{source['origin']}；"
+                     f"{location}：{source.get('page') or '未提供'}\n命中正文：\n{source['text']}")
+            # This is bounded text from the SAME authorized physical page or
+            # logical section. It supplies report/entity headings lost at chunk
+            # boundaries, without allowing a file title to satisfy retrieval.
+            if source.get('page_context'):
+                block += '\n同一原文页起始上下文（用于核对主体与期间）：\n' + str(source['page_context'])[:1000]
+            context_blocks.append(block)
+        context = '\n\n'.join(context_blocks)
         messages = [{'role': 'system', 'content': SYSTEM}]
         messages.extend(governed['history'] if governed else (m.model_dump() for m in d.history))
         # Keep untrusted retrieved text in the user message rather than a system role.

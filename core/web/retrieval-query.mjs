@@ -40,6 +40,7 @@ export function retrievalTokens(text) {
 export function focusQuery(query) {
   let value=normalize(query);
   for(const pattern of formats)value=value.replace(pattern,' ');
+  value=value.replace(/[，。！？；：、,!?;:\s]+$/g,'');
   for(const pattern of questions)value=value.replace(pattern,' ');
   return value.replace(/[，。！？；：、,!?;:\[\]（）()]+/g,' ').replace(/\s+/g,' ').trim();
 }

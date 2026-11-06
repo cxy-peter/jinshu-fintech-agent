@@ -220,3 +220,46 @@ def test_private_snapshot_default_limit_is_not_raised(diagnostic_index):
         diagnostic_index.serialize('r',max_compressed=10)
     with pytest.raises(ValueError,match='容量限制'):
         diagnostic_index.serialize('r',max_compressed=references.MAX_SHARED_INDEX+1)
+
+
+@pytest.mark.parametrize('query',[
+    '根据黄达笔记，用三句话说明货币的职能，并引用原文。',
+    '请依据我上传的金融学教材，以两段话概述货币有哪些功能，同时标注来源和页码。',
+    '参考《课程讲义》，分3点解释货币的职能，请给出原文页码。',
+    '结合个人学习手册，用100字总结货币有哪些功能，并附上引用。',
+])
+def test_source_and_output_instructions_do_not_dilute_question_evidence(query):
+    assert plan_query(query)['terms']==plan_query('货币的职能')['terms']
+    # Synthetic sentences only: no user PDF text in the regression repository.
+    index=ReferenceIndex({'documents':[{'id':'notes','title':'课程笔记','pages':[
+        {'page':11,'text':'1.货币的职能\n货币的职能包括价值尺度、流通手段等。'}]}]})
+    hits=index.search(query)
+    assert hits and hits[0]['page']==11
+
+
+def test_format_cleanup_preserves_comparison_entities_money_and_identifiers():
+    q='参考《金融学》笔记，分3点解释价值尺度和支付手段有什么区别，请给出原文页码。'
+    assert plan_query(q)['terms']==plan_query('价值尺度和支付手段区别')['terms']
+    p=plan_query('用三万元购买ABCFOF999的风险是什么？')
+    assert p['identifiers']==['abcfof999'] and '万元' in p['terms']
+    p=plan_query('上银理财2026年上半年新发行多少支理财产品？请保留原文单位和引用。')
+    assert '2026' in p['terms'] and '上银' in p['terms']
+
+
+def test_page_context_is_real_bounded_same_page_text_and_not_matching_evidence():
+    header='测试发行主体\n报告期：2026-01-01 至2026-06-30\n'
+    body=header+'# 当期发行\n发行数量合计224支，公募175支、私募49支。'
+    index=ReferenceIndex({'documents':[{'id':'report','title':'不要从文件名猜测.pdf',
+        'pages':[{'page':1,'text':body},{'page':2,'text':'# 独立正文\n测试其他主题。'}]}]})
+    hit=index.search('新发行多少支')[0]
+    assert header.strip() not in hit['text'] and hit['page_context'].startswith(header)
+    assert len(hit['page_context'])<=600
+    assert hit['hash']==hashlib.sha256(hit['text'].encode()).hexdigest()
+    assert hit['page_context_hash']==hashlib.sha256(hit['page_context'].encode()).hexdigest()
+    assert index.page_context({'doc_id':'report','page':2,'is_contents':False}).startswith('# 独立正文')
+    assert index.page_context({'doc_id':'report','page':1,'is_contents':True})==''
+    before=index.search('柑橘嫁接')
+    index.page_context=lambda row:'柑橘嫁接正文外的抬头'
+    assert index.search('柑橘嫁接')==before==[]  # output context never creates a match
+    restored=ReferenceIndex.deserialize(index.serialize('r'),'r')
+    assert restored.search('新发行多少支')[0]['page_context'].startswith(header)

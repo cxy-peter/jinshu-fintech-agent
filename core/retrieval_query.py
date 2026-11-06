@@ -74,6 +74,9 @@ def terms(text: str) -> Counter:
 def focus_query(query: str) -> str:
     value = normalize(query)
     for pattern in _FORMAT: value = pattern.sub(' ', value)
+    # A removed trailing citation/format clause can leave comma + whitespace.
+    # Trim that before anchored question patterns (e.g. a comparison ending).
+    value = re.sub(r'[，。！？；：、,!?;:\s]+$', '', value)
     for pattern in _QUESTIONS: value = pattern.sub(' ', value)
     value = re.sub(r'[，。！？；：、,!?;:\[\]（）()]+', ' ', value)
     return re.sub(r'\s+', ' ', value).strip()
